@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Draftor.Views.Main.MainView"
+             xmlns:context="clr-namespace:Draftor.BindingContexts"
+             xmlns:viewModel="clr-namespace:Draftor.ViewModels"
+             xmlns:converter="clr-namespace:Draftor.Converters"
+             Appearing="PeopleView_Appearing"
+             x:Name="HomeView"
+             BackgroundColor="{DynamicResource PageBackgroundColor}"
+             x:DataType="context:MainDataContext">
+    <ContentPage.Resources>
+        <converter:TotalToIntConverter x:Key="TotalToIntConverter" />
+    </ContentPage.Resources>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Add person"
+                     Command="{Binding AddPersonCommand}" />
+        <ToolbarItem Text="Add transaction"
+                     Command="{Binding AddTransactionCommand}" />
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <StackLayout>
+            <Grid>
+                <Frame BackgroundColor="{DynamicResource PrimaryColor}"
+                       Opacity="0.95"
+                       CornerRadius="25"
+                       HeightRequest="100"
+                       HorizontalOptions="FillAndExpand"
+                       VerticalOptions="FillAndExpand">
+                    <Label Text="{Binding Total}"
+                           FontSize="30"
+                           HorizontalTextAlignment="Center"
+                           VerticalTextAlignment="Center"
+                           HorizontalOptions="CenterAndExpand"
+                           FontAttributes="Bold"
+                           LineBreakMode="MiddleTruncation"
+                           SemanticProperties.Hint="{Binding Total}"
+                           VerticalOptions="CenterAndExpand">
+                        <Label.Triggers>
+                            <DataTrigger TargetType="Label"
+                                         Binding="{Binding Total, Converter={StaticResource TotalToIntConverter}}"
+                                         Value="1">
+                                <Setter Property="TextColor"
+                                        Value="LightGreen" />
+                            </DataTrigger>
+                            <DataTrigger TargetType="Label"
+                                         Binding="{Binding Total, Converter={StaticResource TotalToIntConverter}}"
+                                         Value="-1">
+                                <Setter Property="TextColor"
+                                        Value="Red" />
+                            </DataTrigger>
+                            <DataTrigger TargetType="Label"
+                                         Binding="{Binding Total, Converter={StaticResource TotalToIntConverter}}"
+                                         Value="0">
+                                <Setter Property="TextColor"
+                                        Value="DimGray" />
+                            </DataTrigger>
+                        </Label.Triggers>
+                    </Label>
+                </Frame>
+            </Grid>
+            <ListView ItemsSource="{Binding People}"
+                      SelectedItem="{Binding SelectedPerson, Mode=TwoWay}"
+                      SelectionMode="Single"
+                      IsRefreshing="{Binding IsRefreshing, Mode=TwoWay}"
+                      IsPullToRefreshEnabled="True"
+                      BackgroundColor="Transparent"
+                      RefreshCommand="{Binding RefreshCommand}"
+                      RowHeight="80"
+                      HorizontalOptions="FillAndExpand"
+                      VerticalOptions="FillAndExpand">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="{x:Type viewModel:PersonMainVM}">
+                        <ViewCell>
+                            <SwipeView BackgroundColor="Transparent">
+                                <SwipeView.LeftItems>
+                                    <SwipeItem Text="Delete"
+                                               BackgroundColor="Red"
+                                               Command="{Binding BindingContext.DeletePersonCommand, Source={x:Reference HomeView}}"
+                                               CommandParameter="{Binding Id}" />
+                                </SwipeView.LeftItems>
+                                <Frame CornerRadius="5"
+                                       BackgroundColor="{DynamicResource PrimaryColor}"
+                                       Margin="10,5">
+                                    <Grid>
+                                        <FlexLayout Direction="Row"
+                                                    AlignItems="Center"
+                                                    JustifyContent="SpaceBetween">
+                                            <Label Text="{Binding Name}"
+                                                   FontSize="Large" />
+                                            <Label Text="{Binding Total}"
+                                                   FontSize="Medium">
+                                                <Label.Triggers>
+                                                    <DataTrigger TargetType="Label"
+                                                                 Binding="{Binding Total, Converter={StaticResource TotalToIntConverter}}"
+                                                                 Value="1">
+                                                        <Setter Property="TextColor"
+                                                                Value="LightGreen" />
+                                                    </DataTrigger>
+                                                    <DataTrigger TargetType="Label"
+                                                                 Binding="{Binding Total, Converter={StaticResource TotalToIntConverter}}"
+                                                                 Value="-1">
+                                                        <Setter Property="TextColor"
+                                                                Value="Red" />
+                                                    </DataTrigger>
+                                                    <DataTrigger TargetType="Label"
+                                                                 Binding="{Binding Total, Converter={StaticResource TotalToIntConverter}}"
+                                                                 Value="0">
+                                                        <Setter Property="TextColor"
+                                                                Value="DimGray" />
+                                                    </DataTrigger>
+                                                </Label.Triggers>
+                                            </Label>
+                                        </FlexLayout>
+                                    </Grid>
+                                </Frame>
+                            </SwipeView>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

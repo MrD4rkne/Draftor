@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                    x:Class="Draftor.Resources.Styles.LightTheme">
+    <Color x:Key="PageBackgroundColor">White</Color>
+    <Color x:Key="NavigationBarColor">#dcdcdc</Color>
+    <Color x:Key="PrimaryColor">WhiteSmoke</Color>
+    <Color x:Key="SecondaryColor">Black</Color>
+    <Color x:Key="PrimaryTextColor">Black</Color>
+    <Color x:Key="SecondaryTextColor">White</Color>
+    <Color x:Key="TertiaryTextColor">Gray</Color>
+    <Color x:Key="TransparentColor">Transparent</Color>
+    <Color x:Key="DisabledColor">#f2f2f2</Color>
+    <Color x:Key="DisabledFontColor">#737577</Color>
+
+    <x:String x:Key="CalculatorIcon">Resources/drawable/calculatorLight.png</x:String>
+    <x:String x:Key="GroupsIcon">Resources/drawable/groupsLight.png</x:String>
+</ResourceDictionary>
