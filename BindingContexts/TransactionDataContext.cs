@@ -1,68 +1,69 @@
 ﻿using System.Collections.ObjectModel;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Draftor.Abstract;
 
 namespace Draftor.BindingContexts;
 
-public class TransactionDataContext : Core.ObservableObject
+public class TransactionDataContext : ObservableObject
 {
     private readonly IDataService _dataService;
 
     private char _sign = '+';
     public char Sign
     {
-        get { return _sign; }
-        set { _sign = value; OnPropertyChanged(nameof(Sign)); }
+        get => _sign;
+        set => SetProperty(ref _sign, value);
     }
 
     private string _title = string.Empty;
     public string Title
     {
-        get { return _title; }
-        set { _title = value; OnPropertyChanged(nameof(Title)); }
+        get => _title;
+        set => SetProperty(ref _title, value);
     }
 
     private string _description = string.Empty;
     public string Description
     {
-        get { return _description; }
-        set { _description = value; OnPropertyChanged(nameof(Description)); }
+        get => _description;
+        set => SetProperty(ref _description, value);
     }
 
     private double _ammount = 0.0;
     public double Ammount
     {
-        get { return _ammount; }
-        set { _ammount = value; OnPropertyChanged(nameof(Ammount)); AddTransactionCommand.ChangeCanExecute(); }
+        get => _ammount;
+        set { if (SetProperty(ref _ammount, value)){ AddTransactionCommand.NotifyCanExecuteChanged(); } }
     }
 
     private bool _arePeopleLoading;
     public bool ArePeopleLoading
     {
-        get { return _arePeopleLoading; }
-        set { _arePeopleLoading = value; OnPropertyChanged(nameof(ArePeopleLoading)); }
+        get => _arePeopleLoading;
+        set => SetProperty(ref _arePeopleLoading, value);
     }
 
     private bool _isBusy = false;
     public bool IsBusy
     {
-        get
-        {
-            return _isBusy;
-        }
+        get => _isBusy;
         set
         {
-            _isBusy = value;
-            AddTransactionCommand.ChangeCanExecute();
+            if (SetProperty(ref _isBusy, value))
+            {
+                AddTransactionCommand.NotifyCanExecuteChanged();
+            }
         }
     }
 
     public ObservableCollection<ViewModels.PersonForListVM> People { get; private set; }
 
-    public Command AddTransactionCommand { get; private set; }
+    public IAsyncRelayCommand AddTransactionCommand { get; private set; }
 
-    public Command SwitchSignCommand { get; private set; }
+    public IRelayCommand SwitchSignCommand { get; private set; }
 
-    public Command PersonCheckedCommand { get; private set; }
+    public IRelayCommand PersonCheckedCommand { get; private set; }
 
     public TransactionDataContext(IDataService dataService)
     {
@@ -74,9 +75,9 @@ public class TransactionDataContext : Core.ObservableObject
 
     private void BindCommands()
     {
-        AddTransactionCommand = new Command(AddTransactionCommand_Execute, AddTransaction_CanExecute);
-        PersonCheckedCommand = new Command(PersonChecked_Execute);
-        SwitchSignCommand = new Command(SwitchSignCommand_Execute);
+        AddTransactionCommand = new AsyncRelayCommand(AddTransactionCommand_Execute, AddTransaction_CanExecute);
+        PersonCheckedCommand = new RelayCommand(PersonChecked_Execute);
+        SwitchSignCommand = new RelayCommand(SwitchSignCommand_Execute);
     }
 
     public async void LoadData()
@@ -91,7 +92,7 @@ public class TransactionDataContext : Core.ObservableObject
         ArePeopleLoading = false;
     }
 
-    private async void AddTransactionCommand_Execute(object o)
+    private async Task AddTransactionCommand_Execute()
     {
         IsBusy = true;
         var peopleChecked = People.Where(x => x.Checked)
@@ -104,12 +105,12 @@ public class TransactionDataContext : Core.ObservableObject
         IsBusy = false;
     }
 
-    private bool AddTransaction_CanExecute(object o)
+    private bool AddTransaction_CanExecute()
     {
         return !IsBusy && Ammount != 0 && People.Any(x => x.Checked);
     }
 
-    private void SwitchSignCommand_Execute(object o)
+    private void SwitchSignCommand_Execute()
     {
         if (Sign == '+')
             Sign = '-';
@@ -119,6 +120,6 @@ public class TransactionDataContext : Core.ObservableObject
 
     private void PersonChecked_Execute()
     {
-        AddTransactionCommand.ChangeCanExecute();
+        AddTransactionCommand.NotifyCanExecuteChanged();
     }
 }

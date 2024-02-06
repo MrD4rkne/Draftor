@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Label xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+       xmlns:converter="clr-namespace:Draftor.Converters"
+       x:Class="Draftor.Controls.BalanceLabel"
+       x:Name="self"
+       Text="{Binding Source={x:Reference self}, Path=Value}">
+    <Label.Resources>
+        <converter:TotalToIntConverter x:Key="TotalToIntConverter" />
+    </Label.Resources>
+    <Label.Triggers>
+        <DataTrigger TargetType="Label"
+                     Binding="{Binding Source={x:Reference self}, Path=Value, Converter={StaticResource TotalToIntConverter}}"
+                     Value="1">
+            <Setter Property="TextColor"
+                    Value="LightGreen" />
+        </DataTrigger>
+        <DataTrigger TargetType="Label"
+                     Binding="{Binding Source={x:Reference self}, Path=Value, Converter={StaticResource TotalToIntConverter}}"
+                     Value="-1">
+            <Setter Property="TextColor"
+                    Value="Red" />
+        </DataTrigger>
+        <DataTrigger TargetType="Label"
+                     Binding="{Binding Source={x:Reference self}, Path=Value, Converter={StaticResource TotalToIntConverter}}"
+                     Value="0">
+            <Setter Property="TextColor"
+                    Value="DimGray" />
+        </DataTrigger>
+    </Label.Triggers>
+</Label>

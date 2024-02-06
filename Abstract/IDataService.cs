@@ -25,11 +25,11 @@ public interface IDataService
 
     Task<PersonVM> GetPersonAsync(int id);
 
-    Task<IEnumerable<TransactionListViewModel>> GetAllTransactionsForPerson(int id);
+    Task<IEnumerable<TransactionForListVM>> GetAllTransactionsForPerson(int id);
 
     Task UpdatePerson(PersonVM editedVM);
 
     Task AddPerson(PersonVM person);
 
-    Task RemoveTransactions(List<TransactionListViewModel> transactions_to_remove);
+    Task RemoveTransactions(List<TransactionForListVM> transactions_to_remove);
 }

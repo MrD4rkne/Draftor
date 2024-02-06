@@ -1,4 +1,7 @@
 ﻿using System.Collections.ObjectModel;
+using System.Text;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Draftor.Abstract;
 using Draftor.Models;
 using Draftor.ViewModels;
@@ -6,15 +9,15 @@ using Draftor.ViewModels;
 namespace Draftor.BindingContexts;
 
 [QueryProperty(nameof(PersonId), "id")]
-public class PersonDataContext : Core.ObservableObject
+public class PersonDataContext : ObservableObject
 {
     private readonly IDataService _dataService;
 
-    private bool _areTransactionsRefreshing;
-    public bool AreTransactionsRefreshing
+    private bool _isDataBeingLoaded;
+    public bool IsDataBeingLoaded
     {
-        get { return _areTransactionsRefreshing; }
-        set { _areTransactionsRefreshing = value; OnPropertyChanged(nameof(AreTransactionsRefreshing)); }
+        get => _isDataBeingLoaded;
+        set => SetProperty(ref _isDataBeingLoaded, value);
     }
 
     public string ActionButtonText => !IsAdding ? "Save" : "Add";
@@ -22,30 +25,41 @@ public class PersonDataContext : Core.ObservableObject
     public string WindowsTitle => IsAdding ? "Add person" : "Edit / view person";
 
     private int _personId;
-    public int PersonId
+    public int PersonId { get => _personId; set { _personId = value; IsAdding = false; } }
+
+    private ObservableCollection<TransactionForListVM> _transactions;
+    public ObservableCollection<TransactionForListVM> Transactions
     {
-        set
-        {
-            _personId = value;
-            IsAdding = false;
-        }
-        get
-        {
-            return _personId;
-        }
+        get => _transactions;
+        set => SetProperty(ref _transactions, value);
     }
 
-    public ObservableCollection<TransactionListViewModel> Transactions { get; set; }
+    private readonly List<TransactionForListVM> _transactions_to_remove = [];
 
-    private readonly List<TransactionListViewModel> _transactions_to_remove = [];
-
-    private PersonVM Person { get; set; } = null;
+    private PersonVM _person;
+    private PersonVM Person
+    {
+        get => _person;
+        set
+        {
+            if (SetProperty(ref _person, value))
+            {
+                AddCommand.NotifyCanExecuteChanged();
+            }
+        }
+    }
 
     private bool _isAdding = true;
     public bool IsAdding
     {
-        get { return _isAdding; }
-        set { _isAdding = value; OnPropertyChanged(nameof(IsAdding)); OnPropertyChanged(nameof(ActionButtonText)); OnPropertyChanged(nameof(IsEditting)); OnPropertyChanged(nameof(WindowsTitle)); }
+        get => _isAdding;
+        set
+        {
+            if (SetProperty(ref _isAdding, value))
+            {
+                OnPropertyChanged(nameof(IsEditting));
+            }
+        }
     }
 
     public bool IsEditting => !IsAdding;
@@ -53,29 +67,43 @@ public class PersonDataContext : Core.ObservableObject
     private string _name = "";
     public string Name
     {
-        get { return _name; }
-        set { _name = value; OnPropertyChanged(nameof(Name)); AddCommand.ChangeCanExecute(); }
+        get => _name;
+        set
+        {
+            if (SetProperty(ref _name, value))
+            {
+                AddCommand.NotifyCanExecuteChanged();
+            }
+        }
     }
 
     private string _description = "";
     public string Description
     {
-        get { return _description; }
-        set { _description = value; OnPropertyChanged(nameof(Description)); AddCommand.ChangeCanExecute(); }
+        get => _description;
+        set
+        {
+            if (SetProperty(ref _description, value))
+            {
+                AddCommand.NotifyCanExecuteChanged();
+            }
+        }
     }
 
     private double _total;
     public double Total
     {
-        get { return _total; }
-        set { _total = value; OnPropertyChanged(nameof(Total)); }
+        get => _total;
+        set => SetProperty(ref _total, value);
     }
 
-    public Command AddCommand { get; set; }
+    public IAsyncRelayCommand AddCommand { get; set; }
 
-    public Command DeleteTransactionCommand { get; private set; }
+    public IAsyncRelayCommand DeleteTransactionCommand { get; private set; }
 
-    public Command LoadTransactionsCommand { get; private set; }
+    public IAsyncRelayCommand DisplayTransactionCommand { get; private set; }
+
+    public IAsyncRelayCommand LoadDataCommand { get; private set; }
 
     public PersonDataContext(IDataService dataService)
     {
@@ -86,34 +114,31 @@ public class PersonDataContext : Core.ObservableObject
 
     private void BindCommands()
     {
-        AddCommand = new Command(Add_Execute, Add_CanExecute);
-        DeleteTransactionCommand = new Command(DeleteTransactionExecute);
-        LoadTransactionsCommand = new Command(LoadTransactionsExecute);
+        AddCommand = new AsyncRelayCommand(AddTransaction, CanAddTransaction);
+        DeleteTransactionCommand = new AsyncRelayCommand<int>(DeleteTransaction);
+        LoadDataCommand = new AsyncRelayCommand(LoadDataForEdit);
+        DisplayTransactionCommand = new AsyncRelayCommand<TransactionForListVM>(ShowDetailsForTransaction);
     }
 
-    private async Task LoadData(int id)
+    private async Task LoadDataForEdit()
     {
-        Person = await _dataService.GetPersonAsync(id);
-        IsAdding = false;
-        Name = Person.Name;
-        Description = Person.Description;
-        var transactions = (await _dataService.GetAllTransactionsForPerson(id));
+        if (PersonId == 0)
+            return;
+        IsDataBeingLoaded = true;
+        var personToEdit = await _dataService.GetPersonAsync(PersonId);
+        var peopleTransactions = (await _dataService.GetAllTransactionsForPerson(PersonId));
 
-        if (transactions != null)
-        {
-            AreTransactionsRefreshing = true;
-            foreach (var transaction in transactions)
-            {
-                Transactions.Add(transaction);
-            }
-            AreTransactionsRefreshing = false;
-        }
+        Transactions = new(peopleTransactions);
+        IsDataBeingLoaded = false;
+        Name = personToEdit.Name;
+        Description = personToEdit.Description;
+        Person = personToEdit;
         CountBalance();
     }
 
     private void CountBalance()
     {
-        if (Transactions == null)
+        if (Transactions is null)
         {
             Total = 0;
             return;
@@ -121,7 +146,7 @@ public class PersonDataContext : Core.ObservableObject
         Total = Transactions.Where(y => !y.ToRemove).Sum(x => x.Value);
     }
 
-    private async void Add_Execute(object o)
+    private async Task AddTransaction()
     {
         if (Person == null)
         {
@@ -142,39 +167,39 @@ public class PersonDataContext : Core.ObservableObject
         }
     }
 
-    private bool Add_CanExecute(object o)
+    private bool CanAddTransaction()
     {
         if (Person == null)
             return !string.IsNullOrEmpty(Name);
-        // if anything is changed
         return !string.IsNullOrEmpty(Name) && (Name != Person.Name || Description != Person.Description || _transactions_to_remove.Count > 0);
     }
 
-    private async void DeleteTransactionExecute(object o)
+    private async Task DeleteTransaction(int id)
     {
-        if (o is int id)
+        TransactionForListVM transactionToDelete = Transactions.Where(x => x.Id == id).FirstOrDefault();
+        if (transactionToDelete == null)
+            return;
+        bool confirmation = await App.Current.MainPage.DisplayAlert("Confirmation", $"Do you want to remove transaction titled {transactionToDelete.Title} with a value of of {transactionToDelete.Value}? The data will be lost after saving.", "Yes", "No");
+        if (confirmation)
         {
-            TransactionListViewModel transactionToDelete = Transactions.Where(x => x.Id == id).FirstOrDefault();
-            if (transactionToDelete == null)
-                return;
-            bool confirmation = await App.Current.MainPage.DisplayAlert("Confirmation", $"Do you want to remove transaction titled {transactionToDelete.Title} with a value of of {transactionToDelete.Value}? The data will be lost after saving.", "Yes", "No");
-            if (confirmation)
-            {
-                _transactions_to_remove.Add(transactionToDelete);
-                AddCommand.ChangeCanExecute();
-                // UI change transaction
-                transactionToDelete.ToRemove = true;
+            _transactions_to_remove.Add(transactionToDelete);
+            AddCommand.NotifyCanExecuteChanged();
+            transactionToDelete.ToRemove = true;
 
-                var deleteNotification = CommunityToolkit.Maui.Alerts.Toast.Make("Transaction will be erased after saving data.");
-                await deleteNotification.Show();
-                CountBalance();
-            }
+            var deleteNotification = CommunityToolkit.Maui.Alerts.Toast.Make("Transaction will be erased after saving data.");
+            await deleteNotification.Show();
+            CountBalance();
         }
     }
 
-    private async void LoadTransactionsExecute(object o)
+    private async Task ShowDetailsForTransaction(TransactionForListVM transaction)
     {
-        if(!IsEditting) return;
-        await LoadData(PersonId);
+        ArgumentNullException.ThrowIfNull(transaction);
+        StringBuilder detailsBuilder = new();
+        detailsBuilder.AppendLine($"Title: {transaction.Title}");
+        detailsBuilder.AppendLine($"Value: {transaction.Value}");
+        detailsBuilder.AppendLine($"Date: {transaction.Date}");
+        detailsBuilder.AppendLine($"Description: {transaction.Description}");
+        await App.Current.MainPage.DisplayAlert("Details",detailsBuilder.ToString(), "Ok");
     }
 }

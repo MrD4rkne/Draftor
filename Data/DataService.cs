@@ -165,14 +165,14 @@ public class DataService : IDataService
         return _mapper.MapTo<PersonVM>(person);
     }
 
-    public async Task<IEnumerable<TransactionListViewModel>> GetAllTransactionsForPerson(int id)
+    public async Task<IEnumerable<TransactionForListVM>> GetAllTransactionsForPerson(int id)
     {
         var personTranscations = await (await GetDataRepository()).GetTransactionsForPerson(id)
             .ToListAsync();
-        List<TransactionListViewModel> transactionsVMs = [];
+        List<TransactionForListVM> transactionsVMs = [];
         foreach(var transaction in personTranscations)
         {
-            var transactionVM = _mapper.MapTo<TransactionListViewModel>(transaction);
+            var transactionVM = _mapper.MapTo<TransactionForListVM>(transaction);
             transactionsVMs.Add(transactionVM);
         }
         return transactionsVMs.AsEnumerable();
@@ -190,7 +190,7 @@ public class DataService : IDataService
         await (await GetDataRepository()).InsertPersonAsync(person);
     }
 
-    public async Task RemoveTransactions(List<TransactionListViewModel> transactionsToRemove)
+    public async Task RemoveTransactions(List<TransactionForListVM> transactionsToRemove)
     {
         ArgumentNullException.ThrowIfNull(transactionsToRemove);
 

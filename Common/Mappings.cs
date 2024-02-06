@@ -12,8 +12,8 @@ public static class Mappings
         mapper.RegisterMap<PersonVM, Person>(Mappings.GetPersonFromPersonVM);
         mapper.RegisterMap<PersonForListVM, Person>(Mappings.GetPersonFromPersonForListVM);
         mapper.RegisterMap<Person, PersonForListVM>(Mappings.GetPersonForListVMFromPerson);
-        mapper.RegisterMap<Transaction, TransactionListViewModel>(Mappings.GetTransactionListViewModelFromTransaction);
-        mapper.RegisterMap<TransactionListViewModel, Transaction>(Mappings.GetTransactionFromTransactionListViewModel);
+        mapper.RegisterMap<Transaction, TransactionForListVM>(Mappings.GetTransactionListViewModelFromTransaction);
+        mapper.RegisterMap<TransactionForListVM, Transaction>(Mappings.GetTransactionFromTransactionListViewModel);
     }
 
     public static PersonVM GetPersonVMFromPerson(Person person)
@@ -60,21 +60,22 @@ public static class Mappings
         return person;
     }
 
-    public static TransactionListViewModel GetTransactionListViewModelFromTransaction(Transaction transaction)
+    public static TransactionForListVM GetTransactionListViewModelFromTransaction(Transaction transaction)
     {
-        TransactionListViewModel transactionListViewModel = new()
+        TransactionForListVM transactionListViewModel = new()
         {
             Id = transaction.Id,
             Description = transaction.Description,
             Title = transaction.Title,
             Value = transaction.Value,
             IsArchived = transaction.IsArchived,
+            Date=transaction.Date,
             ToRemove = false
         };
         return transactionListViewModel;
     }
 
-    public static Transaction GetTransactionFromTransactionListViewModel(TransactionListViewModel transactionVM)
+    public static Transaction GetTransactionFromTransactionListViewModel(TransactionForListVM transactionVM)
     {
         Transaction transaction = new()
         {
@@ -82,7 +83,8 @@ public static class Mappings
             Description = transactionVM.Description,
             Title = transactionVM.Title,
             Value = transactionVM.Value,
-            IsArchived = transactionVM.IsArchived
+            IsArchived = transactionVM.IsArchived,
+            Date = transactionVM.Date
         };
         return transaction;
     }

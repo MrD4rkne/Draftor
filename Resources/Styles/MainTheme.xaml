@@ -1,0 +1,134 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<?xaml-comp compile="true" ?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                    x:Class="Draftor.Resources.Styles.MainTheme">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="Colors.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <Style TargetType="NavigationPage">
+        <Setter Property="BarBackgroundColor"
+                Value="{StaticResource NavigationBarColor}" />
+        <Setter Property="BarTextColor"
+                Value="{DynamicResource PrimaryTextColor}" />
+    </Style>
+
+    <Style TargetType="Entry">
+        <Setter Property="TextColor"
+                Value="{DynamicResource PrimaryTextColor}" />
+        <Setter Property="BackgroundColor"
+                Value="Transparent" />
+        <Setter Property="FontFamily"
+                Value="OpenSansRegular" />
+        <Setter Property="FontSize"
+                Value="14" />
+        <Setter Property="PlaceholderColor"
+                Value="{DynamicResource TertiaryTextColor}" />
+        <Setter Property="MinimumHeightRequest"
+                Value="44" />
+        <Setter Property="MinimumWidthRequest"
+                Value="44" />
+        <Setter Property="VisualStateManager.VisualStateGroups">
+            <VisualStateGroupList>
+                <VisualStateGroup x:Name="CommonStates">
+                    <VisualState x:Name="Normal" />
+                    <VisualState x:Name="Disabled">
+                        <VisualState.Setters>
+                            <Setter Property="TextColor"
+                                    Value="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource Gray600}}" />
+                        </VisualState.Setters>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateGroupList>
+        </Setter>
+    </Style>
+
+    <Style TargetType="Editor">
+        <Setter Property="TextColor"
+                Value="{DynamicResource PrimaryTextColor}" />
+        <Setter Property="BackgroundColor"
+                Value="Transparent" />
+        <Setter Property="FontFamily"
+                Value="OpenSansRegular" />
+        <Setter Property="FontSize"
+                Value="14" />
+        <Setter Property="PlaceholderColor"
+                Value="{DynamicResource TertiaryTextColor}" />
+        <Setter Property="MinimumHeightRequest"
+                Value="44" />
+        <Setter Property="MinimumWidthRequest"
+                Value="44" />
+        <Setter Property="VisualStateManager.VisualStateGroups">
+            <VisualStateGroupList>
+                <VisualStateGroup x:Name="CommonStates">
+                    <VisualState x:Name="Normal" />
+                    <VisualState x:Name="Disabled">
+                        <VisualState.Setters>
+                            <Setter Property="TextColor"
+                                    Value="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource Gray600}}" />
+                        </VisualState.Setters>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateGroupList>
+        </Setter>
+    </Style>
+
+    <Style TargetType="Button">
+        <Setter Property="BackgroundColor"
+                Value="{StaticResource SecondaryAccentColor}" />
+        <Setter Property="TextColor"
+                Value="{DynamicResource PrimaryTextColor}" />
+        <Setter Property="VisualStateManager.VisualStateGroups">
+            <VisualStateGroupList>
+                <VisualStateGroup x:Name="CommonStates">
+                    <VisualState x:Name="Normal">
+                        <VisualState.Setters>
+                            <Setter Property="BackgroundColor"
+                                    Value="{DynamicResource PrimaryColor}" />
+                            <Setter Property="TextColor"
+                                    Value="{DynamicResource PrimaryTextColor}" />
+                            <Setter Property="Opacity"
+                                    Value="1" />
+                        </VisualState.Setters>
+                    </VisualState>
+                    <VisualState x:Name="Disabled">
+                        <VisualState.Setters>
+                            <Setter Property="BackgroundColor"
+                                    Value="{DynamicResource DisabledColor}" />
+                            <Setter Property="TextColor"
+                                    Value="{DynamicResource DisabledFontColor}" />
+                            <Setter Property="Opacity"
+                                    Value="0.4" />
+                        </VisualState.Setters>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateGroupList>
+        </Setter>
+    </Style>
+
+    <Style TargetType="Label">
+        <Setter Property="TextColor"
+                Value="{DynamicResource PrimaryTextColor}" />
+        <Setter Property="BackgroundColor"
+                Value="Transparent" />
+        <Setter Property="FontFamily"
+                Value="OpenSansRegular" />
+        <Setter Property="FontSize"
+                Value="14" />
+        <Setter Property="VisualStateManager.VisualStateGroups">
+            <VisualStateGroupList>
+                <VisualStateGroup x:Name="CommonStates">
+                    <VisualState x:Name="Normal" />
+                    <VisualState x:Name="Disabled">
+                        <VisualState.Setters>
+                            <Setter Property="TextColor"
+                                    Value="{DynamicResource DisabledFontColor}" />
+                        </VisualState.Setters>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateGroupList>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>

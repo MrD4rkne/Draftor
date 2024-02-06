@@ -10,7 +10,8 @@
              x:Name="addTransactionPage"
              Title="Add transaction"
              BackgroundColor="{DynamicResource PageBackgroundColor}"
-             x:DataType="context:TransactionDataContext">
+             x:DataType="context:TransactionDataContext"
+             Shell.TabBarIsVisible="False">
     <ContentPage.Resources>
         <converter:TotalToIntConverter x:Key="TotalToIntConverter" />
     </ContentPage.Resources>

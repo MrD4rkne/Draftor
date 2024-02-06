@@ -1,6 +1,9 @@
-﻿namespace Draftor.ViewModels;
+﻿
+using CommunityToolkit.Mvvm.ComponentModel;
 
-public class PersonForListVM : Core.ObservableObject
+namespace Draftor.ViewModels;
+
+public class PersonForListVM : ObservableObject
 {
     public int Id { get; set; }
     public string Name { get; set; }
@@ -8,7 +11,7 @@ public class PersonForListVM : Core.ObservableObject
 
     public bool Checked
     {
-        get { return _checked; }
-        set { _checked = value; OnPropertyChanged(nameof(Checked)); }
+        get => _checked;
+        set => SetProperty(ref _checked, value);
     }
 }

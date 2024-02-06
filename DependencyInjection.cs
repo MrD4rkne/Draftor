@@ -53,7 +53,7 @@ public static class DependencyInjection
 
     public static MauiApp RegisterMappings(this MauiApp mauiApp)
     {
-        IMapper mapper = mauiApp.Services.GetService<IMapper>();
+        IMapper? mapper = mauiApp.Services.GetService<IMapper>();
         if (mapper is null)
         {
             throw new ArgumentNullException(nameof(mauiApp), "IMapper instance was not registered.");

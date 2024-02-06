@@ -1,109 +1,84 @@
 ﻿using System.Collections.ObjectModel;
 using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Draftor.Abstract;
 using Draftor.ViewModels;
 
 namespace Draftor.BindingContexts;
 
-public class MainDataContext : Core.ObservableObject
+public class MainDataContext : ObservableObject
 {
     private readonly IDataService _dataService;
 
     private double _total;
-
     public double Total
     {
-        get { return _total; }
-        set { _total = value; OnPropertyChanged(nameof(Total)); }
+        get => _total;
+        set => SetProperty(ref _total, value);
     }
 
     private ObservableCollection<PersonMainVM> _people;
-
     public ObservableCollection<PersonMainVM> People
     {
-        get
-        {
-            return _people;
-        }
+        get => _people;
         set
         {
-            _people = value;
-            OnPropertyChanged(nameof(People));
-        }
-    }
-
-    public PersonMainVM SelectedPerson
-    {
-        set
-        {
-            OnPropertyChanged(nameof(SelectedPerson));
-            if (value != null)
-                Shell.Current.GoToAsync($"{nameof(Views.Actions.PersonView)}?id={value.Id}");
-        }
-        get
-        {
-            return null;
+            if (SetProperty(ref _people, value))
+            {
+                AddPersonCommand.NotifyCanExecuteChanged();
+                AddTransactionCommand.NotifyCanExecuteChanged();
+            }
         }
     }
 
     private bool _isRefreshing = false;
-
     public bool IsRefreshing
     {
-        get
-        {
-            return _isRefreshing;
-        }
+        get => _isRefreshing;
         set
         {
-            _isRefreshing = value;
-            OnPropertyChanged(nameof(IsRefreshing));
-            AddPersonCommand.ChangeCanExecute();
-            AddTransactionCommand.ChangeCanExecute();
+            if (SetProperty(ref _isRefreshing, value))
+            {
+                AddPersonCommand.NotifyCanExecuteChanged();
+                AddTransactionCommand.NotifyCanExecuteChanged();
+            }
         }
     }
 
-    public Command AddPersonCommand { get; private set; }
+    public IAsyncRelayCommand NavigateToPersonDetailsCommand { get; private set; }
 
-    public Command AddTransactionCommand { get; private set; }
+    public IAsyncRelayCommand AddPersonCommand { get; private set; }
 
-    public Command DeletePersonCommand { get; private set; }
+    public IAsyncRelayCommand AddTransactionCommand { get; private set; }
 
-    public Command RefreshCommand { get; private set; }
+    public IAsyncRelayCommand DeletePersonCommand { get; private set; }
+
+    public IAsyncRelayCommand RefreshCommand { get; private set; }
 
     public MainDataContext(IDataService dataService, IThemeManager themeManager)
     {
         _dataService = dataService;
         themeManager.SetupAppApperance();
-        People = [];
         BindCommands();
+        People = [];
     }
 
     public void BindCommands()
     {
-        RefreshCommand = new Command(RefreshExecute, RefreshCanExecute);
-        AddPersonCommand = new Command(AddPersonExecute, AddPersonCanExecute);
-        AddTransactionCommand = new Command(AddTransactionExecute, AddTransactionCanExecute);
-        DeletePersonCommand = new Command(DeletePersonExecute);
+        RefreshCommand = new AsyncRelayCommand(RefreshExecute, RefreshCanExecute);
+        AddPersonCommand = new AsyncRelayCommand(AddPersonExecute, AddPersonCanExecute);
+        AddTransactionCommand = new AsyncRelayCommand(AddTransactionExecute, AddTransactionCanExecute);
+        DeletePersonCommand = new AsyncRelayCommand<int>(DeletePersonExecute);
+        NavigateToPersonDetailsCommand = new AsyncRelayCommand<int>(NavigateToPersonDetailsCommand_Execute);
     }
 
     public async Task Refresh()
     {
-        IsRefreshing = true;
-        People.Clear();
         var people = await _dataService.GetPeopleVMAsync();
-        foreach (var person in people)
-        {
-            People.Add(person);
-        }
+        People = new(people);
         UpdateBalance();
-        await Task.Delay(100);
         IsRefreshing = false;
-    }
-
-    private void LoadData()
-    {
-        Task.Run(Refresh);
     }
 
     private void UpdateBalance()
@@ -111,17 +86,14 @@ public class MainDataContext : Core.ObservableObject
         Total = People.Sum(x => x.Total);
     }
 
-    private async void AddPersonExecute()
+    private async Task AddPersonExecute()
     {
         await Shell.Current.GoToAsync(nameof(Views.Actions.PersonView));
     }
 
-    private bool AddPersonCanExecute()
-    {
-        return !IsRefreshing;
-    }
+    private bool AddPersonCanExecute() => !IsRefreshing;
 
-    private async void AddTransactionExecute()
+    private async Task AddTransactionExecute()
     {
         await Shell.Current.GoToAsync(nameof(Views.Actions.TransactionView));
     }
@@ -133,10 +105,8 @@ public class MainDataContext : Core.ObservableObject
         return canAddTransaction;
     }
 
-    private async void DeletePersonExecute(object o)
+    private async Task DeletePersonExecute(int id)
     {
-        if (o is not int id)
-            return;
         PersonMainVM personToDelete = People.Where(x => x.Id == id).FirstOrDefault();
         ArgumentNullException.ThrowIfNull(personToDelete, nameof(personToDelete));
         bool shouldProceesWithDeletion = await App.Current.MainPage.DisplayAlert("Confirmation", $"Do you want to remove person named {personToDelete.Name} with total balance of {personToDelete.Total}? The data will be lost.", "Yes", "No");
@@ -157,7 +127,7 @@ public class MainDataContext : Core.ObservableObject
         }
     }
 
-    private async void RefreshExecute()
+    private async Task RefreshExecute()
     {
         await Refresh();
         IsRefreshing = false;
@@ -166,5 +136,10 @@ public class MainDataContext : Core.ObservableObject
     private bool RefreshCanExecute()
     {
         return !IsRefreshing;
+    }
+
+    private async Task NavigateToPersonDetailsCommand_Execute(int id)
+    {
+        await Shell.Current.GoToAsync($"{nameof(Views.Actions.PersonView)}?id={id}");
     }
 }

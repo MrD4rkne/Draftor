@@ -1,27 +1,23 @@
-﻿using Draftor.Abstract;
+﻿using System.Windows.Input;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using Draftor.Abstract;
 using Draftor.Models;
 
 namespace Draftor.BindingContexts;
 
-public class SettingsDataContext : Core.ObservableObject
+public class SettingsDataContext : ObservableObject
 {
     private readonly IThemeManager _themeManager;
 
     private bool _isDarkModeEnabled;
     public bool IsDarkModeEnabled
     {
-        get
-        {
-            return _isDarkModeEnabled;
-        }
-        set
-        {
-            _isDarkModeEnabled = value;
-            OnPropertyChanged(nameof(IsDarkModeEnabled));
-        }
+        get => _isDarkModeEnabled;
+        set => SetProperty(ref _isDarkModeEnabled, value);
     }
 
-    public Command UpdateAppThemeCommand { get; private set; }
+    public IRelayCommand UpdateAppThemeCommand { get; private set; }
 
     public SettingsDataContext(IThemeManager themeManager)
     {
@@ -32,21 +28,17 @@ public class SettingsDataContext : Core.ObservableObject
 
     private void BindCommands()
     {
-        UpdateAppThemeCommand = new Command(UpdateAppTheme);
+        UpdateAppThemeCommand = new RelayCommand<bool>(UpdateAppTheme);
     }
 
     private void GetUserPreferences()
     {
-        _themeManager.SetupAppApperance();
         _isDarkModeEnabled = _themeManager.GetCurrentTheme() == Models.Theme.Dark;
     }
 
-    private void UpdateAppTheme(object o)
+    private void UpdateAppTheme(bool isDarkMode)
     {
-        if (o is bool isDarkMode)
-        {
-            Theme preferedTheme = isDarkMode ? Theme.Dark : Theme.Light;
-            _themeManager.SetAppTheme(preferedTheme);
-        }
+        Theme preferedTheme = isDarkMode ? Theme.Dark : Theme.Light;
+        _themeManager.SetAppTheme(preferedTheme);
     }
 }

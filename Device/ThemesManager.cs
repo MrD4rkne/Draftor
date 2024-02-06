@@ -39,15 +39,20 @@ public class ThemesManager : IThemeManager
 
     private void UpdateTheme()
     {
+        ICollection<ResourceDictionary> mergedDictionaries = Application.Current!.Resources.MergedDictionaries;
+        mergedDictionaries.Clear();
+        mergedDictionaries.Add(new MainTheme());
         switch (CurrentTheme)
         {
             case Theme.Dark:
                 App.Current.UserAppTheme = AppTheme.Dark;
+                mergedDictionaries.Add(new DarkTheme());
                 break;
 
             case Theme.Light:
             default:
                 App.Current.UserAppTheme = AppTheme.Light;
+                mergedDictionaries.Add(new LightTheme());
                 break;
         }
     }

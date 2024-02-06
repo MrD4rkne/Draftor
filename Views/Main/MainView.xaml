@@ -5,6 +5,8 @@
              xmlns:context="clr-namespace:Draftor.BindingContexts"
              xmlns:viewModel="clr-namespace:Draftor.ViewModels"
              xmlns:converter="clr-namespace:Draftor.Converters"
+             xmlns:controls="clr-namespace:Draftor.Controls"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              Appearing="PeopleView_Appearing"
              x:Name="HomeView"
              BackgroundColor="{DynamicResource PageBackgroundColor}"
@@ -27,7 +29,7 @@
                        HeightRequest="100"
                        HorizontalOptions="FillAndExpand"
                        VerticalOptions="FillAndExpand">
-                    <Label Text="{Binding Total}"
+                    <controls:BalanceLabel Value="{Binding Total}"
                            FontSize="30"
                            HorizontalTextAlignment="Center"
                            VerticalTextAlignment="Center"
@@ -35,33 +37,11 @@
                            FontAttributes="Bold"
                            LineBreakMode="MiddleTruncation"
                            SemanticProperties.Hint="{Binding Total}"
-                           VerticalOptions="CenterAndExpand">
-                        <Label.Triggers>
-                            <DataTrigger TargetType="Label"
-                                         Binding="{Binding Total, Converter={StaticResource TotalToIntConverter}}"
-                                         Value="1">
-                                <Setter Property="TextColor"
-                                        Value="LightGreen" />
-                            </DataTrigger>
-                            <DataTrigger TargetType="Label"
-                                         Binding="{Binding Total, Converter={StaticResource TotalToIntConverter}}"
-                                         Value="-1">
-                                <Setter Property="TextColor"
-                                        Value="Red" />
-                            </DataTrigger>
-                            <DataTrigger TargetType="Label"
-                                         Binding="{Binding Total, Converter={StaticResource TotalToIntConverter}}"
-                                         Value="0">
-                                <Setter Property="TextColor"
-                                        Value="DimGray" />
-                            </DataTrigger>
-                        </Label.Triggers>
-                    </Label>
+                           VerticalOptions="CenterAndExpand" />
                 </Frame>
             </Grid>
             <ListView ItemsSource="{Binding People}"
-                      SelectedItem="{Binding SelectedPerson, Mode=TwoWay}"
-                      SelectionMode="Single"
+                      SelectionMode="None"
                       IsRefreshing="{Binding IsRefreshing, Mode=TwoWay}"
                       IsPullToRefreshEnabled="True"
                       BackgroundColor="Transparent"
@@ -82,35 +62,19 @@
                                 <Frame CornerRadius="5"
                                        BackgroundColor="{DynamicResource PrimaryColor}"
                                        Margin="10,5">
+                                    <Frame.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding BindingContext.NavigateToPersonDetailsCommand, Source={x:Reference HomeView}}"
+                                                              CommandParameter="{Binding Id}"
+                              NumberOfTapsRequired="1" />
+                                    </Frame.GestureRecognizers>
                                     <Grid>
                                         <FlexLayout Direction="Row"
                                                     AlignItems="Center"
                                                     JustifyContent="SpaceBetween">
                                             <Label Text="{Binding Name}"
                                                    FontSize="Large" />
-                                            <Label Text="{Binding Total}"
-                                                   FontSize="Medium">
-                                                <Label.Triggers>
-                                                    <DataTrigger TargetType="Label"
-                                                                 Binding="{Binding Total, Converter={StaticResource TotalToIntConverter}}"
-                                                                 Value="1">
-                                                        <Setter Property="TextColor"
-                                                                Value="LightGreen" />
-                                                    </DataTrigger>
-                                                    <DataTrigger TargetType="Label"
-                                                                 Binding="{Binding Total, Converter={StaticResource TotalToIntConverter}}"
-                                                                 Value="-1">
-                                                        <Setter Property="TextColor"
-                                                                Value="Red" />
-                                                    </DataTrigger>
-                                                    <DataTrigger TargetType="Label"
-                                                                 Binding="{Binding Total, Converter={StaticResource TotalToIntConverter}}"
-                                                                 Value="0">
-                                                        <Setter Property="TextColor"
-                                                                Value="DimGray" />
-                                                    </DataTrigger>
-                                                </Label.Triggers>
-                                            </Label>
+                                            <controls:BalanceLabel Value="{Binding Total}"
+                                                   FontSize="Medium" />
                                         </FlexLayout>
                                     </Grid>
                                 </Frame>

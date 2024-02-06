@@ -1,8 +1,9 @@
 ﻿using System.ComponentModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace Draftor.ViewModels;
 
-public class TransactionListViewModel : INotifyPropertyChanged
+public class TransactionForListVM : ObservableObject
 {
     public int Id { get; set; }
 
@@ -12,27 +13,15 @@ public class TransactionListViewModel : INotifyPropertyChanged
 
     public double Value { get; set; }
 
+    public DateTime Date { get; set; }
+
     public bool IsArchived { get; set; }
 
     private bool _isToRemove = false;
 
     public bool ToRemove
     {
-        get
-        {
-            return _isToRemove;
-        }
-        set
-        {
-            _isToRemove = value;
-            OnPropertyChanged(nameof(ToRemove));
-        }
-    }
-
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    public void OnPropertyChanged(string name = "")
-    {
-        PropertyChanged?.Invoke(null, new PropertyChangedEventArgs(name));
+        get => _isToRemove;
+        set => SetProperty(ref _isToRemove, value);
     }
 }
