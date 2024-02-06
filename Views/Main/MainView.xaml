@@ -17,28 +17,37 @@
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Add person"
                      Command="{Binding AddPersonCommand}" />
-        <ToolbarItem Text="Add transaction"
-                     Command="{Binding AddTransactionCommand}" />
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <StackLayout>
-            <Grid>
-                <Frame BackgroundColor="{DynamicResource PrimaryColor}"
-                       Opacity="0.95"
-                       CornerRadius="25"
-                       HeightRequest="100"
-                       HorizontalOptions="FillAndExpand"
-                       VerticalOptions="FillAndExpand">
+            <Grid ColumnDefinitions="*,auto"
+                  HeightRequest="80">
+                <Border Grid.Column="0"
+                        Background="{StaticResource Accent100}"
+                        Margin="0,5,5,5"
+                        HorizontalOptions="FillAndExpand"
+                        VerticalOptions="FillAndExpand">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="0,20,0,10" />
+                    </Border.StrokeShape>
                     <controls:BalanceLabel Value="{Binding Total}"
-                           FontSize="30"
-                           HorizontalTextAlignment="Center"
-                           VerticalTextAlignment="Center"
-                           HorizontalOptions="CenterAndExpand"
-                           FontAttributes="Bold"
-                           LineBreakMode="MiddleTruncation"
-                           SemanticProperties.Hint="{Binding Total}"
-                           VerticalOptions="CenterAndExpand" />
-                </Frame>
+                                           FontSize="30"
+                                           HorizontalTextAlignment="Center"
+                                           VerticalTextAlignment="Center"
+                                           HorizontalOptions="CenterAndExpand"
+                                           FontAttributes="Bold"
+                                           LineBreakMode="MiddleTruncation"
+                                           SemanticProperties.Hint="{Binding Total}"
+                                           VerticalOptions="CenterAndExpand" />
+                </Border>
+                <Button Grid.Column="1"
+                        Text="+"
+                        FontSize="Large"
+                        CornerRadius="40"
+                        Margin="15,5,15,5"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center"
+                        Command="{Binding AddTransactionCommand}" />
             </Grid>
             <ListView ItemsSource="{Binding People}"
                       SelectionMode="None"

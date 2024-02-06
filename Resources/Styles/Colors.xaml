@@ -30,6 +30,17 @@
     <Color x:Key="Gray900">#212121</Color>
     <Color x:Key="Gray950">#141414</Color>
 
+    <Color x:Key="Accent900">#6d00c0</Color>
+    <Color x:Key="Accent800">#9800c7</Color>
+    <Color x:Key="Accent700">#ae00cc</Color>
+    <Color x:Key="Accent600">#c600d0</Color>
+    <Color x:Key="Accent500">#d700d2</Color>
+    <Color x:Key="Accent400">#e800e1</Color>
+    <Color x:Key="Accent300">#ee02e6</Color>
+    <Color x:Key="Accent200">#f476ed</Color>
+    <Color x:Key="Accent100">#f9b1f3</Color>
+    <Color x:Key="Accent50">#fee0fb</Color>
+    
     <SolidColorBrush x:Key="PrimaryBrush" Color="{StaticResource Primary}"/>
     <SolidColorBrush x:Key="SecondaryBrush" Color="{StaticResource Secondary}"/>
     <SolidColorBrush x:Key="TertiaryBrush" Color="{StaticResource Tertiary}"/>

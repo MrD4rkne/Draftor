@@ -4,7 +4,7 @@
        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
        xmlns:views="clr-namespace:Draftor.Views.Main"
        Shell.FlyoutBehavior="Disabled"
-     
+       Style="{StaticResource BaseStyle}"
        Title="Draftor">
 
     <TabBar x:Name="MainTabBar"

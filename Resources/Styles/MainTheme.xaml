@@ -7,12 +7,14 @@
         <ResourceDictionary Source="Colors.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
-    <Style TargetType="NavigationPage">
-        <Setter Property="BarBackgroundColor"
-                Value="{StaticResource NavigationBarColor}" />
-        <Setter Property="BarTextColor"
-                Value="{DynamicResource PrimaryTextColor}" />
+    <Style TargetType="Shell"
+           x:Key="BaseStyle">
+        <Setter Property="Shell.BackgroundColor"
+                Value="{StaticResource Accent500}" />
+        <Setter Property="Shell.TabBarBackgroundColor"
+                Value="{StaticResource Accent800}" />
     </Style>
+    
 
     <Style TargetType="Entry">
         <Setter Property="TextColor"
@@ -85,7 +87,7 @@
                     <VisualState x:Name="Normal">
                         <VisualState.Setters>
                             <Setter Property="BackgroundColor"
-                                    Value="{DynamicResource PrimaryColor}" />
+                                    Value="{StaticResource AccentColor}" />
                             <Setter Property="TextColor"
                                     Value="{DynamicResource PrimaryTextColor}" />
                             <Setter Property="Opacity"
@@ -95,7 +97,7 @@
                     <VisualState x:Name="Disabled">
                         <VisualState.Setters>
                             <Setter Property="BackgroundColor"
-                                    Value="{DynamicResource DisabledColor}" />
+                                    Value="{StaticResource SecondaryAccentColor}" />
                             <Setter Property="TextColor"
                                     Value="{DynamicResource DisabledFontColor}" />
                             <Setter Property="Opacity"
