@@ -45,7 +45,7 @@ public class GroupsDataContext : ObservableObject
     private void BindCommands()
     {
         RefreshCommand = new AsyncRelayCommand(RefreshExecute, RefreshCanExecute);
-        DeleteGroupCommand = new AsyncRelayCommand<int>(DeleteGroupExecute);
+        DeleteGroupCommand = new AsyncRelayCommand<GroupVM>(DeleteGroupExecute);
         CreateGroupCommand = new AsyncRelayCommand(CreateGroupCommnand_Execute);
         ClickedGroupCommand = new AsyncRelayCommand(ClickedGroupExecute);
     }
@@ -74,27 +74,27 @@ public class GroupsDataContext : ObservableObject
         return !IsRefreshing;
     }
 
-    private async Task DeleteGroupExecute(int id)
+    private async Task DeleteGroupExecute(GroupVM groupToDelete)
     {
-        GroupVM groupToDelete = Groups.Where(x => x.Id == id).FirstOrDefault();
-        if (groupToDelete != null)
+        ArgumentNullException.ThrowIfNull(groupToDelete);
+        
+        bool confirmation = await Application.Current.MainPage.DisplayAlert("Confirmation", $"Do you want to remove group titled {groupToDelete.Title}. The data will be lost.", "Yes", "No");
+        if (!confirmation)
         {
-            bool confirmation = await Application.Current.MainPage.DisplayAlert("Confirmation", $"Do you want to remove group titled {groupToDelete.Title}. The data will be lost.", "Yes", "No");
-            if (confirmation)
-            {
-                bool isSuccess = await _dataService.DeleteGroupAsync(groupToDelete);
-                if (isSuccess)
-                {
-                    Groups.Remove(groupToDelete);
-                    var groupCreatedToast = CommunityToolkit.Maui.Alerts.Toast.Make("Group has been successfully deleted.");
-                    await groupCreatedToast.Show();
-                }
-                else
-                {
-                    var groupNotCreatedToast = CommunityToolkit.Maui.Alerts.Toast.Make("Group hasn't been deleted because of the error.");
-                    await groupNotCreatedToast.Show();
-                }
-            }
+            return;
+        }
+
+        bool isSuccess = await _dataService.DeleteGroupAsync(groupToDelete);
+        if (isSuccess)
+        {
+            Groups.Remove(groupToDelete);
+            var groupCreatedToast = CommunityToolkit.Maui.Alerts.Toast.Make("Group has been successfully deleted.");
+            await groupCreatedToast.Show();
+        }
+        else
+        {
+            var groupNotCreatedToast = CommunityToolkit.Maui.Alerts.Toast.Make("Group hasn't been deleted because of the error.");
+            await groupNotCreatedToast.Show();
         }
     }
 

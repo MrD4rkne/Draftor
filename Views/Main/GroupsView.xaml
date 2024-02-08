@@ -6,7 +6,6 @@
              xmlns:model="clr-namespace:Draftor.Models"
              xmlns:xct="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="Draftor.Views.Main.GroupsView"
-             BackgroundColor="{DynamicResource PageBackgroundColor}"
              x:Name="GroupView"
              x:DataType="bindingContext:GroupsDataContext">
     <ContentPage.ToolbarItems>
@@ -37,7 +36,7 @@
                                     <SwipeItem Text="Delete"
                                                BackgroundColor="Red"
                                                Command="{Binding BindingContext.DeleteGroupCommand, Source={x:Reference GroupView}}"
-                                               CommandParameter="{Binding Id}" />
+                                               CommandParameter="{Binding}" />
                                 </SwipeView.LeftItems>
                                 <Frame CornerRadius="5"
                                        BackgroundColor="{DynamicResource PrimaryColor}"

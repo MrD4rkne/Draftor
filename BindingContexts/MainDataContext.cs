@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Concurrent;
+using System.Collections.ObjectModel;
 using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -18,8 +19,8 @@ public class MainDataContext : ObservableObject
         set => SetProperty(ref _total, value);
     }
 
-    private ObservableCollection<PersonMainVM> _people;
-    public ObservableCollection<PersonMainVM> People
+    private List<PersonMainVM> _people;
+    public List<PersonMainVM> People
     {
         get => _people;
         set
@@ -61,7 +62,7 @@ public class MainDataContext : ObservableObject
         _dataService = dataService;
         themeManager.SetupAppApperance();
         BindCommands();
-        People = [];
+        People = new();
     }
 
     public void BindCommands()
@@ -76,7 +77,13 @@ public class MainDataContext : ObservableObject
     public async Task Refresh()
     {
         var people = await _dataService.GetPeopleVMAsync();
-        People = new(people);
+        bool isLeft = true;
+        foreach (var person in people)
+        {
+            person.IsLeft = isLeft;
+            isLeft = !isLeft;
+        }
+        People = people;
         UpdateBalance();
         IsRefreshing = false;
     }

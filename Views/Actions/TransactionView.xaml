@@ -9,7 +9,6 @@
              x:Class="Draftor.Views.Actions.TransactionView"
              x:Name="addTransactionPage"
              Title="Add transaction"
-             BackgroundColor="{DynamicResource PageBackgroundColor}"
              x:DataType="context:TransactionDataContext"
              Shell.TabBarIsVisible="False">
     <ContentPage.Resources>

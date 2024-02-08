@@ -9,7 +9,6 @@
              xmlns:controls="clr-namespace:Draftor.Controls"
              x:Name="PersonPage"
              Title="{Binding WindowsTitle}"
-             BackgroundColor="{DynamicResource PageBackgroundColor}"
              x:DataType="context:PersonDataContext"
              Shell.TabBarIsVisible="False">
     <ContentPage.Resources>

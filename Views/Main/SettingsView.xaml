@@ -4,7 +4,6 @@
              xmlns:context="clr-namespace:Draftor.BindingContexts"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="Draftor.Views.Main.SettingsView"
-             BackgroundColor="{DynamicResource PageBackgroundColor}"
              x:DataType="context:SettingsDataContext">
     <ContentPage.Content>
         <Grid HorizontalOptions="Fill"
@@ -37,23 +36,6 @@
                     </Switch.Behaviors>
                 </Switch>
             </StackLayout>
-            <!--AccentColor-->
-            <!--
-            <StackLayout Orientation="Horizontal"
-                         Grid.Row="2"
-                         Grid.Column="1"
-                         HorizontalOptions="Center"
-                         VerticalOptions="Center">
-                <Label FontSize="Medium"
-                       Text="Accent color" />
-                <CarouselView CurrentItem="{Binding CurrentAccent, Mode=TwoWay}"
-                              ItemsSource="{Binding Accents}">
-                    <CarouselView.ItemTemplate>
-                        <DataTemplate x:DataType="">
-                        </DataTemplate>
-                    </CarouselView.ItemTemplate>
-                </CarouselView>
-            </StackLayout>-->
             <Label Text="@Copyright by Marcin Szopa 2023"
                    Grid.Column="1"
                    Margin="5"

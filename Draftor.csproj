@@ -46,13 +46,17 @@
 
 		<!-- Images -->
 		<MauiImage Include="Resources\Images\*" />
-		<MauiImage Update="Resources\Images\dotnet_bot.png" Resize="True" BaseSize="300,185" />
 
 		<!-- Custom Fonts -->
 		<MauiFont Include="Resources\Fonts\*" />
 
 		<!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
 		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Remove="Resources\Images\add_person_icon.png" />
+	  <None Remove="Resources\Images\add_transaction_icon.png" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -70,6 +74,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="Controls\PersonStripe.xaml.cs">
+	    <DependentUpon>PersonStripe.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Resources\Styles\Images.xaml.cs">
+	    <DependentUpon>Images.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="Resources\Styles\MainTheme.xaml.cs">
 	    <DependentUpon>MainTheme.xaml</DependentUpon>
 	  </Compile>
@@ -79,7 +89,13 @@
 	  <MauiXaml Update="Controls\BalanceLabel.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Controls\PersonStripe.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Resources\Styles\DarkTheme.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Resources\Styles\Images.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Resources\Styles\MainTheme.xaml">
