@@ -327,20 +327,20 @@
         <Setter Property="Shell.TabBarBackgroundColor"
                 Value="{toolkit:AppThemeResource BottomBarColor}" />
         <Setter Property="Shell.TabBarForegroundColor"
-                Value="{AppThemeBinding Light={StaticResource Magenta}, Dark={StaticResource White}}" />
+                Value="{StaticResource Magenta}" />
         <Setter Property="Shell.TabBarTitleColor"
-                Value="{toolkit:AppThemeResource PrimaryTextColor}" />
+                Value="{StaticResource Magenta}" />
         <Setter Property="Shell.TabBarUnselectedColor"
-                Value="{AppThemeBinding Light={StaticResource Gray900}, Dark={StaticResource Gray200}}" />
+                Value="{StaticResource Gray200}" />
     </Style>
 
     <Style TargetType="NavigationPage">
         <Setter Property="BarBackgroundColor"
                 Value="{toolkit:AppThemeResource TopBarColor}" />
         <Setter Property="BarTextColor"
-                Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource White}}" />
+                Value="{StaticResource Gray200}" />
         <Setter Property="IconColor"
-                Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource White}}" />
+                Value="{StaticResource Gray200}" />
     </Style>
 
     <Style TargetType="TabbedPage">

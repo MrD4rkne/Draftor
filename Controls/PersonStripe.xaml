@@ -67,9 +67,10 @@
                         AlignItems="Center"
                         JustifyContent="SpaceBetween">
                 <Label Text="{Binding Name}"
-                       FontSize="Large" />
+                       FontSize="Large"
+                       TextColor="{StaticResource White}"/>
                 <controls:BalanceLabel Value="{Binding Total}"
-                                       FontSize="Medium" />
+                                       FontSize="Large" />
             </FlexLayout>
         </Border>
     </SwipeView>
