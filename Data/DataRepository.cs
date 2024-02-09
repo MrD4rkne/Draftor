@@ -203,11 +203,13 @@ public class DataRepository : IDataRepository
         if (!success)
             return false;
         if (group.Members != null)
+        {
             foreach (Person ship in group.Members)
             {
                 var memberShip = new Membership() { GroupId = group.Id, PersonId = ship.Id };
                 await DeleteMembership(memberShip);
             }
+        }
 
         return true;
     }
@@ -248,7 +250,6 @@ public class DataRepository : IDataRepository
         ArgumentNullException.ThrowIfNull(group);
         if (!await DoesGroupExistAsync(group.Id))
             throw new EntityDoesNotExistException();
-
         return await Database.UpdateAsync(group) > 0;
     }
 
@@ -289,7 +290,6 @@ public class DataRepository : IDataRepository
     public async Task<bool> DeleteMembership(Membership membership)
     {
         ArgumentNullException.ThrowIfNull(membership);
-
         return await Database.DeleteAsync(membership) == 1;
     }
 
@@ -319,7 +319,6 @@ public class DataRepository : IDataRepository
         ArgumentNullException.ThrowIfNull(transaction);
         if (!await DoesTransactionExistAsync(transaction.Id))
             throw new EntityDoesNotExistException();
-
         return await Database.UpdateAsync(transaction) == 1;
     }
 

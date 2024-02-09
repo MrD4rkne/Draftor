@@ -52,7 +52,7 @@ public class DataService : IDataService
             .ToListAsync();
 
         var peopleForMainViewList = new List<PersonMainVM>();
-        await Parallel.ForEachAsync(people, async (person, cts) =>
+       foreach(var person in people)
         {
             double total = await (await GetDataRepository()).GetSumForPerson(person.Id);
             PersonMainVM personMainVM = new()
@@ -62,9 +62,10 @@ public class DataService : IDataService
                 Total = total
             };
             peopleForMainViewList.Add(personMainVM);
-        });
+        }
 
-        return peopleForMainViewList.OrderBy(person => person.Id)
+        return peopleForMainViewList
+            .OrderBy(person => person.Id)
             .ToList();
     }
 
@@ -88,7 +89,6 @@ public class DataService : IDataService
     public async Task<bool> DeleteGroupAsync(Group group)
     {
         ArgumentNullException.ThrowIfNull(group);
-
         return await (await GetDataRepository()).DeleteGroupAsync(group);
     }
 
@@ -116,7 +116,7 @@ public class DataService : IDataService
     public async Task<int> AddTransactionBulk(double ammount, string title, string description, IEnumerable<int> peopleChecked)
     {
         int peopleAffectedCount = 0;
-        await Parallel.ForEachAsync(peopleChecked, async (personId, cts) =>
+        foreach(var personId in peopleChecked)
         {
             Transaction transaction = new()
             {
@@ -135,7 +135,7 @@ public class DataService : IDataService
             {
                 Debug.WriteLine($"Transaction for person {personId} was not added");
             }
-        });
+        }
         return peopleAffectedCount;
     }
 
