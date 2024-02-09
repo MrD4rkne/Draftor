@@ -17,7 +17,7 @@
     <ContentPage.Content>
         <StackLayout>
             <Grid>
-                <Frame BackgroundColor="{DynamicResource PrimaryColor}"
+                <Frame BackgroundColor="{toolkit:AppThemeResource PrimaryColor}"
                        Opacity="0.95"
                        CornerRadius="25"
                        HeightRequest="100"
@@ -30,7 +30,7 @@
                                Padding="10"
                                FontAttributes="Bold"
                                Margin="20,5,30,5"
-                               BackgroundColor="{DynamicResource PrimaryColor}">
+                               BackgroundColor="{toolkit:AppThemeResource PrimaryColor}">
                             <Label.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding SwitchSignCommand}" />
                             </Label.GestureRecognizers>

@@ -34,7 +34,7 @@
                 </Border>
                 <Border HorizontalOptions="Fill"
                         VerticalOptions="Fill"
-                        BackgroundColor="{DynamicResource SecondaryColor}"
+                        BackgroundColor="{toolkit:AppThemeResource SecondaryColor}"
                         Grid.Column="1"
                         StrokeThickness="0">
                     <controls:BalanceLabel Value="{Binding Total}"

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:bindingContext="clr-namespace:Draftor.BindingContexts"
              xmlns:vm="clr-namespace:Draftor.ViewModels"
              xmlns:model="clr-namespace:Draftor.Models"
-             xmlns:xct="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="Draftor.Views.Main.GroupsView"
              x:Name="GroupView"
              x:DataType="bindingContext:GroupsDataContext">
@@ -28,7 +28,7 @@
                         <ViewCell>
                             <SwipeView BackgroundColor="Transparent">
                                 <SwipeView.Behaviors>
-                                    <xct:EventToCommandBehavior EventName="Clicked"
+                                    <toolkit:EventToCommandBehavior EventName="Clicked"
                                                                 Command="{Binding BindingContext.GroupClicked, Source={x:Reference GroupView}}"
                                                                 CommandParameter="{Binding Id}" />
                                 </SwipeView.Behaviors>
@@ -39,7 +39,7 @@
                                                CommandParameter="{Binding}" />
                                 </SwipeView.LeftItems>
                                 <Frame CornerRadius="5"
-                                       BackgroundColor="{DynamicResource PrimaryColor}"
+                                       BackgroundColor="{toolkit:AppThemeResource PrimaryColor}"
                                        Margin="10,5">
                                     <Grid>
                                         <FlexLayout Direction="Row"

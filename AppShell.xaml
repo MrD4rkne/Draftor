@@ -10,7 +10,7 @@
     <TabBar x:Name="MainTabBar"
             Route="HeadPage">
         <Tab Route="GroupsPage"
-             Icon="{DynamicResource GroupsIcon}"
+             Icon="{StaticResource GroupsIcon}"
              Title="Groups">
             <ShellContent ContentTemplate="{DataTemplate views:GroupsView}"
                           Title="Groups" />
@@ -18,12 +18,13 @@
         <Tab Route="HomePage"
              x:Name="HomePage"
              Title="Home"
-             Icon="{DynamicResource CalculatorIcon}">
+             Icon="{StaticResource HomeIcon}">
             <ShellContent ContentTemplate="{DataTemplate views:MainView}"
                           Title="Home" />
         </Tab>
         <Tab Route="SettingsPage"
-             Title="Settings">
+             Title="Settings"
+             Icon="{StaticResource SettingsIcon}">
             <ShellContent ContentTemplate="{DataTemplate views:SettingsView}"
                           Title="Settings" />
         </Tab>

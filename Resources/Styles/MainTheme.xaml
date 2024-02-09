@@ -2,12 +2,13 @@
 <?xaml-comp compile="true" ?>
 <ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
                     x:Class="Draftor.Resources.Styles.MainTheme">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="Colors.xaml" />
         <ResourceDictionary Source="Images.xaml" />
     </ResourceDictionary.MergedDictionaries>
-    
+
     <Style TargetType="ActivityIndicator">
         <Setter Property="Color"
                 Value="{StaticResource SecondaryAccentColor}" />
@@ -22,7 +23,7 @@
 
     <Style TargetType="Border">
         <Setter Property="Stroke"
-                Value="{DynamicResource PrimaryColor}" />
+                Value="{toolkit:AppThemeResource PrimaryColor}" />
         <Setter Property="StrokeShape"
                 Value="Rectangle" />
         <Setter Property="StrokeThickness"
@@ -32,12 +33,12 @@
 
     <Style TargetType="BoxView">
         <Setter Property="BackgroundColor"
-                Value="{DynamicResource PrimaryColor}" />
+                Value="{toolkit:AppThemeResource PrimaryColor}" />
     </Style>
 
     <Style TargetType="Button">
         <Setter Property="TextColor"
-                Value="{DynamicResource PrimaryTextColor}" />
+                Value="{toolkit:AppThemeResource PrimaryTextColor}" />
         <Setter Property="BackgroundColor"
                 Value="{StaticResource AccentColor}" />
         <Setter Property="FontFamily"
@@ -72,7 +73,7 @@
 
     <Style TargetType="CheckBox">
         <Setter Property="Color"
-                Value="{DynamicResource PrimaryColor}" />
+                Value="{toolkit:AppThemeResource PrimaryColor}" />
         <Setter Property="MinimumHeightRequest"
                 Value="44" />
         <Setter Property="MinimumWidthRequest"
@@ -84,7 +85,7 @@
                     <VisualState x:Name="Disabled">
                         <VisualState.Setters>
                             <Setter Property="Color"
-                                    Value="{DynamicResource DisabledColor}" />
+                                    Value="{toolkit:AppThemeResource DisabledColor}" />
                         </VisualState.Setters>
                     </VisualState>
                 </VisualStateGroup>
@@ -94,7 +95,7 @@
 
     <Style TargetType="DatePicker">
         <Setter Property="TextColor"
-                Value="{DynamicResource SecondaryTextColor}" />
+                Value="{toolkit:AppThemeResource SecondaryTextColor}" />
         <Setter Property="BackgroundColor"
                 Value="Transparent" />
         <Setter Property="FontFamily"
@@ -122,7 +123,7 @@
 
     <Style TargetType="Editor">
         <Setter Property="TextColor"
-                Value="{DynamicResource SecondaryTextColor}" />
+                Value="{toolkit:AppThemeResource SecondaryTextColor}" />
         <Setter Property="BackgroundColor"
                 Value="Transparent" />
         <Setter Property="FontFamily"
@@ -130,7 +131,7 @@
         <Setter Property="FontSize"
                 Value="14" />
         <Setter Property="PlaceholderColor"
-                Value="{DynamicResource TertiaryTextColor}" />
+                Value="{toolkit:AppThemeResource TertiaryTextColor}" />
         <Setter Property="MinimumHeightRequest"
                 Value="44" />
         <Setter Property="MinimumWidthRequest"
@@ -142,7 +143,7 @@
                     <VisualState x:Name="Disabled">
                         <VisualState.Setters>
                             <Setter Property="TextColor"
-                                    Value="{DynamicResource DisabledTextColor}" />
+                                    Value="{toolkit:AppThemeResource DisabledTextColor}" />
                         </VisualState.Setters>
                     </VisualState>
                 </VisualStateGroup>
@@ -152,7 +153,7 @@
 
     <Style TargetType="Entry">
         <Setter Property="TextColor"
-                Value="{DynamicResource SecondaryTextColor}" />
+                Value="{toolkit:AppThemeResource SecondaryTextColor}" />
         <Setter Property="BackgroundColor"
                 Value="Transparent" />
         <Setter Property="FontFamily"
@@ -160,7 +161,7 @@
         <Setter Property="FontSize"
                 Value="14" />
         <Setter Property="PlaceholderColor"
-                Value="{DynamicResource TertiaryTextColor}" />
+                Value="{toolkit:AppThemeResource TertiaryTextColor}" />
         <Setter Property="MinimumHeightRequest"
                 Value="44" />
         <Setter Property="MinimumWidthRequest"
@@ -172,7 +173,7 @@
                     <VisualState x:Name="Disabled">
                         <VisualState.Setters>
                             <Setter Property="TextColor"
-                                    Value="{DynamicResource DisabledTextColor}" />
+                                    Value="{toolkit:AppThemeResource DisabledTextColor}" />
                         </VisualState.Setters>
                     </VisualState>
                 </VisualStateGroup>
@@ -184,7 +185,7 @@
         <Setter Property="HasShadow"
                 Value="False" />
         <Setter Property="BorderColor"
-                Value="{DynamicResource PrimaryColor}" />
+                Value="{toolkit:AppThemeResource PrimaryColor}" />
         <Setter Property="CornerRadius"
                 Value="8" />
     </Style>
@@ -220,7 +221,7 @@
 
     <Style TargetType="Label">
         <Setter Property="TextColor"
-                Value="{DynamicResource PrimaryTextColor}" />
+                Value="{toolkit:AppThemeResource PrimaryTextColor}" />
         <Setter Property="BackgroundColor"
                 Value="Transparent" />
         <Setter Property="FontFamily"
@@ -234,7 +235,7 @@
                     <VisualState x:Name="Disabled">
                         <VisualState.Setters>
                             <Setter Property="TextColor"
-                                    Value="{DynamicResource DisabledTextColor}" />
+                                    Value="{toolkit:AppThemeResource DisabledTextColor}" />
                         </VisualState.Setters>
                     </VisualState>
                 </VisualStateGroup>
@@ -244,7 +245,7 @@
 
     <Style TargetType="Span">
         <Setter Property="TextColor"
-                Value="{DynamicResource PrimaryTextColor}" />
+                Value="{toolkit:AppThemeResource PrimaryTextColor}" />
     </Style>
 
     <Style TargetType="ListView">
@@ -293,7 +294,7 @@
                     <VisualState x:Name="Off">
                         <VisualState.Setters>
                             <Setter Property="ThumbColor"
-                                    Value="{DynamicResource PrimaryColor}" />
+                                    Value="{toolkit:AppThemeResource PrimaryColor}" />
                         </VisualState.Setters>
                     </VisualState>
                 </VisualStateGroup>
@@ -306,36 +307,36 @@
         <Setter Property="Padding"
                 Value="0" />
         <Setter Property="BackgroundColor"
-                Value="{DynamicResource PageBackgroundColor}" />
+                Value="{toolkit:AppThemeResource PageBackgroundColor}" />
     </Style>
 
     <Style TargetType="Shell"
            ApplyToDerivedTypes="True">
         <Setter Property="Shell.BackgroundColor"
-                Value="{DynamicResource TopBarColor}" />
+                Value="{toolkit:AppThemeResource TopBarColor}" />
         <Setter Property="Shell.ForegroundColor"
                 Value="{OnPlatform WinUI={StaticResource Primary}, Default={StaticResource White}}" />
         <Setter Property="Shell.TitleColor"
                 Value="{StaticResource White}" />
         <Setter Property="Shell.DisabledColor"
-                Value="{DynamicResource DisabledColor}" />
+                Value="{toolkit:AppThemeResource DisabledColor}" />
         <Setter Property="Shell.UnselectedColor"
                 Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray200}}" />
         <Setter Property="Shell.NavBarHasShadow"
                 Value="False" />
         <Setter Property="Shell.TabBarBackgroundColor"
-                Value="{DynamicResource BottomBarColor}" />
+                Value="{toolkit:AppThemeResource BottomBarColor}" />
         <Setter Property="Shell.TabBarForegroundColor"
                 Value="{AppThemeBinding Light={StaticResource Magenta}, Dark={StaticResource White}}" />
         <Setter Property="Shell.TabBarTitleColor"
-                Value="{DynamicResource PrimaryTextColor}" />
+                Value="{toolkit:AppThemeResource PrimaryTextColor}" />
         <Setter Property="Shell.TabBarUnselectedColor"
                 Value="{AppThemeBinding Light={StaticResource Gray900}, Dark={StaticResource Gray200}}" />
     </Style>
 
     <Style TargetType="NavigationPage">
         <Setter Property="BarBackgroundColor"
-                Value="{DynamicResource TopBarColor}" />
+                Value="{toolkit:AppThemeResource TopBarColor}" />
         <Setter Property="BarTextColor"
                 Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource White}}" />
         <Setter Property="IconColor"
@@ -344,7 +345,7 @@
 
     <Style TargetType="TabbedPage">
         <Setter Property="BarBackgroundColor"
-                Value="{DynamicResource BottomBarColor}" />
+                Value="{toolkit:AppThemeResource BottomBarColor}" />
         <Setter Property="BarTextColor"
                 Value="{AppThemeBinding Light={StaticResource Magenta}, Dark={StaticResource White}}" />
         <Setter Property="UnselectedTabColor"

@@ -2,6 +2,7 @@
 using System.Text;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Controls.UserDialogs.Maui;
 using Draftor.Abstract;
 using Draftor.Models;
 using Draftor.ViewModels;
@@ -11,6 +12,7 @@ namespace Draftor.BindingContexts;
 [QueryProperty(nameof(PersonId), "id")]
 public class PersonDataContext : ObservableObject
 {
+    private IUserDialogs _userDialogs;
     private readonly IDataService _dataService;
 
     private bool _isDataBeingLoaded;
@@ -105,19 +107,15 @@ public class PersonDataContext : ObservableObject
 
     public IAsyncRelayCommand LoadDataCommand { get; private set; }
 
-    public PersonDataContext(IDataService dataService)
+    public PersonDataContext(IDataService dataService, IUserDialogs userDialogs)
     {
+        _userDialogs = userDialogs;
         Transactions = [];
-        BindCommands();
-        _dataService = dataService;
-    }
-
-    private void BindCommands()
-    {
         AddCommand = new AsyncRelayCommand(AddTransaction, CanAddTransaction);
         DeleteTransactionCommand = new AsyncRelayCommand<int>(DeleteTransaction);
         LoadDataCommand = new AsyncRelayCommand(LoadDataForEdit);
         DisplayTransactionCommand = new AsyncRelayCommand<TransactionForListVM>(ShowDetailsForTransaction);
+        _dataService = dataService;
     }
 
     private async Task LoadDataForEdit()
@@ -176,23 +174,21 @@ public class PersonDataContext : ObservableObject
 
     private async Task DeleteTransaction(int id)
     {
-        TransactionForListVM transactionToDelete = Transactions.Where(x => x.Id == id).FirstOrDefault();
-        if (transactionToDelete == null)
+        TransactionForListVM? transactionToDelete = Transactions.Where(x => x.Id == id).FirstOrDefault();
+        if (transactionToDelete is null)
             return;
-        bool confirmation = await App.Current.MainPage.DisplayAlert("Confirmation", $"Do you want to remove transaction titled {transactionToDelete.Title} with a value of of {transactionToDelete.Value}? The data will be lost after saving.", "Yes", "No");
+        bool confirmation = await _userDialogs.ConfirmAsync("Confirmation", $"Do you want to remove transaction titled {transactionToDelete.Title} with a value of of {transactionToDelete.Value}? The data will be lost after saving.", "Yes", "No");
         if (confirmation)
         {
             _transactions_to_remove.Add(transactionToDelete);
             AddCommand.NotifyCanExecuteChanged();
             transactionToDelete.ToRemove = true;
-
-            var deleteNotification = CommunityToolkit.Maui.Alerts.Toast.Make("Transaction will be erased after saving data.");
-            await deleteNotification.Show();
+            _userDialogs.ShowToast("Transaction will be erased after saving data.");
             CountBalance();
         }
     }
 
-    private async Task ShowDetailsForTransaction(TransactionForListVM transaction)
+    private async Task ShowDetailsForTransaction(TransactionForListVM? transaction)
     {
         ArgumentNullException.ThrowIfNull(transaction);
         StringBuilder detailsBuilder = new();
@@ -200,6 +196,6 @@ public class PersonDataContext : ObservableObject
         detailsBuilder.AppendLine($"Value: {transaction.Value}");
         detailsBuilder.AppendLine($"Date: {transaction.Date}");
         detailsBuilder.AppendLine($"Description: {transaction.Description}");
-        await App.Current.MainPage.DisplayAlert("Details",detailsBuilder.ToString(), "Ok");
+        await _userDialogs.AlertAsync("Details",detailsBuilder.ToString(), "Ok");
     }
 }

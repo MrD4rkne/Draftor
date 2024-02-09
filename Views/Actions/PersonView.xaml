@@ -23,7 +23,7 @@
             <StackLayout AbsoluteLayout.LayoutBounds="0,0,1,1"
                          AbsoluteLayout.LayoutFlags="All">
                 <Grid>
-                    <Frame BackgroundColor="{DynamicResource PrimaryColor}"
+                    <Frame BackgroundColor="{toolkit:AppThemeResource PrimaryColor}"
                            Opacity="0.95"
                            CornerRadius="25"
                            HeightRequest="100"
@@ -89,7 +89,7 @@
                                                    CommandParameter="{Binding}" />
                                     </SwipeView.RightItems>
                                     <FlexLayout Direction="Row"
-                                                BackgroundColor="{DynamicResource PrimaryColor}"
+                                                BackgroundColor="{toolkit:AppThemeResource PrimaryColor}"
                                                 AlignItems="Center"
                                                 JustifyContent="SpaceBetween"
                                                 Padding="5">

@@ -69,15 +69,10 @@ public class TransactionDataContext : ObservableObject
     {
         _dataService = dataService;
         People = [];
-        BindCommands();
-        LoadData();
-    }
-
-    private void BindCommands()
-    {
         AddTransactionCommand = new AsyncRelayCommand(AddTransactionCommand_Execute, AddTransaction_CanExecute);
         PersonCheckedCommand = new RelayCommand(PersonChecked_Execute);
         SwitchSignCommand = new RelayCommand(SwitchSignCommand_Execute);
+        LoadData();
     }
 
     public async void LoadData()
