@@ -1,5 +1,7 @@
 ﻿using System.Collections.Concurrent;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -21,8 +23,8 @@ public class MainDataContext : ObservableObject
         set => SetProperty(ref _total, value);
     }
 
-    private List<PersonMainVM> _people;
-    public List<PersonMainVM> People
+    private ObservableCollection<PersonMainVM> _people;
+    public ObservableCollection<PersonMainVM> People
     {
         get => _people;
         set
@@ -31,6 +33,7 @@ public class MainDataContext : ObservableObject
             {
                 AddPersonCommand.NotifyCanExecuteChanged();
                 AddTransactionCommand.NotifyCanExecuteChanged();
+                UpdateBalance();
             }
         }
     }
@@ -69,19 +72,20 @@ public class MainDataContext : ObservableObject
         AddTransactionCommand = new AsyncRelayCommand(AddTransactionExecute, AddTransactionCanExecute);
         DeletePersonCommand = new AsyncRelayCommand<int>(DeletePersonExecute);
         NavigateToPersonDetailsCommand = new AsyncRelayCommand<int>(NavigateToPersonDetailsCommand_Execute);
-        People = [];
+        _people = [];
     }
 
     public async Task Refresh()
     {
         var people = await _dataService.GetPeopleVMAsync();
         bool isLeft = true;
+        People.Clear();
         foreach (var person in people)
         {
             person.IsLeft = isLeft;
             isLeft = !isLeft;
+            People.Add(person);
         }
-        People = people;
         UpdateBalance();
         IsRefreshing = false;
     }
