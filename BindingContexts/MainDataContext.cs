@@ -98,14 +98,14 @@ public class MainDataContext : ObservableObject
 
     private async Task AddPersonExecute()
     {
-        await Shell.Current.GoToAsync(nameof(Views.Actions.PersonView));
+        await Shell.Current.GoToAsync(nameof(Views.Actions.AddPersonView));
     }
 
     private bool AddPersonCanExecute() => !IsRefreshing;
 
     private async Task AddTransactionExecute()
     {
-        await Shell.Current.GoToAsync(nameof(Views.Actions.TransactionView));
+        await Shell.Current.GoToAsync(nameof(Views.Actions.AddTransactionView));
     }
 
     private bool AddTransactionCanExecute()

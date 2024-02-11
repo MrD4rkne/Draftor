@@ -4,29 +4,25 @@
        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
        xmlns:views="clr-namespace:Draftor.Views.Main"
        Shell.FlyoutBehavior="Disabled"
-       Style="{StaticResource BaseStyle}"
        Title="Draftor">
 
     <TabBar x:Name="MainTabBar"
             Route="HeadPage">
-        <Tab Route="GroupsPage"
+        <!--<Tab Route="GroupsPage"
              Icon="{StaticResource GroupsIcon}"
              Title="Groups">
-            <ShellContent ContentTemplate="{DataTemplate views:GroupsView}"
-                          Title="Groups" />
-        </Tab>
+            <ShellContent ContentTemplate="{DataTemplate views:GroupsView}"/>
+        </Tab>-->
         <Tab Route="HomePage"
              x:Name="HomePage"
              Title="Home"
              Icon="{StaticResource HomeIcon}">
-            <ShellContent ContentTemplate="{DataTemplate views:MainView}"
-                          Title="Home" />
+            <ShellContent ContentTemplate="{DataTemplate views:MainView}"/>
         </Tab>
         <Tab Route="SettingsPage"
              Title="Settings"
              Icon="{StaticResource SettingsIcon}">
-            <ShellContent ContentTemplate="{DataTemplate views:SettingsView}"
-                          Title="Settings" />
+            <ShellContent ContentTemplate="{DataTemplate views:SettingsView}"/>
         </Tab>
     </TabBar>
 </Shell>

@@ -70,6 +70,7 @@
                        FontSize="Large"
                        TextColor="{StaticResource White}"/>
                 <controls:BalanceLabel Value="{Binding Total}"
+                                       FontAttributes="Bold"
                                        FontSize="Large" />
             </FlexLayout>
         </Border>

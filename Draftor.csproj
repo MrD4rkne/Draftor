@@ -37,6 +37,22 @@
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
 	</PropertyGroup>
 
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net8.0-android|AnyCPU'">
+	  <ApplicationId>com.mszopa.draftor</ApplicationId>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net8.0-maccatalyst|AnyCPU'">
+	  <ApplicationId>com.mszopa.draftor</ApplicationId>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net8.0-android|AnyCPU'">
+	  <ApplicationId>com.mszopa.draftor</ApplicationId>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net8.0-maccatalyst|AnyCPU'">
+	  <ApplicationId>com.mszopa.draftor</ApplicationId>
+	</PropertyGroup>
+
 	<ItemGroup>
 		<!-- App Icon -->
 		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
@@ -79,7 +95,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Update="Controls\PersonStripe.xaml.cs">
+	  <Compile Update="Views\Controls\PersonStripe.xaml.cs">
 	    <DependentUpon>PersonStripe.xaml</DependentUpon>
 	  </Compile>
 	  <Compile Update="Resources\Styles\Images.xaml.cs">
@@ -88,13 +104,22 @@
 	  <Compile Update="Resources\Styles\MainTheme.xaml.cs">
 	    <DependentUpon>MainTheme.xaml</DependentUpon>
 	  </Compile>
+	  <Compile Update="Views\Actions\AddPersonView.xaml.cs">
+	    <DependentUpon>AddPersonView.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Views\Actions\AddTransactionView.xaml.cs">
+	    <DependentUpon>AddTransactionView.xaml</DependentUpon>
+	  </Compile>
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiXaml Update="Controls\BalanceLabel.xaml">
+	  <MauiXaml Update="Views\Controls\BalanceLabel.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Controls\PersonStripe.xaml">
+	  <MauiXaml Update="Views\Controls\PersonDetailsCard.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\Controls\PersonStripe.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Resources\Styles\DarkTheme.xaml">
@@ -109,10 +134,13 @@
 	  <MauiXaml Update="Resources\Styles\LightTheme.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Views\Actions\AddPersonView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\Actions\PersonView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Views\Actions\TransactionView.xaml">
+	  <MauiXaml Update="Views\Actions\AddTransactionView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\Main\GroupsView.xaml">

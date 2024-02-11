@@ -22,12 +22,8 @@ public class PersonDataContext : ObservableObject
         set => SetProperty(ref _isDataBeingLoaded, value);
     }
 
-    public string ActionButtonText => !IsAdding ? "Save" : "Add";
-
-    public string WindowsTitle => IsAdding ? "Add person" : "Edit / view person";
-
     private int _personId;
-    public int PersonId { get => _personId; set { _personId = value; IsAdding = false; } }
+    public int PersonId { get => _personId; set { _personId = value; } }
 
     private ObservableCollection<TransactionForListVM> _transactions;
     public ObservableCollection<TransactionForListVM> Transactions
@@ -46,25 +42,10 @@ public class PersonDataContext : ObservableObject
         {
             if (SetProperty(ref _person, value))
             {
-                AddCommand.NotifyCanExecuteChanged();
+                EditCommand.NotifyCanExecuteChanged();
             }
         }
     }
-
-    private bool _isAdding = true;
-    public bool IsAdding
-    {
-        get => _isAdding;
-        set
-        {
-            if (SetProperty(ref _isAdding, value))
-            {
-                OnPropertyChanged(nameof(IsEditting));
-            }
-        }
-    }
-
-    public bool IsEditting => !IsAdding;
 
     private string _name = "";
     public string Name
@@ -74,7 +55,7 @@ public class PersonDataContext : ObservableObject
         {
             if (SetProperty(ref _name, value))
             {
-                AddCommand.NotifyCanExecuteChanged();
+                EditCommand.NotifyCanExecuteChanged();
             }
         }
     }
@@ -87,7 +68,7 @@ public class PersonDataContext : ObservableObject
         {
             if (SetProperty(ref _description, value))
             {
-                AddCommand.NotifyCanExecuteChanged();
+                EditCommand.NotifyCanExecuteChanged();
             }
         }
     }
@@ -99,7 +80,7 @@ public class PersonDataContext : ObservableObject
         set => SetProperty(ref _total, value);
     }
 
-    public IAsyncRelayCommand AddCommand { get; set; }
+    public IAsyncRelayCommand EditCommand { get; set; }
 
     public IAsyncRelayCommand DeleteTransactionCommand { get; private set; }
 
@@ -110,8 +91,8 @@ public class PersonDataContext : ObservableObject
     public PersonDataContext(IDataService dataService, IUserDialogs userDialogs)
     {
         _userDialogs = userDialogs;
-        Transactions = [];
-        AddCommand = new AsyncRelayCommand(AddTransaction, CanAddTransaction);
+        _transactions = [];
+        EditCommand = new AsyncRelayCommand(EditPerson, CanSaveChanges);
         DeleteTransactionCommand = new AsyncRelayCommand<int>(DeleteTransaction);
         LoadDataCommand = new AsyncRelayCommand(LoadDataForEdit);
         DisplayTransactionCommand = new AsyncRelayCommand<TransactionForListVM>(ShowDetailsForTransaction);
@@ -124,48 +105,37 @@ public class PersonDataContext : ObservableObject
             return;
         IsDataBeingLoaded = true;
         var personToEdit = await _dataService.GetPersonAsync(PersonId);
-        var peopleTransactions = (await _dataService.GetAllTransactionsForPerson(PersonId));
+        if(personToEdit is null)
+        {
+            IsDataBeingLoaded = false;
+            await _userDialogs.AlertAsync("Error", "Person not found", "Ok");
+            await Shell.Current.GoToAsync("..");
+            return;
+        }
 
-        Transactions = new(peopleTransactions);
-        IsDataBeingLoaded = false;
+        var personTransactions = (await _dataService.GetAllTransactionsForPerson(PersonId));
+        Transactions = new(personTransactions);
         Name = personToEdit.Name;
         Description = personToEdit.Description;
         Person = personToEdit;
+        IsDataBeingLoaded = false;
         CountBalance();
     }
 
     private void CountBalance()
     {
-        if (Transactions is null)
-        {
-            Total = 0;
-            return;
-        }
         Total = Transactions.Where(y => !y.ToRemove).Sum(x => x.Value);
     }
 
-    private async Task AddTransaction()
+    private async Task EditPerson()
     {
-        if (Person == null)
-        {
-            PersonVM personToCreate = new()
-            {
-                Name = Name,
-                Description = Description
-            };
-            await _dataService.AddPerson(personToCreate);
-            await Shell.Current.GoToAsync("..");
-        }
-        else
-        {
-            PersonVM editedVM = Person with { Name = Name, Description = Description };
-            await _dataService.UpdatePerson(editedVM);
-            await _dataService.RemoveTransactions(_transactions_to_remove);
-            await Shell.Current.GoToAsync("..");
-        }
+        PersonVM editedVM = Person with { Name = Name, Description = Description };
+        await _dataService.UpdatePerson(editedVM);
+        await _dataService.RemoveTransactions(_transactions_to_remove);
+        await Shell.Current.GoToAsync("..");
     }
 
-    private bool CanAddTransaction()
+    private bool CanSaveChanges()
     {
         if (Person == null)
             return !string.IsNullOrEmpty(Name);
@@ -181,7 +151,7 @@ public class PersonDataContext : ObservableObject
         if (confirmation)
         {
             _transactions_to_remove.Add(transactionToDelete);
-            AddCommand.NotifyCanExecuteChanged();
+            EditCommand.NotifyCanExecuteChanged();
             transactionToDelete.ToRemove = true;
             _userDialogs.ShowToast("Transaction will be erased after saving data.");
             CountBalance();
@@ -196,6 +166,6 @@ public class PersonDataContext : ObservableObject
         detailsBuilder.AppendLine($"Value: {transaction.Value}");
         detailsBuilder.AppendLine($"Date: {transaction.Date}");
         detailsBuilder.AppendLine($"Description: {transaction.Description}");
-        await _userDialogs.AlertAsync("Details",detailsBuilder.ToString(), "Ok");
+        await _userDialogs.AlertAsync(message: detailsBuilder.ToString(), title: "Details", okText: "Ok");
     }
 }

@@ -44,18 +44,7 @@ public class TransactionDataContext : ObservableObject
         set => SetProperty(ref _arePeopleLoading, value);
     }
 
-    private bool _isBusy = false;
-    public bool IsBusy
-    {
-        get => _isBusy;
-        set
-        {
-            if (SetProperty(ref _isBusy, value))
-            {
-                AddTransactionCommand.NotifyCanExecuteChanged();
-            }
-        }
-    }
+    private bool IsBusy { get; set; } = false;
 
     public ObservableCollection<ViewModels.PersonForListVM> People { get; private set; }
 

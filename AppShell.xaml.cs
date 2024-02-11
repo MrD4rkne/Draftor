@@ -6,8 +6,9 @@ public partial class AppShell : Shell
     {
         InitializeComponent();
 
+        Routing.RegisterRoute($"HomePage/{nameof(Views.Actions.AddPersonView)}", typeof(Views.Actions.AddPersonView));
         Routing.RegisterRoute($"HomePage/{nameof(Views.Actions.PersonView)}", typeof(Views.Actions.PersonView));
-        Routing.RegisterRoute($"HomePage/{nameof(Views.Actions.TransactionView)}", typeof(Views.Actions.TransactionView));
+        Routing.RegisterRoute($"HomePage/{nameof(Views.Actions.AddTransactionView)}", typeof(Views.Actions.AddTransactionView));
 
         MainTabBar.CurrentItem = HomePage;
     }
