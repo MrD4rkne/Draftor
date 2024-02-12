@@ -8,8 +8,7 @@
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:controls="clr-namespace:Draftor.Controls"
              x:Name="PersonPage"
-             Title="{Binding WindowsTitle}"
-             BackgroundColor="{DynamicResource PageBackgroundColor}"
+             Title="Edit person"
              x:DataType="context:PersonDataContext"
              Shell.TabBarIsVisible="False">
     <ContentPage.Resources>
@@ -17,53 +16,41 @@
     </ContentPage.Resources>
     <ContentPage.Behaviors>
         <toolkit:EventToCommandBehavior EventName="NavigatedTo"
-                                        Command="{Binding LoadDataCommand}"/>
+                                        Command="{Binding LoadDataCommand}" />
     </ContentPage.Behaviors>
     <ContentPage.Content>
         <AbsoluteLayout>
-            <StackLayout AbsoluteLayout.LayoutBounds="0,0,1,1"
-                         AbsoluteLayout.LayoutFlags="All">
-                <Grid>
-                    <Frame BackgroundColor="{DynamicResource PrimaryColor}"
-                           Opacity="0.95"
-                           CornerRadius="25"
-                           HeightRequest="100"
-                           HorizontalOptions="FillAndExpand"
-                           VerticalOptions="FillAndExpand">
-                        <controls:BalanceLabel Value="{Binding Total}"
-                                               FontSize="30"
-                                               HorizontalTextAlignment="Center"
-                                               VerticalTextAlignment="Center"
-                                               HorizontalOptions="CenterAndExpand"
-                                               FontAttributes="Bold"
-                                               LineBreakMode="MiddleTruncation"
-                                               SemanticProperties.Hint="{Binding Total}"
-                                               VerticalOptions="CenterAndExpand" />
-                    </Frame>
-                </Grid>
+            <Grid AbsoluteLayout.LayoutBounds="0,0,1,1"
+                  AbsoluteLayout.LayoutFlags="All"
+                  RowDefinitions="auto,auto,*,auto">
+                <Frame Grid.Row="0"
+                       BackgroundColor="{toolkit:AppThemeResource PrimaryColor}"
+                       Opacity="0.95"
+                       CornerRadius="25"
+                       HeightRequest="100"
+                       HorizontalOptions="FillAndExpand"
+                       VerticalOptions="FillAndExpand">
+                    <controls:BalanceLabel Value="{Binding Total}"
+                                           FontSize="30"
+                                           HorizontalTextAlignment="Center"
+                                           VerticalTextAlignment="Center"
+                                           HorizontalOptions="CenterAndExpand"
+                                           FontAttributes="Bold"
+                                           LineBreakMode="MiddleTruncation"
+                                           SemanticProperties.Hint="{Binding Total}"
+                                           VerticalOptions="CenterAndExpand" />
+                </Frame>
 
-                <Label FontSize="Medium"
-                       Text="Name"
-                       Margin="5,0" />
-                <Entry HorizontalOptions="FillAndExpand"
-                       Placeholder="Person's name"
-                       Text="{Binding Name, Mode=TwoWay}" />
-                <Label FontSize="Medium"
-                       Text="Description"
-                       Margin="5,0" />
-                <Entry HorizontalOptions="FillAndExpand"
-                       Placeholder="Person's description, your notes"
-                       Text="{Binding Description, Mode=TwoWay}" />
-                <Label FontSize="Medium"
-                       Text="Transactions"
-                       IsVisible="{Binding IsEditting}"
-                       Margin="5,0" />
+                <controls:PersonDetailsCard Margin="5" 
+                    Grid.Row="1"
+                                            Name="{Binding Name, Mode=TwoWay}"
+                                            Description="{Binding Description, Mode=TwoWay}" />
 
-                <ListView ItemsSource="{Binding Transactions}"
+                <ListView Grid.Row="2"
+                          ItemsSource="{Binding Transactions}"
                           HorizontalOptions="Fill"
                           VerticalOptions="Fill"
-                          Margin="5,5"
-                          IsVisible="{Binding IsEditting}">
+                          Margin="5,5">
                     <ListView.ItemTemplate>
                         <DataTemplate x:DataType="viewModel:TransactionForListVM">
                             <ViewCell>
@@ -90,31 +77,16 @@
                                                    CommandParameter="{Binding}" />
                                     </SwipeView.RightItems>
                                     <FlexLayout Direction="Row"
-                                                BackgroundColor="{DynamicResource PrimaryColor}"
+                                                BackgroundColor="{toolkit:AppThemeResource PrimaryColor}"
                                                 AlignItems="Center"
                                                 JustifyContent="SpaceBetween"
                                                 Padding="5">
                                         <Label Text="{Binding Title}"
                                                Padding="5"
                                                FontSize="Medium" />
-                                        <Label Text="{Binding Value}"
-                                               Padding="5"
-                                               FontSize="Medium">
-                                            <Label.Triggers>
-                                                <DataTrigger TargetType="Label"
-                                                             Binding="{Binding Value, Converter={StaticResource TotalToIntConverter}}"
-                                                             Value="1">
-                                                    <Setter Property="TextColor"
-                                                            Value="LightGreen" />
-                                                </DataTrigger>
-                                                <DataTrigger TargetType="Label"
-                                                             Binding="{Binding Value, Converter={StaticResource TotalToIntConverter}}"
-                                                             Value="-1">
-                                                    <Setter Property="TextColor"
-                                                            Value="Red" />
-                                                </DataTrigger>
-                                            </Label.Triggers>
-                                        </Label>
+                                        <controls:BalanceLabel Value="{Binding Value}"
+                                                               Padding="5"
+                                                               FontSize="Medium" />
                                         <FlexLayout.Triggers>
                                             <DataTrigger TargetType="FlexLayout"
                                                          Binding="{Binding ToRemove}"
@@ -129,19 +101,20 @@
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
-                <Button HorizontalOptions="End"
+                <Button Grid.Row="3"
+                        HorizontalOptions="End"
                         Margin="5"
-                        Text="{Binding ActionButtonText}"
+                        Text="Edit"
                         VerticalOptions="Start"
-                        Command="{Binding AddCommand}" />
-            </StackLayout>
+                        Command="{Binding EditCommand}" />
+                </Grid>
 
-            <ActivityIndicator AbsoluteLayout.LayoutBounds="0,0,1,1"
-                               AbsoluteLayout.LayoutFlags="All"
-                               IsVisible="{Binding IsDataBeingLoaded}"
-                               IsRunning="True"
-                               HorizontalOptions="CenterAndExpand"
-                               VerticalOptions="CenterAndExpand" />
+                <ActivityIndicator AbsoluteLayout.LayoutBounds="0,0,1,1"
+                                   AbsoluteLayout.LayoutFlags="All"
+                                   IsVisible="{Binding IsDataBeingLoaded}"
+                                   IsRunning="True"
+                                   HorizontalOptions="CenterAndExpand"
+                                   VerticalOptions="CenterAndExpand" />
 
         </AbsoluteLayout>
     </ContentPage.Content>

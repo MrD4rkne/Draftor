@@ -1,5 +1,6 @@
 ﻿using System.Globalization;
 using CommunityToolkit.Maui;
+using Controls.UserDialogs.Maui;
 using Microsoft.Extensions.Logging;
 
 namespace Draftor;
@@ -8,10 +9,10 @@ public static class MauiProgram
     public static MauiApp CreateMauiApp()
     {
         SetupCultureInfo();
-
         var builder = MauiApp.CreateBuilder();
         builder
             .UseMauiCommunityToolkit()
+            .UseUserDialogs(registerInterface: true, () => { })
             .RegisterViews()
             .RegisterViewModels()
             .RegisterServices()

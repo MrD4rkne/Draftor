@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Draftor.Resources.Styles.Images">
+    <x:String x:Key="HomeIcon">Resources/Images/home_icon.png</x:String>
+    <x:String x:Key="GroupsIcon">Resources/Images/group_icon.png</x:String>
+    <x:String x:Key="SettingsIcon">Resources/Images/settings_icon.png</x:String>
+    <x:String x:Key="AddPersonIcon">Resources/Images/add_person_icon.png</x:String>
+    <x:String x:Key="AddTransactionIcon">Resources/Images/add_transaction_icon.png</x:String>
+</ResourceDictionary>

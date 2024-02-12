@@ -9,27 +9,34 @@
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              Appearing="PeopleView_Appearing"
              x:Name="HomeView"
-             BackgroundColor="{DynamicResource PageBackgroundColor}"
              x:DataType="context:MainDataContext">
     <ContentPage.Resources>
         <converter:TotalToIntConverter x:Key="TotalToIntConverter" />
     </ContentPage.Resources>
-    <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Add person"
-                     Command="{Binding AddPersonCommand}" />
-    </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <StackLayout>
-            <Grid ColumnDefinitions="*,auto"
-                  HeightRequest="80">
-                <Border Grid.Column="0"
-                        Background="{StaticResource Accent100}"
-                        Margin="0,5,5,5"
-                        HorizontalOptions="FillAndExpand"
-                        VerticalOptions="FillAndExpand">
+            <Grid Margin="20,0"
+                  ColumnSpacing="0"
+                  HeightRequest="80"
+                  ColumnDefinitions="auto,*,auto">
+                <Border VerticalOptions="CenterAndExpand"
+                        WidthRequest="50"
+                        Grid.Column="0"
+                        BackgroundColor="MediumPurple"
+                        Stroke="MediumPurple">
                     <Border.StrokeShape>
-                        <RoundRectangle CornerRadius="0,20,0,10" />
+                        <RoundRectangle CornerRadius="0,0,40,0"
+                                        StrokeThickness="0" />
                     </Border.StrokeShape>
+                    <ImageButton Source="{StaticResource AddPersonIcon}"
+                                 Aspect="AspectFit"
+                                 Command="{Binding AddPersonCommand}" />
+                </Border>
+                <Border HorizontalOptions="Fill"
+                        VerticalOptions="Fill"
+                        BackgroundColor="{toolkit:AppThemeResource SecondaryColor}"
+                        Grid.Column="1"
+                        StrokeThickness="0">
                     <controls:BalanceLabel Value="{Binding Total}"
                                            FontSize="30"
                                            HorizontalTextAlignment="Center"
@@ -40,58 +47,37 @@
                                            SemanticProperties.Hint="{Binding Total}"
                                            VerticalOptions="CenterAndExpand" />
                 </Border>
-                <Button Grid.Column="1"
-                        Text="+"
-                        FontSize="Large"
-                        CornerRadius="40"
-                        Margin="15,5,15,5"
-                        HorizontalOptions="Center"
-                        VerticalOptions="Center"
-                        Command="{Binding AddTransactionCommand}" />
+                <Border Grid.Column="2"
+                        VerticalOptions="Fill"
+                        WidthRequest="50"
+                        BackgroundColor="LightGreen"
+                        Stroke="LightGreen">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="0,0,0,40"
+                                        StrokeThickness="0" />
+                    </Border.StrokeShape>
+                    <ImageButton Source="{StaticResource AddTransactionIcon}"
+                                 Aspect="AspectFit"
+                                 Command="{Binding AddTransactionCommand}" />
+                </Border>
             </Grid>
-            <ListView ItemsSource="{Binding People}"
-                      SelectionMode="None"
-                      IsRefreshing="{Binding IsRefreshing, Mode=TwoWay}"
-                      IsPullToRefreshEnabled="True"
-                      BackgroundColor="Transparent"
-                      RefreshCommand="{Binding RefreshCommand}"
-                      RowHeight="80"
-                      HorizontalOptions="FillAndExpand"
-                      VerticalOptions="FillAndExpand">
-                <ListView.ItemTemplate>
-                    <DataTemplate x:DataType="{x:Type viewModel:PersonMainVM}">
-                        <ViewCell>
-                            <SwipeView BackgroundColor="Transparent">
-                                <SwipeView.LeftItems>
-                                    <SwipeItem Text="Delete"
-                                               BackgroundColor="Red"
-                                               Command="{Binding BindingContext.DeletePersonCommand, Source={x:Reference HomeView}}"
-                                               CommandParameter="{Binding Id}" />
-                                </SwipeView.LeftItems>
-                                <Frame CornerRadius="5"
-                                       BackgroundColor="{DynamicResource PrimaryColor}"
-                                       Margin="10,5">
-                                    <Frame.GestureRecognizers>
-                                        <TapGestureRecognizer Command="{Binding BindingContext.NavigateToPersonDetailsCommand, Source={x:Reference HomeView}}"
-                                                              CommandParameter="{Binding Id}"
-                              NumberOfTapsRequired="1" />
-                                    </Frame.GestureRecognizers>
-                                    <Grid>
-                                        <FlexLayout Direction="Row"
-                                                    AlignItems="Center"
-                                                    JustifyContent="SpaceBetween">
-                                            <Label Text="{Binding Name}"
-                                                   FontSize="Large" />
-                                            <controls:BalanceLabel Value="{Binding Total}"
-                                                   FontSize="Medium" />
-                                        </FlexLayout>
-                                    </Grid>
-                                </Frame>
-                            </SwipeView>
-                        </ViewCell>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+            <RefreshView IsRefreshing="{Binding IsRefreshing, Mode=TwoWay}"
+                         Command="{Binding RefreshCommand}">
+                <CollectionView ItemsSource="{Binding People, Mode=TwoWay}"
+                                SelectionMode="None"
+                                BackgroundColor="Transparent"
+                                HorizontalOptions="FillAndExpand"
+                                VerticalOptions="FillAndExpand">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="{x:Type viewModel:PersonMainVM}">
+                            <controls:PersonStripe BindingContext="{Binding}"
+                                                       DeleteCommand="{Binding BindingContext.DeletePersonCommand, Source={x:Reference HomeView}}"
+                                                       DetailsCommand="{Binding BindingContext.NavigateToPersonDetailsCommand, Source={x:Reference HomeView}}"
+                                                       HeightRequest="70" />
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </RefreshView>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

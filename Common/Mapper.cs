@@ -21,7 +21,7 @@ public class Mapper : Abstract.IMapper
         ArgumentNullException.ThrowIfNull(obj, nameof(obj));
 
         var typeKey = new Tuple<Type, Type>(obj.GetType(), typeof(T));
-        if (!_maps.TryGetValue(typeKey, out Func<object, object> mapDelegate))
+        if (!_maps.TryGetValue(typeKey, out Func<object, object>? mapDelegate))
             throw new MapDoesNotExistException($"Map from type {typeKey.Item1} to type {typeKey.Item2} was not registered.");
         try
         {
@@ -36,7 +36,7 @@ public class Mapper : Abstract.IMapper
 
     private static Func<object, object> CreateIndirectDelegate<TFrom, TTo>(Func<TFrom, TTo> mapFunc)
     {
-        Func<object, object> indirectDelegate = (obj) => mapFunc((TFrom)obj);
+        object indirectDelegate(object obj) => mapFunc((TFrom)obj)!;
         return indirectDelegate;
     }
 }

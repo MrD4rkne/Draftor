@@ -21,8 +21,8 @@ public static class DependencyInjection
             .AddTransient<GroupsDataContext>()
             .AddTransient<SettingsDataContext>()
             .AddTransient<PersonDataContext>()
-            .AddTransient<TransactionDataContext>();
-
+            .AddTransient<TransactionDataContext>()
+            .AddTransient<AddPersonDataContext>();
         return mauiAppBuilder;
     }
 
@@ -35,7 +35,6 @@ public static class DependencyInjection
             .AddSingleton<IDataRepository, DataRepository>()
             .AddSingleton<IConstantsProvider, ConstantsProvider>()
             .AddSingleton<IMapper, Services.Mapper>();
-
         return mauiAppBuilder;
     }
 
@@ -46,7 +45,8 @@ public static class DependencyInjection
             .AddTransient<GroupsView>()
             .AddTransient<SettingsView>()
             .AddTransient<PersonView>()
-            .AddTransient<TransactionView>();
+            .AddTransient<AddPersonView>()
+            .AddTransient<AddTransactionView>();
 
         return mauiAppBuilder;
     }

@@ -2,24 +2,55 @@
 <?xaml-comp compile="true" ?>
 <ResourceDictionary 
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit">
 
-    <!-- Note: For Android please see also Platforms\Android\Resources\values\colors.xml -->
+    <toolkit:AppThemeColor Light="#cdd2d2"
+                           Dark="#071E22"
+                           x:Key="PageBackgroundColor" />
+    <toolkit:AppThemeColor Light="#21457a"
+                           Dark="#21457a"
+                           x:Key="TopBarColor" />
+    <toolkit:AppThemeColor Light="#26508e"
+                           Dark="#26508e"
+                           x:Key="BottomBarColor" />
+    <toolkit:AppThemeColor Light="#0081A7"
+                           Dark="#0081A7"
+                           x:Key="PrimaryColor" />
+    <toolkit:AppThemeColor Light="#4CA6C1"
+                           Dark="#38A0B2"
+                           x:Key="SecondaryColor" />
+    <toolkit:AppThemeColor Light="Black"
+                           Dark="White"
+                           x:Key="PrimaryTextColor" />
+    <toolkit:AppThemeColor Light="Black"
+                           Dark="WhiteSmoke"
+                           x:Key="SecondaryTextColor" />
+    <toolkit:AppThemeColor Light="#333333"
+                           Dark="Gray"
+                           x:Key="TertiaryTextColor" />
+    <toolkit:AppThemeColor Light="#C8C8C8"
+                           Dark="#141414"
+                           x:Key="DisabledColor" />
+    <toolkit:AppThemeColor Light="#737577"
+                           Dark="#DADBDD"
+                           x:Key="DisabledTextColor" />
 
-    <Color x:Key="Primary">#6A3DE8</Color>
+    <Color x:Key="Primary">#502419</Color>
     <Color x:Key="PrimaryDark">#ac99ea</Color>
     <Color x:Key="PrimaryDarkText">#242424</Color>
-    <Color x:Key="Secondary">#DFD8F7</Color>
+    <Color x:Key="Secondary">#B0C4B1</Color>
     <Color x:Key="SecondaryDarkText">#9880e5</Color>
-    <Color x:Key="Tertiary">#2B0B98</Color>
-    <Color x:Key="AccentColor">#E07216</Color>
-    <Color x:Key="SecondaryAccentColor">#c96614</Color>
+    <Color x:Key="Tertiary">#9A4C95</Color>
+    <Color x:Key="AccentColor">#BB86FC</Color>
+    <Color x:Key="SecondaryAccentColor">#f082c7</Color>
 
     <Color x:Key="White">White</Color>
     <Color x:Key="Black">Black</Color>
     <Color x:Key="Magenta">#D600AA</Color>
     <Color x:Key="MidnightBlue">#190649</Color>
     <Color x:Key="OffBlack">#1f1f1f</Color>
+    <Color x:Key="Red">#931621</Color>
 
     <Color x:Key="Gray100">#E1E1E1</Color>
     <Color x:Key="Gray200">#C8C8C8</Color>

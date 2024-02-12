@@ -3,6 +3,7 @@ using System.Windows.Input;
 using CommunityToolkit.Mvvm;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Controls.UserDialogs.Maui;
 using Draftor.Abstract;
 using Draftor.ViewModels;
 
@@ -10,6 +11,7 @@ namespace Draftor.BindingContexts;
 
 public class GroupsDataContext : ObservableObject
 {
+    private readonly IUserDialogs _userDialogs;
     private readonly IDataService _dataService;
     public ObservableCollection<GroupVM> Groups { get; set; }
 
@@ -34,20 +36,16 @@ public class GroupsDataContext : ObservableObject
 
     public IAsyncRelayCommand CreateGroupCommand { get; private set; }
 
-    public GroupsDataContext(IDataService dataService)
+    public GroupsDataContext(IDataService dataService, IUserDialogs userDialogs)
     {
+        _userDialogs = userDialogs;
         _dataService = dataService;
         Groups = [];
-        BindCommands();
-        Task.Run(Refresh);
-    }
-
-    private void BindCommands()
-    {
         RefreshCommand = new AsyncRelayCommand(RefreshExecute, RefreshCanExecute);
-        DeleteGroupCommand = new AsyncRelayCommand<int>(DeleteGroupExecute);
+        DeleteGroupCommand = new AsyncRelayCommand<GroupVM>(DeleteGroupExecute);
         CreateGroupCommand = new AsyncRelayCommand(CreateGroupCommnand_Execute);
         ClickedGroupCommand = new AsyncRelayCommand(ClickedGroupExecute);
+        Task.Run(Refresh);
     }
 
     public async Task Refresh()
@@ -74,27 +72,25 @@ public class GroupsDataContext : ObservableObject
         return !IsRefreshing;
     }
 
-    private async Task DeleteGroupExecute(int id)
+    private async Task DeleteGroupExecute(GroupVM? groupToDelete)
     {
-        GroupVM groupToDelete = Groups.Where(x => x.Id == id).FirstOrDefault();
-        if (groupToDelete != null)
+        ArgumentNullException.ThrowIfNull(groupToDelete);
+        
+        bool confirmation = await _userDialogs.ConfirmAsync("Confirmation", $"Do you want to remove group titled {groupToDelete.Title}. The data will be lost.", "Yes", "No");
+        if (!confirmation)
         {
-            bool confirmation = await Application.Current.MainPage.DisplayAlert("Confirmation", $"Do you want to remove group titled {groupToDelete.Title}. The data will be lost.", "Yes", "No");
-            if (confirmation)
-            {
-                bool isSuccess = await _dataService.DeleteGroupAsync(groupToDelete);
-                if (isSuccess)
-                {
-                    Groups.Remove(groupToDelete);
-                    var groupCreatedToast = CommunityToolkit.Maui.Alerts.Toast.Make("Group has been successfully deleted.");
-                    await groupCreatedToast.Show();
-                }
-                else
-                {
-                    var groupNotCreatedToast = CommunityToolkit.Maui.Alerts.Toast.Make("Group hasn't been deleted because of the error.");
-                    await groupNotCreatedToast.Show();
-                }
-            }
+            return;
+        }
+
+        bool isSuccess = await _dataService.DeleteGroupAsync(groupToDelete);
+        if (isSuccess)
+        {
+            Groups.Remove(groupToDelete);
+            _userDialogs.ShowToast("Group has been successfully deleted.");
+        }
+        else
+        {
+            _userDialogs.ShowToast("Group hasn't been deleted because of the error.");
         }
     }
 
