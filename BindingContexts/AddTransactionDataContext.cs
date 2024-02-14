@@ -2,12 +2,14 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Draftor.Abstract;
+using Draftor.Core.Interfaces;
+using Draftor.Core.ViewModels;
 
 namespace Draftor.BindingContexts;
 
 public class TransactionDataContext : ObservableObject
 {
-    private readonly IDataService _dataService;
+    private readonly IPersonService _dataService;
 
     private char _sign = '+';
     public char Sign
@@ -34,7 +36,12 @@ public class TransactionDataContext : ObservableObject
     public double Ammount
     {
         get => _ammount;
-        set { if (SetProperty(ref _ammount, value)){ AddTransactionCommand.NotifyCanExecuteChanged(); } }
+        set { 
+            if (SetProperty(ref _ammount, value))
+            { 
+                AddTransactionCommand.NotifyCanExecuteChanged(); 
+            } 
+        }
     }
 
     private bool _arePeopleLoading;
@@ -46,7 +53,7 @@ public class TransactionDataContext : ObservableObject
 
     private bool IsBusy { get; set; } = false;
 
-    public ObservableCollection<ViewModels.PersonForListVM> People { get; private set; }
+    public ObservableCollection<PersonForListVM> People { get; private set; }
 
     public IAsyncRelayCommand AddTransactionCommand { get; private set; }
 
@@ -54,7 +61,7 @@ public class TransactionDataContext : ObservableObject
 
     public IRelayCommand PersonCheckedCommand { get; private set; }
 
-    public TransactionDataContext(IDataService dataService)
+    public TransactionDataContext(IPersonService dataService)
     {
         _dataService = dataService;
         People = [];
@@ -83,6 +90,7 @@ public class TransactionDataContext : ObservableObject
             .Select(person => person.Id);
         Ammount *= (Sign == '+' ? 1 : -1);
         int peopleAffectedCount = await _dataService.AddTransactionBulk(Ammount, Title, Description, peopleChecked);
+
         await Shell.Current.GoToAsync("..");
         var transactionAddedToast = CommunityToolkit.Maui.Alerts.Toast.Make($"Added transaction for {peopleAffectedCount} {(peopleAffectedCount > 1 ? "people" : "person")}.");
         await transactionAddedToast.Show();

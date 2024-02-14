@@ -1,20 +1,17 @@
-﻿using System.Collections.Concurrent;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using CommunityToolkit.Maui.Alerts;
+﻿using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Controls.UserDialogs.Maui;
 using Draftor.Abstract;
-using Draftor.ViewModels;
+using Draftor.Core.Interfaces;
+using Draftor.Core.ViewModels;
 
 namespace Draftor.BindingContexts;
 
 public class MainDataContext : ObservableObject
 {
-    private IUserDialogs _userDialogs;
-    private readonly IDataService _dataService;
+    private readonly IUserDialogs _userDialogs;
+    private readonly IPersonService _dataService;
 
     private double _total;
     public double Total
@@ -62,7 +59,7 @@ public class MainDataContext : ObservableObject
 
     public IAsyncRelayCommand RefreshCommand { get; private set; }
 
-    public MainDataContext(IDataService dataService, IUserDialogs userDialogs, IThemeManager themeManager)
+    public MainDataContext(IPersonService dataService, IUserDialogs userDialogs, IThemeManager themeManager)
     {
         _userDialogs = userDialogs;
         _dataService = dataService;
@@ -87,7 +84,6 @@ public class MainDataContext : ObservableObject
             People.Add(person);
         }
         UpdateBalance();
-        IsRefreshing = false;
     }
 
     private void UpdateBalance()
@@ -137,6 +133,7 @@ public class MainDataContext : ObservableObject
 
     private async Task RefreshExecute()
     {
+        IsRefreshing = true;
         await Refresh();
         IsRefreshing = false;
     }

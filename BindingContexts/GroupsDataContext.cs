@@ -1,18 +1,17 @@
 ﻿using System.Collections.ObjectModel;
-using System.Windows.Input;
-using CommunityToolkit.Mvvm;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Controls.UserDialogs.Maui;
 using Draftor.Abstract;
-using Draftor.ViewModels;
+using Draftor.Core.Interfaces;
+using Draftor.Core.ViewModels;
 
 namespace Draftor.BindingContexts;
 
 public class GroupsDataContext : ObservableObject
 {
     private readonly IUserDialogs _userDialogs;
-    private readonly IDataService _dataService;
+    private readonly IGroupService _groupService;
     public ObservableCollection<GroupVM> Groups { get; set; }
 
     private bool _isRefreshing = false;
@@ -36,10 +35,10 @@ public class GroupsDataContext : ObservableObject
 
     public IAsyncRelayCommand CreateGroupCommand { get; private set; }
 
-    public GroupsDataContext(IDataService dataService, IUserDialogs userDialogs)
+    public GroupsDataContext(IGroupService groupService, IUserDialogs userDialogs)
     {
         _userDialogs = userDialogs;
-        _dataService = dataService;
+        _groupService = groupService;
         Groups = [];
         RefreshCommand = new AsyncRelayCommand(RefreshExecute, RefreshCanExecute);
         DeleteGroupCommand = new AsyncRelayCommand<GroupVM>(DeleteGroupExecute);
@@ -52,7 +51,7 @@ public class GroupsDataContext : ObservableObject
     {
         IsRefreshing = true;
         Groups.Clear();
-        var groups = await _dataService.GetGroupsListAsync();
+        var groups = await _groupService.GetGroupsListAsync();
         foreach (var group in groups)
         {
             Groups.Add(group);
@@ -82,7 +81,7 @@ public class GroupsDataContext : ObservableObject
             return;
         }
 
-        bool isSuccess = await _dataService.DeleteGroupAsync(groupToDelete);
+        bool isSuccess = await _groupService.DeleteGroupAsync(groupToDelete);
         if (isSuccess)
         {
             Groups.Remove(groupToDelete);

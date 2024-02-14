@@ -1,5 +1,3 @@
-using Microsoft.Maui.Controls;
-
 namespace Draftor.Controls;
 
 public partial class BalanceLabel : Label

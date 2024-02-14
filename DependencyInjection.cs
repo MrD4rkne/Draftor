@@ -1,14 +1,15 @@
 ﻿using Draftor.Abstract;
+using Draftor.Core.Interfaces;
+using Draftor.BindableViewModels;
 using Draftor.BindingContexts;
-using Draftor.Common;
 using Draftor.Core;
-using Draftor.Data;
 using Draftor.Device;
-using Draftor.Models;
-using Draftor.Services;
-using Draftor.ViewModels;
+using Draftor.Domain.Interfaces;
 using Draftor.Views.Actions;
 using Draftor.Views.Main;
+using Draftor.Core.Services;
+using Draftor.Core.Mapping;
+using Draftor.Infrastructure;
 
 namespace Draftor;
 
@@ -31,10 +32,11 @@ public static class DependencyInjection
         mauiAppBuilder.Services
             .AddSingleton<IPreferencesStore, PreferencesStore>()
             .AddSingleton<IThemeManager, ThemesManager>()
-            .AddSingleton<IDataService, DataService>()
+            .AddSingleton<IPersonService, PersonService>()
+            .AddSingleton<IGroupService, GroupService>()
             .AddSingleton<IDataRepository, DataRepository>()
             .AddSingleton<IConstantsProvider, ConstantsProvider>()
-            .AddSingleton<IMapper, Services.Mapper>();
+            .AddSingleton<IMapper, Mapper>();
         return mauiAppBuilder;
     }
 
@@ -53,12 +55,7 @@ public static class DependencyInjection
 
     public static MauiApp RegisterMappings(this MauiApp mauiApp)
     {
-        IMapper? mapper = mauiApp.Services.GetService<IMapper>();
-        if (mapper is null)
-        {
-            throw new ArgumentNullException(nameof(mauiApp), "IMapper instance was not registered.");
-        }
-
+        IMapper? mapper = mauiApp.Services.GetService<IMapper>() ?? throw new ArgumentNullException(nameof(mauiApp), "IMapper instance was not registered.");
         mapper.RegisterMappings();
         return mauiApp;
     }

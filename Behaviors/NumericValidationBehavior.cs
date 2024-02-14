@@ -14,14 +14,17 @@ public class NumericValidationBehavior : Behavior<Entry>
         base.OnDetachingFrom(entry);
     }
 
-    private static void OnEntryTextChanged(object sender, TextChangedEventArgs args)
-    {
-        if (!string.IsNullOrWhiteSpace(args.NewTextValue))
+    private static void OnEntryTextChanged(object? sender, TextChangedEventArgs args)
+    { 
+        if (string.IsNullOrWhiteSpace(args.NewTextValue) || sender is null)
         {
-            string text = args.NewTextValue;
-            bool IsValid = IsEntryValid(text);
-            if (!IsValid)
-                ((Entry)sender).Text = args.OldTextValue;
+            return;
+        }
+        string text = args.NewTextValue;
+        bool IsValid = IsEntryValid(text);
+        if (!IsValid)
+        {
+            ((Entry)sender).Text = args.OldTextValue;
         }
     }
 
@@ -29,13 +32,11 @@ public class NumericValidationBehavior : Behavior<Entry>
     {
         if (string.IsNullOrEmpty(text))
             return false;
-        double a;
-        if (!double.TryParse(text, out a))
+        if (!double.TryParse(text, out _))
             return false;
         int i = text.IndexOf('.');
         if (i > 0 && i < text.Length - 1 - 2)
             return false;
-
         return true;
     }
 }

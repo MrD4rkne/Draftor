@@ -3,17 +3,17 @@ using System.Text;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Controls.UserDialogs.Maui;
-using Draftor.Abstract;
-using Draftor.Models;
-using Draftor.ViewModels;
+using Draftor.BindableViewModels;
+using Draftor.Core.Interfaces;
+using Draftor.Core.ViewModels;
 
 namespace Draftor.BindingContexts;
 
 [QueryProperty(nameof(PersonId), "id")]
 public class PersonDataContext : ObservableObject
 {
-    private IUserDialogs _userDialogs;
-    private readonly IDataService _dataService;
+    private readonly IUserDialogs _userDialogs;
+    private readonly IPersonService _dataService;
 
     private bool _isDataBeingLoaded;
     public bool IsDataBeingLoaded
@@ -25,14 +25,14 @@ public class PersonDataContext : ObservableObject
     private int _personId;
     public int PersonId { get => _personId; set { _personId = value; } }
 
-    private ObservableCollection<TransactionForListVM> _transactions;
-    public ObservableCollection<TransactionForListVM> Transactions
+    private ObservableCollection<TransactionBindableVM> _transactions;
+    public ObservableCollection<TransactionBindableVM> Transactions
     {
         get => _transactions;
         set => SetProperty(ref _transactions, value);
     }
 
-    private readonly List<TransactionForListVM> _transactions_to_remove = [];
+    private readonly List<int> _transactions_to_remove = [];
 
     private PersonVM _person;
     private PersonVM Person
@@ -88,14 +88,14 @@ public class PersonDataContext : ObservableObject
 
     public IAsyncRelayCommand LoadDataCommand { get; private set; }
 
-    public PersonDataContext(IDataService dataService, IUserDialogs userDialogs)
+    public PersonDataContext(IPersonService dataService, IUserDialogs userDialogs)
     {
         _userDialogs = userDialogs;
         _transactions = [];
         EditCommand = new AsyncRelayCommand(EditPerson, CanSaveChanges);
         DeleteTransactionCommand = new AsyncRelayCommand<int>(DeleteTransaction);
         LoadDataCommand = new AsyncRelayCommand(LoadDataForEdit);
-        DisplayTransactionCommand = new AsyncRelayCommand<TransactionForListVM>(ShowDetailsForTransaction);
+        DisplayTransactionCommand = new AsyncRelayCommand<TransactionBindableVM>(ShowDetailsForTransaction);
         _dataService = dataService;
     }
 
@@ -114,7 +114,9 @@ public class PersonDataContext : ObservableObject
         }
 
         var personTransactions = (await _dataService.GetAllTransactionsForPerson(PersonId));
-        Transactions = new(personTransactions);
+        var bindableTransactions = GetBindableTransactions(personTransactions);
+
+        Transactions = new(bindableTransactions);
         Name = personToEdit.Name;
         Description = personToEdit.Description;
         Person = personToEdit;
@@ -122,9 +124,20 @@ public class PersonDataContext : ObservableObject
         CountBalance();
     }
 
+    private List<TransactionBindableVM> GetBindableTransactions(IEnumerable<TransactionVM> transactionVMs)
+    {
+        List<TransactionBindableVM> transactionBindableVMs = new();
+        foreach (var transaction in transactionVMs)
+        {
+            var bindableTransaction = BindableMappings.GetTransactionBindableFromTransactionVM(transaction);
+            transactionBindableVMs.Add(bindableTransaction);
+        }
+        return transactionBindableVMs;
+    }
+
     private void CountBalance()
     {
-        Total = Transactions.Where(y => !y.ToRemove).Sum(x => x.Value);
+        Total = Transactions.Where(y => !y.IsToRemove).Sum(x => x.Value);
     }
 
     private async Task EditPerson()
@@ -144,21 +157,22 @@ public class PersonDataContext : ObservableObject
 
     private async Task DeleteTransaction(int id)
     {
-        TransactionForListVM? transactionToDelete = Transactions.Where(x => x.Id == id).FirstOrDefault();
+        TransactionBindableVM? transactionToDelete = Transactions.Where(x => x.Id == id).FirstOrDefault();
         if (transactionToDelete is null)
             return;
         bool confirmation = await _userDialogs.ConfirmAsync("Confirmation", $"Do you want to remove transaction titled {transactionToDelete.Title} with a value of of {transactionToDelete.Value}? The data will be lost after saving.", "Yes", "No");
-        if (confirmation)
+        if(!confirmation)
         {
-            _transactions_to_remove.Add(transactionToDelete);
-            EditCommand.NotifyCanExecuteChanged();
-            transactionToDelete.ToRemove = true;
-            _userDialogs.ShowToast("Transaction will be erased after saving data.");
-            CountBalance();
+            return;
         }
+        _transactions_to_remove.Add(transactionToDelete.Id);
+        EditCommand.NotifyCanExecuteChanged();
+        transactionToDelete.IsToRemove = true;
+        _userDialogs.ShowToast("Transaction will be erased after saving data.");
+        CountBalance();
     }
 
-    private async Task ShowDetailsForTransaction(TransactionForListVM? transaction)
+    private async Task ShowDetailsForTransaction(TransactionBindableVM? transaction)
     {
         ArgumentNullException.ThrowIfNull(transaction);
         StringBuilder detailsBuilder = new();

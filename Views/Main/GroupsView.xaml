@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:bindingContext="clr-namespace:Draftor.BindingContexts"
-             xmlns:vm="clr-namespace:Draftor.ViewModels"
+             xmlns:vm="clr-namespace:Draftor.Core.ViewModels;assembly=Draftor.Core"
              xmlns:model="clr-namespace:Draftor.Models"
              x:Class="Draftor.Views.Main.GroupsView"
              x:Name="GroupView"

@@ -1,5 +1,5 @@
 using System.Windows.Input;
-using Draftor.ViewModels;
+using Draftor.Core.ViewModels;
 
 namespace Draftor.Controls;
 

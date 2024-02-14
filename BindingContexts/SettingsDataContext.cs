@@ -1,5 +1,4 @@
-﻿using System.Windows.Input;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Draftor.Abstract;
 using Draftor.Models;
@@ -23,11 +22,6 @@ public class SettingsDataContext : ObservableObject
     {
         _themeManager = themeManager;
         GetUserPreferences();
-        BindCommands();
-    }
-
-    private void BindCommands()
-    {
         UpdateAppThemeCommand = new RelayCommand<bool>(UpdateAppTheme);
     }
 

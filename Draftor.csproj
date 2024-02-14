@@ -158,4 +158,8 @@
 	  <Folder Include="Resources\Styles\Controls\" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <ProjectReference Include="..\Draftor.Application\Draftor.Core.csproj" />
+	</ItemGroup>
+
 </Project>

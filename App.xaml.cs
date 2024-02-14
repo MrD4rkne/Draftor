@@ -1,6 +1,4 @@
-﻿using System.Globalization;
-
-namespace Draftor;
+﻿namespace Draftor;
 
 public partial class App : Application
 {

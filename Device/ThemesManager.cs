@@ -1,6 +1,5 @@
 ﻿using Draftor.Abstract;
 using Draftor.Models;
-using Draftor.Resources.Styles;
 
 namespace Draftor.Device;
 

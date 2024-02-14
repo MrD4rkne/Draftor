@@ -4,7 +4,7 @@
              xmlns:converter="clr-namespace:Draftor.Converters"
              xmlns:behaviors="clr-namespace:Draftor.Behaviors"
              xmlns:context="clr-namespace:Draftor.BindingContexts"
-             xmlns:viewModel="clr-namespace:Draftor.ViewModels"
+             xmlns:viewModel="clr-namespace:Draftor.Core.ViewModels;assembly=Draftor.Core"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="Draftor.Views.Actions.AddTransactionView"
              x:Name="addTransactionPage"

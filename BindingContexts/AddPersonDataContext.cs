@@ -1,17 +1,13 @@
-﻿using System.Collections.ObjectModel;
-using System.Text;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Controls.UserDialogs.Maui;
-using Draftor.Abstract;
-using Draftor.Models;
-using Draftor.ViewModels;
+using Draftor.Core.Interfaces;
+using Draftor.Core.ViewModels;
 
 namespace Draftor.BindingContexts;
 
 public class AddPersonDataContext : ObservableObject
 {
-    private readonly IDataService _dataService;
+    private readonly IPersonService _dataService;
 
     private string _name = "";
     public string Name
@@ -41,7 +37,7 @@ public class AddPersonDataContext : ObservableObject
 
     public IAsyncRelayCommand AddCommand { get; set; }
 
-    public AddPersonDataContext(IDataService dataService)
+    public AddPersonDataContext(IPersonService dataService)
     {
         _dataService = dataService;
         AddCommand = new AsyncRelayCommand(AddTransaction, CanAddTransaction);
