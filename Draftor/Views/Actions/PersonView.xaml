@@ -57,7 +57,7 @@
                                 <SwipeView Margin="5">
                                     <SwipeView.Triggers>
                                         <DataTrigger TargetType="SwipeView"
-                                                     Binding="{Binding ToRemove}"
+                                                     Binding="{Binding IsToRemove}"
                                                      Value="True">
                                             <Setter Property="IsEnabled"
                                                     Value="False" />
@@ -89,7 +89,7 @@
                                                                FontSize="Medium" />
                                         <FlexLayout.Triggers>
                                             <DataTrigger TargetType="FlexLayout"
-                                                         Binding="{Binding ToRemove}"
+                                                         Binding="{Binding IsToRemove}"
                                                          Value="True">
                                                 <Setter Property="Opacity"
                                                         Value="0.2" />

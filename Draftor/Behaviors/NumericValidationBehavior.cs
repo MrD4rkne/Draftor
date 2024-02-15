@@ -1,4 +1,6 @@
-﻿namespace Draftor.Behaviors;
+﻿using System.Globalization;
+
+namespace Draftor.Behaviors;
 
 public class NumericValidationBehavior : Behavior<Entry>
 {
@@ -15,24 +17,26 @@ public class NumericValidationBehavior : Behavior<Entry>
     }
 
     private static void OnEntryTextChanged(object? sender, TextChangedEventArgs args)
-    { 
+    {
         if (string.IsNullOrWhiteSpace(args.NewTextValue) || sender is null)
         {
             return;
         }
         string text = args.NewTextValue;
+        text = text.Replace(',', '.');
         bool IsValid = IsEntryValid(text);
         if (!IsValid)
         {
-            ((Entry)sender).Text = args.OldTextValue;
+            text = args.OldTextValue;
         }
+        ((Entry)sender).Text = text;
     }
 
     private static bool IsEntryValid(string text)
     {
         if (string.IsNullOrEmpty(text))
             return false;
-        if (!double.TryParse(text, out _))
+        if (!double.TryParse(text, NumberStyles.Any, CultureInfo.InvariantCulture, out _))
             return false;
         int i = text.IndexOf('.');
         if (i > 0 && i < text.Length - 1 - 2)

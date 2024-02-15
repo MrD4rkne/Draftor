@@ -44,11 +44,11 @@ public class TransactionDataContext : ObservableObject
         }
     }
 
-    private bool _arePeopleLoading;
-    public bool ArePeopleLoading
+    private bool _isDataBeingLoaded;
+    public bool IsDataBeingLoaded
     {
-        get => _arePeopleLoading;
-        set => SetProperty(ref _arePeopleLoading, value);
+        get => _isDataBeingLoaded;
+        set => SetProperty(ref _isDataBeingLoaded, value);
     }
 
     private bool IsBusy { get; set; } = false;
@@ -61,6 +61,8 @@ public class TransactionDataContext : ObservableObject
 
     public IRelayCommand PersonCheckedCommand { get; private set; }
 
+    public IAsyncRelayCommand LoadDataCommand { get; private set; }
+
     public TransactionDataContext(IPersonService dataService)
     {
         _dataService = dataService;
@@ -68,19 +70,24 @@ public class TransactionDataContext : ObservableObject
         AddTransactionCommand = new AsyncRelayCommand(AddTransactionCommand_Execute, AddTransaction_CanExecute);
         PersonCheckedCommand = new RelayCommand(PersonChecked_Execute);
         SwitchSignCommand = new RelayCommand(SwitchSignCommand_Execute);
-        LoadData();
+        LoadDataCommand = new AsyncRelayCommand(LoadData);
     }
 
-    public async void LoadData()
+    private async Task LoadData()
     {
-        ArePeopleLoading = true;
-        People.Clear();
+        IsDataBeingLoaded = true;
+        await LoadPeople();
+        IsDataBeingLoaded = false;
+    }
+
+    private async Task LoadPeople()
+    {
         var people = await _dataService.GetPeopleForListAsync();
+        People.Clear();
         foreach (var person in people)
         {
             People.Add(person);
         }
-        ArePeopleLoading = false;
     }
 
     private async Task AddTransactionCommand_Execute()
@@ -100,7 +107,7 @@ public class TransactionDataContext : ObservableObject
 
     private bool AddTransaction_CanExecute()
     {
-        return !IsBusy && Ammount != 0 && People.Any(x => x.Checked);
+        return !IsBusy && Ammount != 0 && People.Any(x => x.Checked) && !string.IsNullOrEmpty(Title);
     }
 
     private void SwitchSignCommand_Execute()
