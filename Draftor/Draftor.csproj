@@ -23,7 +23,7 @@
 		<ApplicationTitle>Draftor</ApplicationTitle>
 
 		<!-- App Identifier -->
-		<ApplicationId>com.companyname.draftor</ApplicationId>
+		<ApplicationId>com.mszopa.draftor</ApplicationId>
 
 		<!-- Versions -->
 		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
@@ -55,11 +55,9 @@
 
 	<ItemGroup>
 		<!-- App Icon -->
-		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
 
 		<!-- Splash Screen -->
-		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" />
-
+		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#21457a" BaseSize="256,256" />
 		<!-- Images -->
 		<MauiImage Include="Resources\Images\*" />
 
@@ -68,6 +66,15 @@
 
 		<!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
 		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <AndroidResource Remove="Resources\Styles\Controls\**" />
+	  <Compile Remove="Resources\Styles\Controls\**" />
+	  <EmbeddedResource Remove="Resources\Styles\Controls\**" />
+	  <MauiCss Remove="Resources\Styles\Controls\**" />
+	  <MauiXaml Remove="Resources\Styles\Controls\**" />
+	  <None Remove="Resources\Styles\Controls\**" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -122,16 +129,10 @@
 	  <MauiXaml Update="Views\Controls\PersonStripe.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Resources\Styles\DarkTheme.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
 	  <MauiXaml Update="Resources\Styles\Images.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Resources\Styles\MainTheme.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Resources\Styles\LightTheme.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\Actions\AddPersonView.xaml">
@@ -155,7 +156,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Resources\Styles\Controls\" />
+	  <Folder Include="Resources\AppIcon\" />
 	</ItemGroup>
 
 	<ItemGroup>

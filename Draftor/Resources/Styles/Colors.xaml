@@ -42,7 +42,7 @@
     <Color x:Key="SecondaryDarkText">#9880e5</Color>
     <Color x:Key="Tertiary">#9A4C95</Color>
     <Color x:Key="AccentColor">#BB86FC</Color>
-    <Color x:Key="SecondaryAccentColor">#f082c7</Color>
+    <Color x:Key="SecondaryAccentColor">#FF9800</Color>
 
     <Color x:Key="White">White</Color>
     <Color x:Key="Black">Black</Color>
