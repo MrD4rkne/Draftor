@@ -16,6 +16,7 @@ public class PersonDataContext : ObservableObject
     private readonly IPersonService _dataService;
 
     private bool _isDataBeingLoaded;
+
     public bool IsDataBeingLoaded
     {
         get => _isDataBeingLoaded;
@@ -23,9 +24,11 @@ public class PersonDataContext : ObservableObject
     }
 
     private int _personId;
-    public int PersonId { get => _personId; set { _personId = value; } }
+    public int PersonId
+    { get => _personId; set { _personId = value; } }
 
     private ObservableCollection<TransactionBindableVM> _transactions;
+
     public ObservableCollection<TransactionBindableVM> Transactions
     {
         get => _transactions;
@@ -35,6 +38,7 @@ public class PersonDataContext : ObservableObject
     private readonly List<int> _transactions_to_remove = [];
 
     private PersonVM _person;
+
     private PersonVM Person
     {
         get => _person;
@@ -48,6 +52,7 @@ public class PersonDataContext : ObservableObject
     }
 
     private string _name = "";
+
     public string Name
     {
         get => _name;
@@ -61,6 +66,7 @@ public class PersonDataContext : ObservableObject
     }
 
     private string _description = "";
+
     public string Description
     {
         get => _description;
@@ -74,6 +80,7 @@ public class PersonDataContext : ObservableObject
     }
 
     private double _total;
+
     public double Total
     {
         get => _total;
@@ -105,7 +112,7 @@ public class PersonDataContext : ObservableObject
             return;
         IsDataBeingLoaded = true;
         var personToEdit = await _dataService.GetPersonAsync(PersonId);
-        if(personToEdit is null)
+        if (personToEdit is null)
         {
             IsDataBeingLoaded = false;
             await _userDialogs.AlertAsync("Error", "Person not found", "Ok");
@@ -161,7 +168,7 @@ public class PersonDataContext : ObservableObject
         if (transactionToDelete is null)
             return;
         bool confirmation = await _userDialogs.ConfirmAsync("Confirmation", $"Do you want to remove transaction titled {transactionToDelete.Title} with a value of of {transactionToDelete.Value}? The data will be lost after saving.", "Yes", "No");
-        if(!confirmation)
+        if (!confirmation)
         {
             return;
         }

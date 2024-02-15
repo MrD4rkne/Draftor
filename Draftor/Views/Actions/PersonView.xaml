@@ -41,8 +41,8 @@
                                            VerticalOptions="CenterAndExpand" />
                 </Frame>
 
-                <controls:PersonDetailsCard Margin="5" 
-                    Grid.Row="1"
+                <controls:PersonDetailsCard Margin="5"
+                                            Grid.Row="1"
                                             Name="{Binding Name, Mode=TwoWay}"
                                             Description="{Binding Description, Mode=TwoWay}" />
 
@@ -107,15 +107,14 @@
                         Text="Edit"
                         VerticalOptions="Start"
                         Command="{Binding EditCommand}" />
-                </Grid>
+            </Grid>
 
-                <ActivityIndicator AbsoluteLayout.LayoutBounds="0,0,1,1"
-                                   AbsoluteLayout.LayoutFlags="All"
-                                   IsVisible="{Binding IsDataBeingLoaded}"
-                                   IsRunning="True"
-                                   HorizontalOptions="CenterAndExpand"
-                                   VerticalOptions="CenterAndExpand" />
-
+            <ActivityIndicator AbsoluteLayout.LayoutBounds="0,0,1,1"
+                               AbsoluteLayout.LayoutFlags="All"
+                               IsVisible="{Binding IsDataBeingLoaded}"
+                               IsRunning="True"
+                               HorizontalOptions="CenterAndExpand"
+                               VerticalOptions="CenterAndExpand" />
         </AbsoluteLayout>
     </ContentPage.Content>
 </ContentPage>

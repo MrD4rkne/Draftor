@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Runtime.Serialization;
 
 namespace Draftor.Domain.Exceptions;
+
 public class BadConfigurationException : Exception
 {
     public BadConfigurationException()

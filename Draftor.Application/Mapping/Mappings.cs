@@ -69,7 +69,7 @@ public static class Mappings
             Title = transaction.Title,
             Value = transaction.Value,
             IsArchived = transaction.IsArchived,
-            Date=transaction.Date
+            Date = transaction.Date
         };
         return transactionListViewModel;
     }

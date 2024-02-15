@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.Contracts;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Draftor.Domain.Exceptions;
+﻿using Draftor.Domain.Exceptions;
 using Draftor.Domain.Interfaces;
 using Draftor.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Draftor.Infrastructure;
+
 public class DataContext : DbContext
 {
     private readonly string _databasePath;
@@ -34,18 +29,18 @@ public class DataContext : DbContext
     {
         modelBuilder.Entity<Person>()
             .HasMany(person => person.Transactions)
-            .WithOne(transaction=>transaction.Person)
+            .WithOne(transaction => transaction.Person)
             .HasForeignKey(t => t.PersonId);
         modelBuilder.Entity<Group>()
             .HasMany(group => group.Members)
             .WithMany(person => person.Groups)
             .UsingEntity<Membership>(
-            memb=>memb.HasOne(m => m.Person)
+            memb => memb.HasOne(m => m.Person)
                 .WithMany()
-                .HasForeignKey(e=>e.PersonId),
-            memb=>memb.HasOne(m=>m.Group)
+                .HasForeignKey(e => e.PersonId),
+            memb => memb.HasOne(m => m.Group)
                 .WithMany()
-                .HasForeignKey(e=>e.GroupId)
+                .HasForeignKey(e => e.GroupId)
             );
     }
 }

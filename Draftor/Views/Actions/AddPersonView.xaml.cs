@@ -4,9 +4,9 @@ namespace Draftor.Views.Actions;
 
 public partial class AddPersonView : ContentPage
 {
-	public AddPersonView(AddPersonDataContext addPersonDataContext)
-	{
-		InitializeComponent();
-		BindingContext = addPersonDataContext;
-	}
+    public AddPersonView(AddPersonDataContext addPersonDataContext)
+    {
+        InitializeComponent();
+        BindingContext = addPersonDataContext;
+    }
 }

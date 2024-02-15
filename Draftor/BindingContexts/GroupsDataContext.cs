@@ -2,7 +2,6 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Controls.UserDialogs.Maui;
-using Draftor.Abstract;
 using Draftor.Core.Interfaces;
 using Draftor.Core.ViewModels;
 
@@ -74,7 +73,7 @@ public class GroupsDataContext : ObservableObject
     private async Task DeleteGroupExecute(GroupVM? groupToDelete)
     {
         ArgumentNullException.ThrowIfNull(groupToDelete);
-        
+
         bool confirmation = await _userDialogs.ConfirmAsync("Confirmation", $"Do you want to remove group titled {groupToDelete.Title}. The data will be lost.", "Yes", "No");
         if (!confirmation)
         {

@@ -11,18 +11,18 @@
         <!--<Tab Route="GroupsPage"
              Icon="{StaticResource GroupsIcon}"
              Title="Groups">
-            <ShellContent ContentTemplate="{DataTemplate views:GroupsView}"/>
+            <ShellContent ContentTemplate="{DataTemplate views:GroupsView}" />
         </Tab>-->
         <Tab Route="HomePage"
              x:Name="HomePage"
              Title="Home"
              Icon="{StaticResource HomeIcon}">
-            <ShellContent ContentTemplate="{DataTemplate views:MainView}"/>
+            <ShellContent ContentTemplate="{DataTemplate views:MainView}" />
         </Tab>
         <Tab Route="SettingsPage"
              Title="Settings"
              Icon="{StaticResource SettingsIcon}">
-            <ShellContent ContentTemplate="{DataTemplate views:SettingsView}"/>
+            <ShellContent ContentTemplate="{DataTemplate views:SettingsView}" />
         </Tab>
     </TabBar>
 </Shell>

@@ -14,6 +14,7 @@ public class MainDataContext : ObservableObject
     private readonly IPersonService _dataService;
 
     private double _total;
+
     public double Total
     {
         get => _total;
@@ -21,6 +22,7 @@ public class MainDataContext : ObservableObject
     }
 
     private ObservableCollection<PersonMainVM> _people;
+
     public ObservableCollection<PersonMainVM> People
     {
         get => _people;
@@ -36,6 +38,7 @@ public class MainDataContext : ObservableObject
     }
 
     private bool _isRefreshing = false;
+
     public bool IsRefreshing
     {
         get => _isRefreshing;

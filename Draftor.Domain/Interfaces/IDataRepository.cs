@@ -53,5 +53,6 @@ public interface IDataRepository
     Task<double> GetSumForPerson(int personId);
 
     Task<Transaction> ArchiveTransactionAsync(int transactionId);
+
     Task AddTransactionsAsync(List<Transaction> transactionsToAdd);
 }

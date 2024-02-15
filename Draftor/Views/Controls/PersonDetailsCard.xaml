@@ -5,8 +5,8 @@
              x:Class="Draftor.Controls.PersonDetailsCard"
              x:Name="personDetails">
     <Grid RowDefinitions="auto,auto,auto,auto">
-        <Label Grid.Row="0" 
-            FontSize="Medium"
+        <Label Grid.Row="0"
+               FontSize="Medium"
                Text="Name"
                Margin="5,0" />
         <Entry Grid.Row="1"
@@ -14,7 +14,7 @@
                Placeholder="Person's name"
                Text="{Binding Name, Source={x:Reference personDetails}}" />
         <Label Grid.Row="2"
-            FontSize="Medium"
+               FontSize="Medium"
                Text="Description"
                Margin="5,0" />
         <Entry Grid.Row="3"

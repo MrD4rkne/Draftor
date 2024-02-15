@@ -10,6 +10,7 @@ public class AddPersonDataContext : ObservableObject
     private readonly IPersonService _dataService;
 
     private string _name = "";
+
     public string Name
     {
         get => _name;
@@ -23,6 +24,7 @@ public class AddPersonDataContext : ObservableObject
     }
 
     private string _description = "";
+
     public string Description
     {
         get => _description;

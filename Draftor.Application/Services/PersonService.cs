@@ -1,12 +1,10 @@
-﻿using System.Diagnostics;
-using Draftor.Core.Exceptions;
+﻿using Draftor.Core.Exceptions;
 using Draftor.Core.Interfaces;
 using Draftor.Core.Mapping;
 using Draftor.Core.ViewModels;
 using Draftor.Domain.Exceptions;
 using Draftor.Domain.Interfaces;
 using Draftor.Domain.Models;
-using Draftor.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -60,7 +58,6 @@ public class PersonService(IDataRepository dataRepository, IMapper mapper, ILogg
         return peopleForMainViewList
         .OrderBy(person => person.Id)
         .ToList();
-
     }
 
     public async Task ArchiveTransactionAsync(int transactionId)
@@ -105,7 +102,8 @@ public class PersonService(IDataRepository dataRepository, IMapper mapper, ILogg
         try
         {
             await _dataRepository.AddTransactionsAsync(transactionsToAdd);
-        }catch(Exception ex)
+        }
+        catch (Exception ex)
         {
             _logger.LogError(ex, "Error while adding transactions bulk");
             throw new UnexpectedApplicationException("Infrastructure reported exception while adding transactions bulk.", ex);
@@ -131,13 +129,14 @@ public class PersonService(IDataRepository dataRepository, IMapper mapper, ILogg
         try
         {
             personModel = await _dataRepository.GetPersonAsync(id);
-        }catch(Exception ex)
+        }
+        catch (Exception ex)
         {
             _logger.LogError(ex, "Error while getting person");
             throw new UnexpectedApplicationException("Infrastructure reported exception while getting person.", ex);
         }
 
-        if(personModel is null)
+        if (personModel is null)
         {
             throw new EntityDoesNotExistException();
         }
@@ -150,7 +149,8 @@ public class PersonService(IDataRepository dataRepository, IMapper mapper, ILogg
         try
         {
             personTranscations = _dataRepository.GetTransactionsForPerson(id);
-        }catch(Exception ex)
+        }
+        catch (Exception ex)
         {
             _logger.LogError(ex, "Error while getting transactions for person");
             throw new UnexpectedApplicationException("Infrastructure reported exception while getting transactions for person.", ex);
@@ -164,8 +164,9 @@ public class PersonService(IDataRepository dataRepository, IMapper mapper, ILogg
         Person person = _mapper.MapTo<Person>(editedVM);
         try
         {
-           await _dataRepository.UpdatePersonAsync(person);
-        }catch(Exception ex)
+            await _dataRepository.UpdatePersonAsync(person);
+        }
+        catch (Exception ex)
         {
             _logger.LogError(ex, "Error while updating person");
             throw new UnexpectedApplicationException("Infrastructure reported exception while updating person.", ex);
@@ -178,7 +179,8 @@ public class PersonService(IDataRepository dataRepository, IMapper mapper, ILogg
         try
         {
             await _dataRepository.InsertPersonAsync(personToAdd);
-        }catch(Exception ex)
+        }
+        catch (Exception ex)
         {
             _logger.LogError(ex, "Error while adding person");
             throw new UnexpectedApplicationException("Infrastructure reported exception while adding person.", ex);

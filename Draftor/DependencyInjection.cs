@@ -1,15 +1,14 @@
 ﻿using Draftor.Abstract;
-using Draftor.Core.Interfaces;
-using Draftor.BindableViewModels;
 using Draftor.BindingContexts;
 using Draftor.Core;
+using Draftor.Core.Interfaces;
+using Draftor.Core.Mapping;
+using Draftor.Core.Services;
 using Draftor.Device;
 using Draftor.Domain.Interfaces;
+using Draftor.Infrastructure;
 using Draftor.Views.Actions;
 using Draftor.Views.Main;
-using Draftor.Core.Services;
-using Draftor.Core.Mapping;
-using Draftor.Infrastructure;
 
 namespace Draftor;
 

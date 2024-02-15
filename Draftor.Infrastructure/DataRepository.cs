@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using Draftor.Domain.Exceptions;
+﻿using Draftor.Domain.Exceptions;
 using Draftor.Domain.Interfaces;
 using Draftor.Domain.Models;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +10,7 @@ public class DataRepository : IDataRepository
 {
     private readonly DataContext _context;
     private readonly ILogger<IDataRepository> _logger;
+
     public DataRepository(DataContext dataContext, ILogger<IDataRepository> logger)
     {
         _context = dataContext;
@@ -342,9 +342,10 @@ public class DataRepository : IDataRepository
         }
     }
 
-    public async Task<Transaction> ArchiveTransactionAsync(int transactionId) { 
+    public async Task<Transaction> ArchiveTransactionAsync(int transactionId)
+    {
         Transaction? transactionToArchive = await GetTransactionAsync(transactionId);
-        if(transactionToArchive is null)
+        if (transactionToArchive is null)
         {
             throw new EntityDoesNotExistException("Transaction does not exist.");
         }
@@ -364,7 +365,8 @@ public class DataRepository : IDataRepository
         }
     }
 
-    public Task AddTransactionsAsync(List<Transaction> transactionsToAdd) { 
+    public Task AddTransactionsAsync(List<Transaction> transactionsToAdd)
+    {
         ArgumentNullException.ThrowIfNull(transactionsToAdd);
         _context.Transactions.AddRange(transactionsToAdd);
         try

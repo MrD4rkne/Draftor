@@ -126,10 +126,10 @@
                              Grid.Row="0"
                              Margin="0,20,0,10" />
                     <CollectionView Grid.Row="1"
-                              Grid.Column="0"
-                              HorizontalOptions="Fill"
-                              Margin="5"
-                              ItemsSource="{Binding People}">
+                                    Grid.Column="0"
+                                    HorizontalOptions="Fill"
+                                    Margin="5"
+                                    ItemsSource="{Binding People}">
                         <CollectionView.ItemTemplate>
                             <DataTemplate x:DataType="viewModel:PersonForListVM">
                                 <StackLayout Orientation="Horizontal"

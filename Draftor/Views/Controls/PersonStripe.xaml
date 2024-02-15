@@ -61,14 +61,14 @@
             </Border.GestureRecognizers>
             <Border.StrokeShape>
                 <RoundRectangle StrokeThickness="0"
-                                Style="{StaticResource HorizontalRoundRectangle}"/>
+                                Style="{StaticResource HorizontalRoundRectangle}" />
             </Border.StrokeShape>
             <FlexLayout Direction="Row"
                         AlignItems="Center"
                         JustifyContent="SpaceBetween">
                 <Label Text="{Binding Name}"
                        FontSize="Large"
-                       TextColor="{StaticResource White}"/>
+                       TextColor="{StaticResource White}" />
                 <controls:BalanceLabel Value="{Binding Total}"
                                        FontAttributes="Bold"
                                        FontSize="Large" />

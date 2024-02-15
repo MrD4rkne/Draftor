@@ -29,8 +29,8 @@
                             <SwipeView BackgroundColor="Transparent">
                                 <SwipeView.Behaviors>
                                     <toolkit:EventToCommandBehavior EventName="Clicked"
-                                                                Command="{Binding BindingContext.GroupClicked, Source={x:Reference GroupView}}"
-                                                                CommandParameter="{Binding Id}" />
+                                                                    Command="{Binding BindingContext.GroupClicked, Source={x:Reference GroupView}}"
+                                                                    CommandParameter="{Binding Id}" />
                                 </SwipeView.Behaviors>
                                 <SwipeView.LeftItems>
                                     <SwipeItem Text="Delete"

@@ -10,6 +10,7 @@ public class SettingsDataContext : ObservableObject
     private readonly IThemeManager _themeManager;
 
     private bool _isDarkModeEnabled;
+
     public bool IsDarkModeEnabled
     {
         get => _isDarkModeEnabled;

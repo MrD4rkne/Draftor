@@ -74,9 +74,9 @@
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="{x:Type viewModel:PersonMainVM}">
                             <controls:PersonStripe BindingContext="{Binding}"
-                                                       DeleteCommand="{Binding BindingContext.DeletePersonCommand, Source={x:Reference HomeView}}"
-                                                       DetailsCommand="{Binding BindingContext.NavigateToPersonDetailsCommand, Source={x:Reference HomeView}}"
-                                                       HeightRequest="70" />
+                                                   DeleteCommand="{Binding BindingContext.DeletePersonCommand, Source={x:Reference HomeView}}"
+                                                   DetailsCommand="{Binding BindingContext.NavigateToPersonDetailsCommand, Source={x:Reference HomeView}}"
+                                                   HeightRequest="70" />
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>

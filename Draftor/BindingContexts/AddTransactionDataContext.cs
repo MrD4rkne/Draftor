@@ -1,7 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Draftor.Abstract;
 using Draftor.Core.Interfaces;
 using Draftor.Core.ViewModels;
 
@@ -12,6 +11,7 @@ public class TransactionDataContext : ObservableObject
     private readonly IPersonService _dataService;
 
     private char _sign = '+';
+
     public char Sign
     {
         get => _sign;
@@ -19,6 +19,7 @@ public class TransactionDataContext : ObservableObject
     }
 
     private string _title = string.Empty;
+
     public string Title
     {
         get => _title;
@@ -26,6 +27,7 @@ public class TransactionDataContext : ObservableObject
     }
 
     private string _description = string.Empty;
+
     public string Description
     {
         get => _description;
@@ -33,18 +35,21 @@ public class TransactionDataContext : ObservableObject
     }
 
     private double _ammount = 0.0;
+
     public double Ammount
     {
         get => _ammount;
-        set { 
+        set
+        {
             if (SetProperty(ref _ammount, value))
-            { 
-                AddTransactionCommand.NotifyCanExecuteChanged(); 
-            } 
+            {
+                AddTransactionCommand.NotifyCanExecuteChanged();
+            }
         }
     }
 
     private bool _isDataBeingLoaded;
+
     public bool IsDataBeingLoaded
     {
         get => _isDataBeingLoaded;

@@ -30,7 +30,6 @@
                 Value="1" />
     </Style>
 
-
     <Style TargetType="BoxView">
         <Setter Property="BackgroundColor"
                 Value="{toolkit:AppThemeResource PrimaryColor}" />
@@ -260,7 +259,6 @@
                 Value="{StaticResource SecondaryAccentColor}" />
     </Style>
 
-
     <Style TargetType="SwipeItem">
         <Setter Property="BackgroundColor"
                 Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}" />
@@ -353,5 +351,4 @@
         <Setter Property="SelectedTabColor"
                 Value="{AppThemeBinding Light={StaticResource Gray950}, Dark={StaticResource Gray200}}" />
     </Style>
-
 </ResourceDictionary>

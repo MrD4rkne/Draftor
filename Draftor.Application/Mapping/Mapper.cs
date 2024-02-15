@@ -24,7 +24,7 @@ public class Mapper : IMapper
 
     public T? TryMapTo<T>(object? obj)
     {
-        if(obj is null)
+        if (obj is null)
         {
             return default(T);
         }

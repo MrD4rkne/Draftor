@@ -12,7 +12,7 @@ public partial class BalanceLabel : Label
     }
 
     public BalanceLabel()
-	{
-		InitializeComponent();
-	}
+    {
+        InitializeComponent();
+    }
 }

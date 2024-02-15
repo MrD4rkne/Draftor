@@ -1,6 +1,4 @@
-﻿using Draftor.BindingContexts;
-
-namespace Draftor.Views.Main;
+﻿namespace Draftor.Views.Main;
 
 public partial class MainView : ContentPage
 {

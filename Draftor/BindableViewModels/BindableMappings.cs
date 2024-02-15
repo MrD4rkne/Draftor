@@ -1,10 +1,9 @@
-﻿using Draftor.Core.Interfaces;
-using Draftor.Core.ViewModels;
+﻿using Draftor.Core.ViewModels;
 
 namespace Draftor.BindableViewModels;
+
 public static class BindableMappings
 {
-
     public static TransactionBindableVM GetTransactionBindableFromTransactionVM(TransactionVM transaction)
     {
         TransactionBindableVM transactionVM = new()

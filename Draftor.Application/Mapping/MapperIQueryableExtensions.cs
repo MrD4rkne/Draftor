@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Draftor.Core.Interfaces;
+﻿using Draftor.Core.Interfaces;
 
 namespace Draftor.Core.Mapping;
+
 public static class MapperIQueryableExtensions
 {
     /// <summary>

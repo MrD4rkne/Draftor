@@ -2,6 +2,7 @@
 using Android.Runtime;
 
 namespace Draftor;
+
 [Application]
 public class MainApplication : MauiApplication
 {

@@ -21,7 +21,7 @@ public partial class PersonDetailsCard : ContentView
     }
 
     public PersonDetailsCard()
-	{
-		InitializeComponent();
-	}
+    {
+        InitializeComponent();
+    }
 }

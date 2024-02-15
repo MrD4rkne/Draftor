@@ -4,6 +4,7 @@ using Controls.UserDialogs.Maui;
 using Microsoft.Extensions.Logging;
 
 namespace Draftor;
+
 public static class MauiProgram
 {
     public static MauiApp CreateMauiApp()
@@ -26,7 +27,7 @@ public static class MauiProgram
             });
 
 #if DEBUG
-		builder.Logging.AddDebug();
+        builder.Logging.AddDebug();
 #endif
 
         var app = builder.Build();

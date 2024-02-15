@@ -27,16 +27,16 @@ public partial class PersonStripe : ContentView
     {
         get
         {
-            if(BindingContext is PersonMainVM personVM)
+            if (BindingContext is PersonMainVM personVM)
                 return personVM;
             throw new ArgumentException("BindingContext is not of type PersonMainVM");
         }
     }
 
     public PersonStripe()
-	{
-		InitializeComponent();
-	}
+    {
+        InitializeComponent();
+    }
 
     private void Delete_Clicked(object sender, EventArgs e)
     {

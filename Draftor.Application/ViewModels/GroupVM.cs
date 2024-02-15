@@ -1,6 +1,4 @@
-﻿using Draftor.Models;
-
-namespace Draftor.Core.ViewModels;
+﻿namespace Draftor.Core.ViewModels;
 
 public record GroupVM
 {
