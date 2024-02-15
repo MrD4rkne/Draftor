@@ -15,7 +15,9 @@ public static class MauiProgram
             .UseUserDialogs(registerInterface: true, () => { })
             .RegisterViews()
             .RegisterViewModels()
-            .RegisterServices()
+            .RegisterClientApi()
+            .RegisterCore()
+            .RegisterInfrastructure()
             .UseMauiApp<App>()
             .ConfigureFonts(fonts =>
             {

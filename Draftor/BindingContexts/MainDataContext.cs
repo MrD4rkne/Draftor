@@ -118,16 +118,20 @@ public class MainDataContext : ObservableObject
         bool shouldProceesWithDeletion = await _userDialogs.ConfirmAsync("Confirmation", $"Do you want to remove person named {personToDelete.Name} with total balance of {personToDelete.Total}? The data will be lost.", "Yes", "No");
         if (!shouldProceesWithDeletion)
             return;
-        bool wasSuccess = await _dataService.DeletePersonAsync(personToDelete.Id);
-        if (wasSuccess)
+        try
+        {
+            await _dataService.DeletePersonAsync(personToDelete.Id);
+        }
+        catch (Exception ex)
+        {
+            _userDialogs.ShowToast("Person hasn't been deleted because of the error.");
+            return;
+        }
+        finally
         {
             People.Remove(personToDelete);
             UpdateBalance();
             _userDialogs.ShowToast("Person has been successfully deleted.");
-        }
-        else
-        {
-            _userDialogs.ShowToast("Person hasn't been deleted because of the error.");
         }
     }
 

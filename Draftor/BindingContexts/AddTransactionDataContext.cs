@@ -89,9 +89,10 @@ public class TransactionDataContext : ObservableObject
         var peopleChecked = People.Where(x => x.Checked)
             .Select(person => person.Id);
         Ammount *= (Sign == '+' ? 1 : -1);
-        int peopleAffectedCount = await _dataService.AddTransactionBulk(Ammount, Title, Description, peopleChecked);
-
+        await _dataService.AddTransactionBulk(Ammount, Title, Description, peopleChecked);
         await Shell.Current.GoToAsync("..");
+
+        int peopleAffectedCount = peopleChecked.Count();
         var transactionAddedToast = CommunityToolkit.Maui.Alerts.Toast.Make($"Added transaction for {peopleAffectedCount} {(peopleAffectedCount > 1 ? "people" : "person")}.");
         await transactionAddedToast.Show();
         IsBusy = false;
