@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Draftor.Domain\Draftor.Domain.csproj" />
+    <ProjectReference Include="..\Draftor.Infrastructure\Draftor.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>
