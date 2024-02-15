@@ -3,7 +3,7 @@ using Draftor.Domain.Interfaces;
 using Draftor.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Draftor.Infrastructure;
+namespace Draftor.Infrastructure.Concrete;
 
 public class DataContext : DbContext
 {

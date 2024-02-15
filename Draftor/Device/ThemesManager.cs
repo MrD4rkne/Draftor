@@ -3,16 +3,11 @@ using Draftor.Models;
 
 namespace Draftor.Device;
 
-public class ThemesManager : IThemeManager
+public class ThemesManager(IPreferencesStore preferencesStore) : IThemeManager
 {
-    private readonly IPreferencesStore _preferencesStore;
+    private readonly IPreferencesStore _preferencesStore = preferencesStore;
 
     private Theme CurrentTheme { get; set; }
-
-    public ThemesManager(IPreferencesStore preferencesStore)
-    {
-        _preferencesStore = preferencesStore;
-    }
 
     public void SetupAppApperance()
     {
@@ -38,16 +33,10 @@ public class ThemesManager : IThemeManager
 
     private void UpdateTheme()
     {
-        switch (CurrentTheme)
+        App.Current!.UserAppTheme = CurrentTheme switch
         {
-            case Theme.Dark:
-                App.Current!.UserAppTheme = AppTheme.Dark;
-                break;
-
-            case Theme.Light:
-            default:
-                App.Current!.UserAppTheme = AppTheme.Light;
-                break;
-        }
+            Theme.Dark => AppTheme.Dark,
+            _ => AppTheme.Light,
+        };
     }
 }

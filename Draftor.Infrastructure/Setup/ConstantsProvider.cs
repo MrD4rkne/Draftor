@@ -1,6 +1,6 @@
 ﻿using Draftor.Domain.Interfaces;
 
-namespace Draftor.Infrastructure;
+namespace Draftor.Infrastructure.Setup;
 
 public class ConstantsProvider : IConstantsProvider
 {

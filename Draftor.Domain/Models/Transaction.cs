@@ -1,6 +1,6 @@
 ﻿namespace Draftor.Domain.Models;
 
-public record Transaction
+public class Transaction
 {
     public int Id { get; set; }
 

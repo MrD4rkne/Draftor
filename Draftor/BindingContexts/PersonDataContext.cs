@@ -133,7 +133,7 @@ public class PersonDataContext : ObservableObject
 
     private List<TransactionBindableVM> GetBindableTransactions(IEnumerable<TransactionVM> transactionVMs)
     {
-        List<TransactionBindableVM> transactionBindableVMs = new();
+        List<TransactionBindableVM> transactionBindableVMs = [];
         foreach (var transaction in transactionVMs)
         {
             var bindableTransaction = BindableMappings.GetTransactionBindableFromTransactionVM(transaction);

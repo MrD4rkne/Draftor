@@ -26,7 +26,7 @@ public class Mapper : IMapper
     {
         if (obj is null)
         {
-            return default(T);
+            return default;
         }
         return MapNotNull<T>(obj);
     }

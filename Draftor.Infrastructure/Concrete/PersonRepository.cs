@@ -4,18 +4,12 @@ using Draftor.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
-namespace Draftor.Infrastructure;
+namespace Draftor.Infrastructure.Concrete;
 
-public class DataRepository : IDataRepository
+public class PersonRepository(DataContext dataContext, ILogger<IPersonRepository> logger) : IPersonRepository
 {
-    private readonly DataContext _context;
-    private readonly ILogger<IDataRepository> _logger;
-
-    public DataRepository(DataContext dataContext, ILogger<IDataRepository> logger)
-    {
-        _context = dataContext;
-        _logger = logger;
-    }
+    private readonly DataContext _context = dataContext;
+    private readonly ILogger<IPersonRepository> _logger = logger;
 
     public IQueryable<Person> GetAllPeople()
     {
@@ -131,156 +125,6 @@ public class DataRepository : IDataRepository
         }
     }
 
-    public IQueryable<Group> GetGroups()
-    {
-        return _context.Groups;
-    }
-
-    public IQueryable<Group> GetGroupsForUser(int userId)
-    {
-        return _context.Groups
-            .Where(group => group.Members!.Any(person => person.Id == userId));
-    }
-
-    public async Task<Group> CreateGroupAsync(Group group)
-    {
-        ArgumentNullException.ThrowIfNull(group, nameof(group));
-        if (await DoesGroupWithTitleExistAsync(group.Title))
-            throw new GroupTitleOverlapException();
-        _context.Add(group);
-        try
-        {
-            await _context.SaveChangesAsync();
-            return group;
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Error while adding group to database");
-            throw new UnknownInfrastructureException("Error while adding group to database", ex);
-        }
-    }
-
-    private async Task<bool> DoesGroupWithTitleExistAsync(string groupTitle)
-    {
-        return await _context.Groups
-            .AnyAsync(x => x.Title == groupTitle);
-    }
-
-    public async Task DeleteGroupAsync(Group group)
-    {
-        ArgumentNullException.ThrowIfNull(group);
-        _context.Remove(group);
-        try
-        {
-            await _context.SaveChangesAsync();
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Error while deleting group from database");
-            throw new UnknownInfrastructureException("Error while deleting group from database", ex);
-        }
-    }
-
-    public async Task<Group?> GetGroupAsync(int groupId)
-    {
-        try
-        {
-            Group? group = await _context.Groups.FindAsync(groupId);
-            return group;
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Error while getting group from database");
-            throw new UnknownInfrastructureException("Error while getting group from database", ex);
-        }
-    }
-
-    public async Task DeleteGroupAsync(int id)
-    {
-        var groupToBeDeleted = await GetGroupAsync(id) ?? throw new EntityDoesNotExistException("Group of that id does not exist.");
-        _context.Remove(groupToBeDeleted);
-        try
-        {
-            await _context.SaveChangesAsync();
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Error while deleting group from database");
-            throw new UnknownInfrastructureException("Error while deleting group from database", ex);
-        }
-    }
-
-    public async Task<bool> DoesGroupExistAsync(int id)
-    {
-        return await GetGroupAsync(id) is not null;
-    }
-
-    public async Task<Group> UpdateGroupAsync(Group group)
-    {
-        ArgumentNullException.ThrowIfNull(group);
-        if (!await DoesGroupExistAsync(group.Id))
-            throw new EntityDoesNotExistException();
-        _context.Attach(group);
-        _context.Entry(group).State = EntityState.Modified;
-        try
-        {
-            await _context.SaveChangesAsync();
-            return group;
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Error while updating group in database");
-            throw new UnknownInfrastructureException("Error while updating group in database", ex);
-        }
-    }
-
-    public Task<int> GetGroupMembersCount(int groupId)
-    {
-        return _context.Groups
-            .Where(x => x.Id == groupId)
-            .SelectMany(x => x.Members)
-            .CountAsync();
-    }
-
-    public async Task<Membership> AddMembership(Membership membership)
-    {
-        ArgumentNullException.ThrowIfNull(membership);
-        if (!await DoesGroupExistAsync(membership.GroupId))
-        {
-            throw new EntityDoesNotExistException("Group does not exist.");
-        }
-        if (!await DoesPersonExistsAsync(membership.PersonId))
-        {
-            throw new EntityDoesNotExistException("Person does not exist.");
-        }
-        _context.Add(membership);
-        try
-        {
-            await _context.SaveChangesAsync();
-            return membership;
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Error while adding membership to database");
-            throw new UnknownInfrastructureException("Error while adding membership to database", ex);
-        }
-    }
-
-    public async Task DeleteMembership(Membership membership)
-    {
-        ArgumentNullException.ThrowIfNull(membership);
-        _context.Remove(membership);
-        try
-        {
-            await _context.SaveChangesAsync();
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Error while deleting membership from database");
-            throw new UnknownInfrastructureException("Error while deleting membership from database", ex);
-        }
-    }
-
     public async Task<Transaction?> GetTransactionAsync(int transactionId)
     {
         try
@@ -344,12 +188,7 @@ public class DataRepository : IDataRepository
 
     public async Task<Transaction> ArchiveTransactionAsync(int transactionId)
     {
-        Transaction? transactionToArchive = await GetTransactionAsync(transactionId);
-        if (transactionToArchive is null)
-        {
-            throw new EntityDoesNotExistException("Transaction does not exist.");
-        }
-
+        Transaction? transactionToArchive = await GetTransactionAsync(transactionId) ?? throw new EntityDoesNotExistException("Transaction does not exist.");
         transactionToArchive.IsArchived = true;
         _context.Attach(transactionToArchive);
         _context.Entry(transactionToArchive).State = EntityState.Modified;

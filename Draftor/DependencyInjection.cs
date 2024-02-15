@@ -6,7 +6,8 @@ using Draftor.Core.Mapping;
 using Draftor.Core.Services;
 using Draftor.Device;
 using Draftor.Domain.Interfaces;
-using Draftor.Infrastructure;
+using Draftor.Infrastructure.Concrete;
+using Draftor.Infrastructure.Setup;
 using Draftor.Views.Actions;
 using Draftor.Views.Main;
 
@@ -18,7 +19,7 @@ public static class DependencyInjection
     {
         mauiAppBuilder.Services
             .AddSingleton<DataContext>()
-            .AddSingleton<IDataRepository, DataRepository>()
+            .AddSingleton<IPersonRepository, PersonRepository>()
             .AddSingleton<IConstantsProvider, ConstantsProvider>();
         return mauiAppBuilder;
     }

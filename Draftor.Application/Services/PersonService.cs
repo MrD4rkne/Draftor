@@ -10,9 +10,9 @@ using Microsoft.Extensions.Logging;
 
 namespace Draftor.Core.Services;
 
-public class PersonService(IDataRepository dataRepository, IMapper mapper, ILogger<IPersonService> logger) : IPersonService
+public class PersonService(IPersonRepository dataRepository, IMapper mapper, ILogger<IPersonService> logger) : IPersonService
 {
-    private readonly IDataRepository _dataRepository = dataRepository;
+    private readonly IPersonRepository _dataRepository = dataRepository;
     private readonly IMapper _mapper = mapper;
     private readonly ILogger<IPersonService> _logger = logger;
 

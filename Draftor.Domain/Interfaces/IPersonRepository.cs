@@ -2,7 +2,7 @@
 
 namespace Draftor.Domain.Interfaces;
 
-public interface IDataRepository
+public interface IPersonRepository
 {
     IQueryable<Person> GetAllPeople();
 
@@ -20,27 +20,7 @@ public interface IDataRepository
 
     IQueryable<Transaction> GetAllTransactionsForPerson(int personId);
 
-    Task RemoveTransactionAsync(int id);
-
-    IQueryable<Group> GetGroups();
-
-    Task<Group> CreateGroupAsync(Group group);
-
-    Task DeleteGroupAsync(Group group);
-
-    Task<Group?> GetGroupAsync(int groupId);
-
-    Task DeleteGroupAsync(int id);
-
-    Task<bool> DoesGroupExistAsync(int id);
-
-    Task<Group> UpdateGroupAsync(Group group);
-
-    Task<int> GetGroupMembersCount(int groupId);
-
-    Task<Membership> AddMembership(Membership membership);
-
-    Task DeleteMembership(Membership membership);
+    Task RemoveTransactionAsync(int id);    
 
     Task<Transaction?> GetTransactionAsync(int transactionId);
 

@@ -5,6 +5,7 @@ using Controls.UserDialogs.Maui;
 using Draftor.Abstract;
 using Draftor.Core.Interfaces;
 using Draftor.Core.ViewModels;
+using Microsoft.Extensions.Logging;
 
 namespace Draftor.BindingContexts;
 
@@ -12,6 +13,7 @@ public class MainDataContext : ObservableObject
 {
     private readonly IUserDialogs _userDialogs;
     private readonly IPersonService _dataService;
+    private readonly ILogger<MainDataContext> _logger;
 
     private double _total;
 
@@ -62,10 +64,11 @@ public class MainDataContext : ObservableObject
 
     public IAsyncRelayCommand RefreshCommand { get; private set; }
 
-    public MainDataContext(IPersonService dataService, IUserDialogs userDialogs, IThemeManager themeManager)
+    public MainDataContext(IPersonService dataService, IUserDialogs userDialogs, IThemeManager themeManager, ILogger<MainDataContext> logger)
     {
         _userDialogs = userDialogs;
         _dataService = dataService;
+        _logger = logger;
         themeManager.SetupAppApperance();
         RefreshCommand = new AsyncRelayCommand(RefreshExecute, RefreshCanExecute);
         AddPersonCommand = new AsyncRelayCommand(AddPersonExecute, AddPersonCanExecute);
@@ -128,6 +131,7 @@ public class MainDataContext : ObservableObject
         catch (Exception ex)
         {
             _userDialogs.ShowToast("Person hasn't been deleted because of the error.");
+            _logger.LogError(ex, "Error while deleting person.");
             return;
         }
         finally
