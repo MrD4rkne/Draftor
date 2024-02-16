@@ -20,6 +20,7 @@ public class DataContext : DbContext
         if (constantsProvider.GetDatabaseConfigurationModel() is not DbConfigurationModel dbConfigurationModel)
             throw new BadConfigurationException();
         _databasePath = dbConfigurationModel.DatabasePath;
+        Database.EnsureCreated();
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder options)

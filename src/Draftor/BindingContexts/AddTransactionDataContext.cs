@@ -23,7 +23,11 @@ public class TransactionDataContext : ObservableObject
     public string Title
     {
         get => _title;
-        set => SetProperty(ref _title, value);
+        set { 
+            if (SetProperty(ref _title, value)) {
+                AddTransactionCommand.NotifyCanExecuteChanged();
+            } 
+        }
     }
 
     private string _description = string.Empty;
