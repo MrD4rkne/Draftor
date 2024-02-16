@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Draftor.Views.Main.MainView"
+             xmlns:context="clr-namespace:Draftor.BindingContexts"
+             xmlns:viewModel="clr-namespace:Draftor.Core.ViewModels;assembly=Draftor.Core"
+             xmlns:converter="clr-namespace:Draftor.Converters"
+             xmlns:controls="clr-namespace:Draftor.Controls"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Name="HomeView"
+             x:DataType="context:MainDataContext">
+    <ContentPage.Behaviors>
+        <toolkit:EventToCommandBehavior EventName="NavigatedTo"
+                                        Command="{Binding RefreshCommand}" />
+    </ContentPage.Behaviors>
+    <ContentPage.Resources>
+        <converter:TotalToIntConverter x:Key="TotalToIntConverter" />
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <StackLayout>
+            <Grid Margin="20,0"
+                  ColumnSpacing="0"
+                  HeightRequest="80"
+                  ColumnDefinitions="auto,*,auto">
+                <Border VerticalOptions="CenterAndExpand"
+                        WidthRequest="50"
+                        Grid.Column="0"
+                        BackgroundColor="MediumPurple"
+                        Stroke="MediumPurple">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="0,0,40,0"
+                                        StrokeThickness="0" />
+                    </Border.StrokeShape>
+                    <ImageButton Source="{StaticResource AddPersonIcon}"
+                                 Aspect="AspectFit"
+                                 Command="{Binding AddPersonCommand}" />
+                </Border>
+                <Border HorizontalOptions="Fill"
+                        VerticalOptions="Fill"
+                        BackgroundColor="{toolkit:AppThemeResource SecondaryColor}"
+                        Grid.Column="1"
+                        StrokeThickness="0">
+                    <controls:BalanceLabel Value="{Binding Total}"
+                                           FontSize="30"
+                                           HorizontalTextAlignment="Center"
+                                           VerticalTextAlignment="Center"
+                                           HorizontalOptions="CenterAndExpand"
+                                           FontAttributes="Bold"
+                                           LineBreakMode="MiddleTruncation"
+                                           SemanticProperties.Hint="{Binding Total}"
+                                           VerticalOptions="CenterAndExpand" />
+                </Border>
+                <Border Grid.Column="2"
+                        VerticalOptions="Fill"
+                        WidthRequest="50"
+                        BackgroundColor="LightGreen"
+                        Stroke="LightGreen">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="0,0,0,40"
+                                        StrokeThickness="0" />
+                    </Border.StrokeShape>
+                    <ImageButton Source="{StaticResource AddTransactionIcon}"
+                                 Aspect="AspectFit"
+                                 Command="{Binding AddTransactionCommand}" />
+                </Border>
+            </Grid>
+            <RefreshView IsRefreshing="{Binding IsRefreshing, Mode=TwoWay}"
+                         Command="{Binding RefreshCommand}">
+                <CollectionView ItemsSource="{Binding People, Mode=TwoWay}"
+                                SelectionMode="None"
+                                BackgroundColor="Transparent"
+                                HorizontalOptions="FillAndExpand"
+                                VerticalOptions="FillAndExpand">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="{x:Type viewModel:PersonMainVM}">
+                            <controls:PersonStripe BindingContext="{Binding}"
+                                                   DeleteCommand="{Binding BindingContext.DeletePersonCommand, Source={x:Reference HomeView}}"
+                                                   DetailsCommand="{Binding BindingContext.NavigateToPersonDetailsCommand, Source={x:Reference HomeView}}"
+                                                   HeightRequest="60" />
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </RefreshView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

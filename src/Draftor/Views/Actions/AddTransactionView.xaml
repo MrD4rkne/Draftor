@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:converter="clr-namespace:Draftor.Converters"
+             xmlns:behaviors="clr-namespace:Draftor.Behaviors"
+             xmlns:context="clr-namespace:Draftor.BindingContexts"
+             xmlns:viewModel="clr-namespace:Draftor.Core.ViewModels;assembly=Draftor.Core"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Class="Draftor.Views.Actions.AddTransactionView"
+             x:Name="addTransactionPage"
+             Title="Add transaction"
+             x:DataType="context:TransactionDataContext"
+             Shell.TabBarIsVisible="False">
+    <ContentPage.Resources>
+        <converter:TotalToIntConverter x:Key="TotalToIntConverter" />
+        <converter:DoubleToTextConverter x:Key="TexToDoubleConverter" />
+    </ContentPage.Resources>
+    <ContentPage.Behaviors>
+        <toolkit:EventToCommandBehavior EventName="NavigatedTo"
+                                        Command="{Binding LoadDataCommand}" />
+    </ContentPage.Behaviors>
+    <ContentPage.Content>
+        <AbsoluteLayout>
+            <Grid AbsoluteLayout.LayoutBounds="0,0,1,1"
+                  AbsoluteLayout.LayoutFlags="All"
+                  RowDefinitions="auto,auto,auto,auto,auto,*,auto">
+                <Frame Margin="5"
+                       Grid.Row="0"
+                       BackgroundColor="{toolkit:AppThemeResource PrimaryColor}"
+                       CornerRadius="25"
+                       HeightRequest="100"
+                       HorizontalOptions="FillAndExpand"
+                       VerticalOptions="FillAndExpand">
+                    <FlexLayout Direction="Row"
+                                AlignItems="Center"
+                                JustifyContent="SpaceBetween">
+                        <Frame Margin="20,5,30,5"
+                               BackgroundColor="Transparent"
+                               HeightRequest="100"
+                               HorizontalOptions="CenterAndExpand"
+                               VerticalOptions="CenterAndExpand">
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding SwitchSignCommand}" />
+                            </Frame.GestureRecognizers>
+                            <Label Text="{Binding Sign}"
+                                   FontAttributes="Bold"
+                                   VerticalOptions="CenterAndExpand"
+                                   FontSize="Large">
+                                <Label.Triggers>
+                                    <DataTrigger TargetType="Label"
+                                                 Binding="{Binding Sign}"
+                                                 Value="+">
+                                        <Setter Property="TextColor"
+                                                Value="LightGreen" />
+                                    </DataTrigger>
+                                    <DataTrigger TargetType="Label"
+                                                 Binding="{Binding Sign}"
+                                                 Value="-">
+                                        <Setter Property="TextColor"
+                                                Value="OrangeRed" />
+                                    </DataTrigger>
+                                </Label.Triggers>
+                            </Label>
+                        </Frame>
+                        <Entry Text="{Binding Ammount, Mode=TwoWay, Converter={StaticResource TexToDoubleConverter}}"
+                               FontSize="Title"
+                               HorizontalTextAlignment="Center"
+                               VerticalTextAlignment="Center"
+                               HorizontalOptions="CenterAndExpand"
+                               VerticalOptions="CenterAndExpand"
+                               Margin="5,5,20,5"
+                               MaxLength="8"
+                               Keyboard="Numeric"
+                               Placeholder="e.g. 123.45">
+                            <Entry.Triggers>
+                                <DataTrigger TargetType="Entry"
+                                             Binding="{Binding Sign}"
+                                             Value="+">
+                                    <Setter Property="TextColor"
+                                            Value="LightGreen" />
+                                </DataTrigger>
+                                <DataTrigger TargetType="Entry"
+                                             Binding="{Binding Sign}"
+                                             Value="-">
+                                    <Setter Property="TextColor"
+                                            Value="OrangeRed" />
+                                </DataTrigger>
+                            </Entry.Triggers>
+                            <Entry.Behaviors>
+                                <behaviors:NumericValidationBehavior />
+                            </Entry.Behaviors>
+                        </Entry>
+                    </FlexLayout>
+                </Frame>
+                <Label Grid.Row="1"
+                       FontSize="Medium"
+                       Margin="5,0,0,0"
+                       Text="Title" />
+                <Entry Grid.Row="2"
+                       HorizontalOptions="Fill"
+                       Placeholder="Groceries"
+                       Text="{Binding Title, Mode=TwoWay}" />
+                <Label Grid.Row="3"
+                       FontSize="Medium"
+                       Margin="5,0,0,0"
+                       Text="Description" />
+                <Editor Grid.Row="4"
+                        HorizontalOptions="Fill"
+                        Placeholder="2 bananas, 1 apple and milk (lots of) ..."
+                        Text="{Binding Description, Mode=TwoWay}" />
+                <Grid Grid.Row="5"
+                      HorizontalOptions="Fill"
+                      VerticalOptions="Fill"
+                      RowDefinitions="auto,*">
+                    <Label Grid.Row="0"
+                           Text="People"
+                           HorizontalTextAlignment="Center"
+                           VerticalTextAlignment="Center"
+                           FontSize="Medium" />
+                    <CollectionView Grid.Row="1"
+                                    HorizontalOptions="Fill"
+                                    Margin="5"
+                                    ItemsSource="{Binding People}">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="viewModel:PersonForListVM">
+                                <StackLayout Orientation="Horizontal"
+                                             HeightRequest="50"
+                                             VerticalOptions="Center"
+                                             HorizontalOptions="Fill">
+                                    <CheckBox IsChecked="{Binding Checked, Mode=TwoWay}"
+                                              VerticalOptions="Center"
+                                              HorizontalOptions="Start">
+                                        <CheckBox.Behaviors>
+                                            <toolkit:EventToCommandBehavior EventName="CheckedChanged"
+                                                                            Command="{Binding BindingContext.PersonCheckedCommand, Source={x:Reference addTransactionPage}}"
+                                                                            CommandParameter="{Binding}" />
+                                        </CheckBox.Behaviors>
+                                    </CheckBox>
+                                    <Label Text="{Binding Name}"
+                                           FontSize="Medium"
+                                           VerticalOptions="Center"
+                                           HorizontalOptions="StartAndExpand"
+                                           LineBreakMode="TailTruncation" />
+                                </StackLayout>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </Grid>
+                <Button Grid.Row="6"
+                        Text="Add"
+                        HorizontalOptions="End"
+                        Margin="10"
+                        Command="{Binding AddTransactionCommand}" />
+            </Grid>
+            <ActivityIndicator AbsoluteLayout.LayoutBounds="0,0,1,1"
+                               AbsoluteLayout.LayoutFlags="All"
+                               IsVisible="{Binding IsDataBeingLoaded}"
+                               IsRunning="True"
+                               HorizontalOptions="CenterAndExpand"
+                               VerticalOptions="CenterAndExpand" />
+        </AbsoluteLayout>
+    </ContentPage.Content>
+</ContentPage>
