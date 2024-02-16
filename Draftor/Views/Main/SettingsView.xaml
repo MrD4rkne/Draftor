@@ -13,6 +13,7 @@
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
                 <RowDefinition Height="5" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
@@ -36,12 +37,36 @@
                     </Switch.Behaviors>
                 </Switch>
             </StackLayout>
-            <Label Text="@Copyright by Marcin Szopa 2023"
+            <Label Grid.Column="1"
+                   Margin="5"
+                   HorizontalTextAlignment="Center"
+                   VerticalOptions="End"
+                   FontSize="Medium"
+                   Grid.Row="3">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="@Copyright by " />
+                        <Span Text="Marcin Szopa"
+                              FontAttributes="Bold"
+                              TextDecorations="Underline">
+                            <Span.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding NavigateToAuthorsPageCommand}" />
+                            </Span.GestureRecognizers>
+                        </Span>
+                        <Span Text=" 2024" />
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+            <Label Text="Click here to see references to used materials"
                    Grid.Column="1"
                    Margin="5"
                    HorizontalTextAlignment="Center"
                    FontSize="Small"
-                   Grid.Row="3" />
+                   Grid.Row="4">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding ShowLicensesCommand}" />
+                </Label.GestureRecognizers>
+            </Label>
         </Grid>
     </ContentPage.Content>
 </ContentPage>

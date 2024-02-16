@@ -51,7 +51,6 @@ public static class DependencyInjection
     {
         mauiAppBuilder.Services
             .AddTransient<MainDataContext>()
-            .AddTransient<GroupsDataContext>()
             .AddTransient<SettingsDataContext>()
             .AddTransient<PersonDataContext>()
             .AddTransient<TransactionDataContext>()
@@ -63,7 +62,6 @@ public static class DependencyInjection
     {
         mauiAppBuilder.Services
             .AddTransient<MainView>()
-            .AddTransient<GroupsView>()
             .AddTransient<SettingsView>()
             .AddTransient<PersonView>()
             .AddTransient<AddPersonView>()
