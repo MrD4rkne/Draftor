@@ -37,11 +37,11 @@ Draftor is an intuitive application designed to empower users in managing their 
 - Marcin Szopa ([@MrDarkne](https://github.com/MrD4rkne))
 
 ## Project story
-Two years ago, I developed this application using Xamarin.Forms. However in Decemper I began journey of migrating it to MAUI. I didn't plan to do anything else.
+Two years ago, I've developed this application using Xamarin.Forms. However in December I began journey of migrating it to MAUI. I didn't plan to do anything else.
 
 The transition to MAUI wasn't merely an upgrade; it became an opportunity for a complete overhaul of the project. I took the initiative to refactor the codebase, apply best practices, and ensure that every aspect of the application followed a clean and efficient design.
 
-The result? What you see before you now—a polished, simple application built on MAUI, design to my needs.
+The result? What you see before you now—a polished, simple application built on MAUI, designed according to my needs.
 
 Welcome to the new and improved version of the app, where every line of code reflects dedication to excellence and a commitment to practising clean code.
 
