@@ -23,7 +23,7 @@ Draftor is an intuitive application designed to empower users in managing their 
 2. Installing from [compiled apks](./apks)
 - enable *Installation from unknown sources* on your Android device
 - copy *.apk* file onto your device
-- launch it and finish follow instructions
+- launch it and finish by following instructions
 
     
 ## Screenshots
