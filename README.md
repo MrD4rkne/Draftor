@@ -7,6 +7,7 @@ Draftor is an intuitive application designed to empower users in managing their 
 - **Balance Management**: Keep track of balances for each person, ensuring transparency and accountability in financial dealings.
 
 ## Tech Stack
+-- **.NET 8**
 - **MAUI Framework**: Built using MAUI, Draftor ensures seamless cross-platform compatibility, allowing users to access their financial data from various devices. (only android was tested)
 - **MVVM Pattern**: The MVVM (Model-View-ViewModel) architecture enhances maintainability and testability, providing a clear separation of concerns and facilitating easier code organization.
 - **Clean Architecture**: Draftor follows Clean Architecture principles, ensuring scalability, maintainability, and flexibility in software design and development.
