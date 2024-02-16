@@ -46,5 +46,5 @@ The result? What you see before you now—a polished, simple application built o
 Welcome to the new and improved version of the app, where every line of code reflects dedication to excellence and a commitment to practising clean code.
 
 ## License
-[MIT](./LICENSE.TXT)
+[MIT](./LICENSE)
 
