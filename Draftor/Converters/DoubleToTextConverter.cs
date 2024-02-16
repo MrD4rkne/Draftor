@@ -19,7 +19,14 @@ public class DoubleToTextConverter : IValueConverter
 
     public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        double ret;
-        return double.TryParse(value as string, out ret) ? ret : 0;
+        if(value is not string text)
+            return value;
+        if (text.EndsWith('.'))
+            text = text.Substring(0, text.Length - 1);
+        if (double.TryParse(text, NumberStyles.Any, CultureInfo.InvariantCulture, out double result))
+        {
+            return result;
+        }
+        return value;
     }
 }

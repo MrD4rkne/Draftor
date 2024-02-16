@@ -53,10 +53,9 @@ public class PersonRepository(DataContext dataContext, ILogger<IPersonRepository
     public async Task<Person> UpdatePersonAsync(Person person)
     {
         ArgumentNullException.ThrowIfNull(person);
-        if (!await DoesPersonExistsAsync(person.Id))
-            throw new EntityDoesNotExistException();
-        _context.Attach(person);
-        _context.Entry(person).State = EntityState.Modified;
+        var currPerson = await GetPersonAsync(person.Id) ?? throw new EntityDoesNotExistException();
+        currPerson.Name = person.Name;
+        currPerson.Description = person.Description;
         try
         {
             await _context.SaveChangesAsync();
@@ -143,10 +142,11 @@ public class PersonRepository(DataContext dataContext, ILogger<IPersonRepository
     public async Task<Transaction> UpdateTransactionAsync(Transaction transaction)
     {
         ArgumentNullException.ThrowIfNull(transaction);
-        if (!await DoesTransactionExistAsync(transaction.Id))
-            throw new EntityDoesNotExistException();
-        _context.Attach(transaction);
-        _context.Entry(transaction).State = EntityState.Modified;
+        Transaction transactionToEdit = await GetTransactionAsync(transaction.Id) ?? throw new EntityDoesNotExistException();
+        transactionToEdit.Title = transaction.Title;
+        transactionToEdit.Description = transaction.Description;
+        transactionToEdit.Value = transaction.Value;
+        transactionToEdit.PersonId = transaction.PersonId;
         try
         {
             await _context.SaveChangesAsync();

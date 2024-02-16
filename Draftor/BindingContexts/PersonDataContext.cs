@@ -167,7 +167,7 @@ public class PersonDataContext : ObservableObject
         TransactionBindableVM? transactionToDelete = Transactions.Where(x => x.Id == id).FirstOrDefault();
         if (transactionToDelete is null)
             return;
-        bool confirmation = await _userDialogs.ConfirmAsync("Confirmation", $"Do you want to remove transaction titled {transactionToDelete.Title} with a value of of {transactionToDelete.Value}? The data will be lost after saving.", "Yes", "No");
+        bool confirmation = await _userDialogs.ConfirmAsync($"Do you want to remove transaction titled {transactionToDelete.Title} with a value of of {transactionToDelete.Value}? The data will be lost after saving.", "Confirmation", "Yes", "No");
         if (!confirmation)
         {
             return;

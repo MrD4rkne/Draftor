@@ -8,6 +8,11 @@
              x:DataType="viewModel:PersonMainVM"
              x:Name="personStripe">
     <ContentView.Resources>
+        <SwipeItems x:Key="PersonSwipeButtons">
+            <SwipeItem Text="Delete"
+                       BackgroundColor="{StaticResource Red}"
+                       Clicked="Delete_Clicked" />
+        </SwipeItems>
         <Style x:Key="HorizontalRoundRectangle"
                TargetType="RoundRectangle">
             <Style.Triggers>
@@ -46,13 +51,26 @@
                 </DataTrigger>
             </Style.Triggers>
         </Style>
+        <Style x:Key="SwipeViewPersonStripe"
+               TargetType="SwipeView">
+            <Style.Triggers>
+                <DataTrigger TargetType="SwipeView"
+                             Binding="{Binding IsLeft}"
+                             Value="True">
+                    <Setter Property="LeftItems"
+                            Value="{StaticResource PersonSwipeButtons}" />
+                </DataTrigger>
+                <DataTrigger TargetType="SwipeView"
+                             Binding="{Binding IsLeft}"
+                             Value="False">
+                    <Setter Property="RightItems"
+                            Value="{StaticResource PersonSwipeButtons}" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
     </ContentView.Resources>
-    <SwipeView BackgroundColor="Transparent">
-        <SwipeView.LeftItems>
-            <SwipeItem Text="Delete"
-                       BackgroundColor="{StaticResource Red}"
-                       Clicked="Delete_Clicked" />
-        </SwipeView.LeftItems>
+    <SwipeView Style="{StaticResource SwipeViewPersonStripe}"
+               BackgroundColor="Transparent">
         <Border BackgroundColor="{toolkit:AppThemeResource PrimaryColor}"
                 Style="{StaticResource HorizontalBorder}">
             <Border.GestureRecognizers>

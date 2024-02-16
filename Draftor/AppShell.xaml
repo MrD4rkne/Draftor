@@ -8,11 +8,6 @@
 
     <TabBar x:Name="MainTabBar"
             Route="HeadPage">
-        <!--<Tab Route="GroupsPage"
-             Icon="{StaticResource GroupsIcon}"
-             Title="Groups">
-            <ShellContent ContentTemplate="{DataTemplate views:GroupsView}" />
-        </Tab>-->
         <Tab Route="HomePage"
              x:Name="HomePage"
              Title="Home"

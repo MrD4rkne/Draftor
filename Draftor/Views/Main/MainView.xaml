@@ -76,7 +76,7 @@
                             <controls:PersonStripe BindingContext="{Binding}"
                                                    DeleteCommand="{Binding BindingContext.DeletePersonCommand, Source={x:Reference HomeView}}"
                                                    DetailsCommand="{Binding BindingContext.NavigateToPersonDetailsCommand, Source={x:Reference HomeView}}"
-                                                   HeightRequest="70" />
+                                                   HeightRequest="60" />
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>

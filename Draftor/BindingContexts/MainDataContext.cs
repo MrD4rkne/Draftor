@@ -121,7 +121,7 @@ public class MainDataContext : ObservableObject
     {
         PersonMainVM? personToDelete = People.Where(x => x.Id == id).FirstOrDefault();
         ArgumentNullException.ThrowIfNull(personToDelete, nameof(personToDelete));
-        bool shouldProceesWithDeletion = await _userDialogs.ConfirmAsync("Confirmation", $"Do you want to remove person named {personToDelete.Name} with total balance of {personToDelete.Total}? The data will be lost.", "Yes", "No");
+        bool shouldProceesWithDeletion = await _userDialogs.ConfirmAsync($"Do you want to remove person named {personToDelete.Name} with total balance of {personToDelete.Total}? The data will be lost.", "Confirmation", "Yes", "No");
         if (!shouldProceesWithDeletion)
             return;
         try

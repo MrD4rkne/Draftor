@@ -56,8 +56,6 @@ public class TransactionDataContext : ObservableObject
         set => SetProperty(ref _isDataBeingLoaded, value);
     }
 
-    private bool IsBusy { get; set; } = false;
-
     public ObservableCollection<PersonForListVM> People { get; private set; }
 
     public IAsyncRelayCommand AddTransactionCommand { get; private set; }
@@ -97,7 +95,6 @@ public class TransactionDataContext : ObservableObject
 
     private async Task AddTransactionCommand_Execute()
     {
-        IsBusy = true;
         var peopleChecked = People.Where(x => x.Checked)
             .Select(person => person.Id);
         Ammount *= (Sign == '+' ? 1 : -1);
@@ -107,12 +104,11 @@ public class TransactionDataContext : ObservableObject
         int peopleAffectedCount = peopleChecked.Count();
         var transactionAddedToast = CommunityToolkit.Maui.Alerts.Toast.Make($"Added transaction for {peopleAffectedCount} {(peopleAffectedCount > 1 ? "people" : "person")}.");
         await transactionAddedToast.Show();
-        IsBusy = false;
     }
 
     private bool AddTransaction_CanExecute()
     {
-        return !IsBusy && Ammount != 0 && People.Any(x => x.Checked) && !string.IsNullOrEmpty(Title);
+        return !IsDataBeingLoaded && Ammount != 0 && People.Any(x => x.Checked) && !string.IsNullOrEmpty(Title);
     }
 
     private void SwitchSignCommand_Execute()
