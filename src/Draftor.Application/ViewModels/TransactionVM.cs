@@ -7,7 +7,7 @@ public record TransactionVM
 
     public string? Description { get; set; }
 
-    public required double Value { get; set; }
+    public required decimal Value { get; set; }
 
     public required bool IsArchived { get; set; }
 

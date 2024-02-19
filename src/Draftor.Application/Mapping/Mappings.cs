@@ -67,7 +67,7 @@ public static class Mappings
             Id = transaction.Id,
             Description = transaction.Description,
             Title = transaction.Title,
-            Value = transaction.Value,
+            Value = Convert.ToDecimal(transaction.Value),
             IsArchived = transaction.IsArchived,
             Date = transaction.Date
         };
@@ -81,7 +81,7 @@ public static class Mappings
             Id = transactionVM.Id,
             Description = transactionVM.Description,
             Title = transactionVM.Title,
-            Value = transactionVM.Value,
+            Value = Convert.ToDouble(transactionVM.Value),
             IsArchived = transactionVM.IsArchived,
             Date = transactionVM.Date
         };

@@ -2,15 +2,15 @@
 
 namespace Draftor.Converters;
 
-public class DoubleToTextConverter : IValueConverter
+public class DecimalToTextConverter : IValueConverter
 {
-    public DoubleToTextConverter()
+    public DecimalToTextConverter()
     {
     }
 
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        if (value is double a)
+        if (value is decimal a)
         {
             return a.ToString();
         }
@@ -23,7 +23,7 @@ public class DoubleToTextConverter : IValueConverter
             return value;
         if (text.EndsWith('.'))
             text = text.Substring(0, text.Length - 1);
-        if (double.TryParse(text, NumberStyles.Any, CultureInfo.InvariantCulture, out double result))
+        if (decimal.TryParse(text, NumberStyles.Any, CultureInfo.InvariantCulture, out decimal result))
         {
             return result;
         }

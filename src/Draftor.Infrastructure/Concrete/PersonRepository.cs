@@ -170,14 +170,16 @@ public class PersonRepository(DataContext dataContext, ILogger<IPersonRepository
             .Where(x => x.PersonId == personId);
     }
 
-    public async Task<double> GetSumForPerson(int personId)
+    public async Task<decimal> GetSumForPerson(int personId)
     {
         try
         {
-            return await _context.Transactions
+            var rawSum = await _context.Transactions
                                .Where(x => x.PersonId == personId)
                                .Where(tr => tr.IsArchived == false)
                                .SumAsync(x => x.Value);
+           double roundedSum = Math.Round(rawSum, 2);
+           return Convert.ToDecimal(roundedSum);
         }
         catch (Exception ex)
         {

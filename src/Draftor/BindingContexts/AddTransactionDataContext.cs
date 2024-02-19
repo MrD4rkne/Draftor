@@ -38,9 +38,9 @@ public class TransactionDataContext : ObservableObject
         set => SetProperty(ref _description, value);
     }
 
-    private double _ammount = 0.0;
+    private decimal _ammount = 0;
 
-    public double Ammount
+    public decimal Ammount
     {
         get => _ammount;
         set

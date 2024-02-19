@@ -46,7 +46,7 @@ public class PersonService(IPersonRepository dataRepository, IMapper mapper, ILo
         List<PersonMainVM> peopleForMainViewList = [];
         foreach (var person in people)
         {
-            double total = await _dataRepository.GetSumForPerson(person.Id);
+            decimal total = await _dataRepository.GetSumForPerson(person.Id);
             PersonMainVM personMainVM = new()
             {
                 Id = person.Id,
@@ -87,13 +87,13 @@ public class PersonService(IPersonRepository dataRepository, IMapper mapper, ILo
         }
     }
 
-    public async Task AddTransactionBulk(double ammount, string title, string description, IEnumerable<int> peopleChecked)
+    public async Task AddTransactionBulk(decimal ammount, string title, string description, IEnumerable<int> peopleChecked)
     {
         List<Transaction> transactionsToAdd = peopleChecked.Select(personId =>
         {
             return new Transaction
             {
-                Value = ammount,
+                Value = Convert.ToDouble(ammount),
                 Title = title,
                 Description = description,
                 PersonId = personId

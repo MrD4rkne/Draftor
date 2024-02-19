@@ -12,7 +12,7 @@ public interface IPersonService
 
     Task AddTransactionAsync(TransactionVM transaction);
 
-    Task AddTransactionBulk(double ammount, string title, string description, IEnumerable<int> peopleChecked);
+    Task AddTransactionBulk(decimal ammount, string title, string description, IEnumerable<int> peopleChecked);
 
     Task DeletePersonAsync(int id);
 

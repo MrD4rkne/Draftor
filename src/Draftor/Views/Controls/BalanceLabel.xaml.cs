@@ -1,13 +1,15 @@
+using CommunityToolkit.Maui.ImageSources;
+
 namespace Draftor.Controls;
 
 public partial class BalanceLabel : Label
 {
     public static readonly BindableProperty ValueProperty =
-            BindableProperty.Create(nameof(Value), typeof(double), typeof(BalanceLabel), 0.0);
+            BindableProperty.Create(nameof(Value), typeof(decimal), typeof(BalanceLabel), default(decimal));
 
-    public double Value
+    public decimal Value
     {
-        get { return (double)GetValue(BalanceLabel.ValueProperty); }
+        get { return (decimal)GetValue(BalanceLabel.ValueProperty); }
         set { SetValue(BalanceLabel.ValueProperty, value); }
     }
 

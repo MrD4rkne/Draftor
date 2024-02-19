@@ -79,9 +79,9 @@ public class PersonDataContext : ObservableObject
         }
     }
 
-    private double _total;
+    private decimal _total;
 
-    public double Total
+    public decimal Total
     {
         get => _total;
         set => SetProperty(ref _total, value);

@@ -6,7 +6,7 @@ public record PersonMainVM
 
     public required string Name { get; set; }
 
-    public required double Total { get; set; }
+    public required decimal Total { get; set; }
 
     public bool IsLeft { get; set; }
 }

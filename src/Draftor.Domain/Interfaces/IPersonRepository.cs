@@ -30,7 +30,7 @@ public interface IPersonRepository
 
     IQueryable<Transaction> GetTransactionsForPerson(int personId);
 
-    Task<double> GetSumForPerson(int personId);
+    Task<decimal> GetSumForPerson(int personId);
 
     Task<Transaction> ArchiveTransactionAsync(int transactionId);
 

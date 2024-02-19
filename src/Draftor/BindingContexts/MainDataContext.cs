@@ -15,9 +15,9 @@ public class MainDataContext : ObservableObject
     private readonly IPersonService _dataService;
     private readonly ILogger<MainDataContext> _logger;
 
-    private double _total;
+    private decimal _total;
 
-    public double Total
+    public decimal Total
     {
         get => _total;
         set => SetProperty(ref _total, value);
@@ -94,7 +94,7 @@ public class MainDataContext : ObservableObject
 
     private void UpdateBalance()
     {
-        double currTotal = People.Sum(x => x.Total);
+        decimal currTotal = People.Sum(x => x.Total);
         Total = currTotal;
     }
 

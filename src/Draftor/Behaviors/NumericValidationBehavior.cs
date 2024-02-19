@@ -38,7 +38,7 @@ public class NumericValidationBehavior : Behavior<Entry>
     {
         if (string.IsNullOrEmpty(text))
             return false;
-        if (!double.TryParse(text, NumberStyles.Any, CultureInfo.InvariantCulture, out _))
+        if (!decimal.TryParse(text, NumberStyles.Any, CultureInfo.InvariantCulture, out _))
             return false;
         if (DoesHaxMaximumTwoDecimalPlaces(text) == false)
             return false;

@@ -13,7 +13,7 @@
              Shell.TabBarIsVisible="False">
     <ContentPage.Resources>
         <converter:TotalToIntConverter x:Key="TotalToIntConverter" />
-        <converter:DoubleToTextConverter x:Key="TexToDoubleConverter" />
+        <converter:DecimalToTextConverter x:Key="TextToDecimalConverter" />
     </ContentPage.Resources>
     <ContentPage.Behaviors>
         <toolkit:EventToCommandBehavior EventName="NavigatedTo"
@@ -62,7 +62,7 @@
                                 </Label.Triggers>
                             </Label>
                         </Frame>
-                        <Entry Text="{Binding Ammount, Mode=TwoWay, Converter={StaticResource TexToDoubleConverter}}"
+                        <Entry Text="{Binding Ammount, Mode=TwoWay, Converter={StaticResource TextToDecimalConverter}}"
                                FontSize="Title"
                                HorizontalTextAlignment="Center"
                                VerticalTextAlignment="Center"
